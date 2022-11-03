@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+.sign_wrapper{
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+}
+
+
+.sign_in{
+width: 370px;
+height: 450px;
+padding: 20px;
+border-radius: 13px;
+background: #ffffff;
+ display: flex;
+    justify-content: center;
+box-shadow:  8px 8px 16px #cecece, -8px -8px 16px #f2f2f2;
+}
+
+.title{
+    color:  #01A9C1;
+   
+   font-size: 30px;
+   font-weight: 800;
+   font-family: 'Roboto', sans-serif;
+}
+
+.text{
+    outline: none;
+    width: 260px;
+    height: 43px;
+    border: 1.5px solid rgb(68, 68, 68);
+    border-radius: 25px;
+     display: flex;
+    justify-content: center;
+
+}
+
