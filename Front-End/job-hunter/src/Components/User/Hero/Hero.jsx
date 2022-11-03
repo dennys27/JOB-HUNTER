@@ -8,7 +8,7 @@ const Hero = () => {
     <div className="Hero">
       <Grid container spacing={2}>
         <Grid
-          sx={{ display: "flex", justifyContent: "center" }}
+          sx={{ display: "flex" , justifyContent: "center" }}
           item
           xs={12}
           sm={6}

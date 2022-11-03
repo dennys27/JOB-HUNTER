@@ -1,15 +1,13 @@
-import React from "react";
-import "./Login.css";
+import React from 'react'
+import './Signup.css'
 
-
-
-const Login = () => {
+const Signup = () => {
   return (
     <>
       <div className="sign_wrapper">
         <div className="sign_in">
           <div className="content">
-            <h5 className="title">Log in</h5>
+            <h5 className="title">Signup</h5>
             <input placeholder="email" className="text" type="text" value="" />
             <input
               placeholder="password"
@@ -23,16 +21,16 @@ const Login = () => {
               Agreement, Privacy Policy, and Cookie Policy.
             </p>
 
-            <button className="login_btn">Login</button>
+            <button className="login_btn">Agree & Join</button>
 
             <p className="dont">
-              Dont have an account? <a >Signup</a>
+             Already have an account? <a>Login</a>
             </p>
           </div>
         </div>
       </div>
     </>
   );
-};
+}
 
-export default Login;
+export default Signup
