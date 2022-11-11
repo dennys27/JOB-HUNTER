@@ -8,6 +8,7 @@ import { Routes, Route } from "react-router-dom";
 import UserRoutes from './UserRoutes';
 import AdminNavbar from './Components/Admin/AdminNavbar/AdminNavbar';
 import AdminLogin from './Components/Admin/Login/AdminLogin';
+import AdminHome from './Components/Admin/AdminHome/AdminHome';
 
 
 
@@ -28,7 +29,7 @@ function App() {
       <Routes>
         <Route element={<AdminLogin/>} path="/AdminLogin" />
         <Route element={<UserRoutes />}>
-          <Route element={<Feed />} path="/Home" />
+          <Route element={<AdminHome />} path="/AdminHome" />
         </Route>
       </Routes>
     </div>

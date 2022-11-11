@@ -92,7 +92,7 @@ const AdminNavbar = () => {
                   alignItems: "center",
                 }}
               >
-                JOBHUNTER
+                ADMIN
               </Typography>
 
               <Search sx={{ display: { xs: "none", sm: "flex" } }}>
@@ -137,26 +137,7 @@ const AdminNavbar = () => {
                 </Typography>
               </Box>
 
-              <Box
-                display={"flex"}
-                flexDirection={"column"}
-                justifyContent={"center"}
-                alignItems={"center"}
-                mr={2}
-                mt={0.5}
-                className="hover"
-              >
-                <AiOutlineMessage size={23} />
-                <Typography
-                  sx={{
-                    display: "block",
-                    top: 0,
-                    fontSize: 14,
-                  }}
-                >
-                  Messages
-                </Typography>
-              </Box>
+            
 
               <Box
                 display={"flex"}

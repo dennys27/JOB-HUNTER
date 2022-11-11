@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { login } from "../../../features/Auth/AuthSlice";
 import { Link, useNavigate } from "react-router-dom";
 import "./AdminLogin.css";
 import { useEffect } from "react";
 import './AdminLogin.css';
+import { login } from "../../../features/Auth/AdminAuthSlice";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const AdminLogin = () => {
   const dispatch = useDispatch();
 
   const { user, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.auth
+    (state) => state.adminAuth
   );
 
   const onChangeHandler = (e) => {
