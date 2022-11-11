@@ -1,74 +1,66 @@
-import React, { useEffect } from 'react'
-import { useState } from 'react';
-import './Signup.css'
-import { register } from '../../../features/Auth/AuthSlice';
+import React, { useEffect } from "react";
+import { useState } from "react";
+import "./Signup.css";
+import { register } from "../../../features/Auth/AuthSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import validate from 'neo-form-validations'
+import validate from "neo-form-validations";
+import Navbar from "../Navbar/Navbar";
 
 const Signup = () => {
-  
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
-    password:""
-  })
-  const [errorEmail, setErrorEmail] = useState("")
-  const [already,setAlready] = useState("")
-  const [errorPassword, setErrorPassword] = useState("")
-  const dispatch = useDispatch()
+    password: "",
+  });
+  const [errorEmail, setErrorEmail] = useState("");
+  const [already, setAlready] = useState("");
+  const [errorPassword, setErrorPassword] = useState("");
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
-     
-     setFormData((prevState) => ({
-       ...prevState,
-       [e.target.name]: e.target.value,
-     }));
-  }
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
   const onSubmit = (e) => {
-    if (validate.isEmail(formData.email) === false) {
-     setErrorEmail("invalid email")
-    }
     
-    else if (validate.isPassword(formData.password).status===false) {
+    if (validate.isEmail(formData.email) === false) {
+      setErrorEmail("invalid email");
+    } else if (validate.isPassword(formData.password).status === false) {
       setErrorPassword("invalid password");
     } else {
-      
       e.preventDefault();
       dispatch(register(formData));
-      
     }
-     
-     
-      
   };
 
   //testing...
 
-    const { user, isLoading, isError, isSuccess, message } = useSelector(
-      (state) => state.auth
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
   );
-  
-   console.log(message, "yuudfdsfjshdf");
-   
-    useEffect(() => {
-      // if (isError) {
-      //   toast.error(message);
-      // }
-   setAlready(message); 
-      if ( user) {
-         console.log(user);
-          navigate("/login");
-      }
 
-     // dispatch(reset());
-    }, [user, isError, isSuccess, message, navigate, dispatch]);
-  
+  console.log(message, "yuudfdsfjshdf");
 
+  useEffect(() => {
+    // if (isError) {
+    //   toast.error(message);
+    // }
+    setAlready(message);
+    if (user) {
+      console.log(user);
+      navigate("/login");
+    }
+
+    // dispatch(reset());
+  }, [user, isError, isSuccess, message,  dispatch]);
 
   return (
     <>
+      <Navbar />
       <div className="sign_wrapper">
         <div className="sign_in">
           <div className="content">
@@ -81,7 +73,7 @@ const Signup = () => {
               type="text"
               value={formData.email}
             />
-            <p style={{color:"red"}} >{errorEmail}</p>
+            <p style={{ color: "red" }}>{errorEmail}</p>
             <input
               name="password"
               placeholder="password"
@@ -91,8 +83,8 @@ const Signup = () => {
               onChange={(e) => handleChange(e)}
             />
 
-            <p style={{color:"red"}} >{errorPassword}</p>
-            <p style={{color:"red"}} >{already}</p>
+            <p style={{ color: "red" }}>{errorPassword}</p>
+            <p style={{ color: "red" }}>{already}</p>
 
             <p className="policy">
               By clicking Agree & Join, you agree to <br /> the Jobhunter User
@@ -104,13 +96,16 @@ const Signup = () => {
             </button>
 
             <p className="dont">
-              Already have an account? <Link to="/login">Login</Link>
+              Already have an account?{" "}
+              <Link style={{ textDecoration: "none" }} to="/login">
+                Login
+              </Link>
             </p>
           </div>
         </div>
       </div>
     </>
   );
-}
+};
 
-export default Signup
+export default Signup;

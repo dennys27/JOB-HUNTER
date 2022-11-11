@@ -5,6 +5,7 @@ import "./AdminLogin.css";
 import { useEffect } from "react";
 import './AdminLogin.css';
 import { login } from "../../../features/Auth/AdminAuthSlice";
+import AdminNavbar from "../AdminNavbar/AdminNavbar";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -47,7 +48,8 @@ const AdminLogin = () => {
   }, [user, isError, isSuccess, message, navigate, dispatch]);
 
   return (
-    <>
+      <>
+          <AdminNavbar/>
       <div className="sign_wrapper">
         <div className="sign_in">
           <div className="content">

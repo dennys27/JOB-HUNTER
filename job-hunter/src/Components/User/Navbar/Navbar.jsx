@@ -5,9 +5,9 @@ import "./Navbar.css"
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled, alpha } from "@mui/material/styles";
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { Avatar, Badge, Button, IconButton, Link, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { useNavigate,Link } from "react-router-dom";
+import { Avatar, Button, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
 import { logout } from "../../../features/Auth/AuthSlice";
 
 import {
@@ -280,7 +280,13 @@ const Navbar = () => {
                   <MenuItem onClick={handleClose}>Profile</MenuItem>
                   <MenuItem onClick={handleClose}>My account</MenuItem>
                   <MenuItem onClick={handleClose}>
-                    <Box onClick={()=>{handleLogout()}}>Logout</Box>
+                    <Box
+                      onClick={() => {
+                        handleLogout();
+                      }}
+                    >
+                      Logout
+                    </Box>
                   </MenuItem>
                 </Menu>
               </Box>
@@ -288,7 +294,6 @@ const Navbar = () => {
               <Box>
                 <Box
                   sx={{
-                    visibility: "hidden",
                     display: { xs: "none", md: "flex" },
                     postion: "right",
                     mr: 3,
@@ -298,6 +303,7 @@ const Navbar = () => {
                   }}
                 >
                   <Box
+                    sx={{ visibility: "hidden" }}
                     display={"flex"}
                     flexDirection={"column"}
                     justifyContent={"center"}
@@ -319,6 +325,7 @@ const Navbar = () => {
                   </Box>
 
                   <Box
+                    sx={{ visibility: "hidden" }}
                     display={"flex"}
                     flexDirection={"column"}
                     justifyContent={"center"}
@@ -340,6 +347,7 @@ const Navbar = () => {
                   </Box>
 
                   <Box
+                    sx={{ visibility: "hidden" }}
                     display={"flex"}
                     flexDirection={"column"}
                     justifyContent={"center"}
@@ -361,6 +369,7 @@ const Navbar = () => {
                   </Box>
 
                   <Box
+                    sx={{ visibility: "hidden" }}
                     display={"flex"}
                     flexDirection={"column"}
                     justifyContent={"center"}
@@ -382,6 +391,7 @@ const Navbar = () => {
                   </Box>
 
                   <Box
+                    sx={{ visibility: "hidden" }}
                     display={"flex"}
                     flexDirection={"column"}
                     justifyContent={"center"}
@@ -403,9 +413,8 @@ const Navbar = () => {
                   </Box>
 
                   <div>
-                    <Box >
+                    <Box sx={{ visibility: "hidden" }}>
                       <Avatar
-                        
                         sx={{
                           mt: 0.5,
                           width: "40px",
@@ -415,9 +424,27 @@ const Navbar = () => {
                         src="https://www.boxymo.ie/news/img/ferrari.jpg"
                       />
                     </Box>
-
-                    
                   </div>
+                  <Link
+                    style={{ color: "white", textDecoration: "none" }}
+                    to="/login"
+                  >
+                    <Button
+                      sx={{
+                        backgroundColor: "#01A9C1",
+                        width: "100px",
+                        height: "39px",
+                        borderRadius: 6,
+                        marginTop: 0.5,
+                      }}
+                      variant="contained"
+                      display={"flex"}
+                      justifyContent={"center"}
+                      textAlignCenter={"center"}
+                    >
+                      login
+                    </Button>
+                  </Link>
                 </Box>
               </Box>
             )}

@@ -16,7 +16,7 @@ import AdminHome from './Components/Admin/AdminHome/AdminHome';
 function App() {
   return (
     <div className="wrapper">
-      {/* <Navbar />
+      {/* <Navbar /> */}
       <Routes>
         <Route element={<Hero />} path="/" />
         <Route element={<Signup />} path="/signup" />
@@ -24,8 +24,8 @@ function App() {
         <Route element={<UserRoutes />}>
           <Route element={<Feed />} path="/Home" />
         </Route>
-      </Routes> */}
-      <AdminNavbar />
+      </Routes>
+     
       <Routes>
         <Route element={<AdminLogin/>} path="/AdminLogin" />
         <Route element={<UserRoutes />}>
