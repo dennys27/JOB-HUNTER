@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+.sign_wrapper{
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+}
+
+
+.sign_in{
+width: 370px;
+height: 450px;
+padding: 20px;
+border-radius: 13px;
+background: #ffffff;
+display: flex;
+justify-content: center;
+text-align: center;
+box-shadow:  8px 8px 16px #cecece, -8px -8px 16px #f2f2f2;
+}
+
+.content{
+    
+   margin-top:30px;
+ 
+}
+
+.title{
+
+   color:#01A9C1;
+   font-size: 30px;
+   font-weight: 800;
+   font-family: 'Roboto', sans-serif;
+  
+}
+
+.text{
+    outline: none;
+    width: 270px;
+    height: 43px;
+    border-radius: 25px;
+    text-align: center;
+    background-color: #e0e0e0;
+    border: none;
+    margin-top: 25px;
+   
+
+}
+
+.login_btn{
+    width: 120px;
+    height: 45px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    outline: none;
+    border-radius: 25px;
+    background-color:#01A9C1;
+    margin-top: 30px;
+}
+
+.login_btn:hover{
+    background-color:#008da3;
+}
+
+.policy{
+    font-size: 11px;
+    font-weight: 400;
+    margin-top: 20px;
+    color: #474747;
+}
+
+.dont{
+   
+    font-size: 13px;
+    font-weight: 400;
+    margin-top: 20px;
+    color: #474747;
+
+}

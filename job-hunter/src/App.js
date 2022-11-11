@@ -6,17 +6,28 @@ import Navbar from './Components/User/Navbar/Navbar';
 import Signup from './Components/User/Signup/Signup';
 import { Routes, Route } from "react-router-dom";
 import UserRoutes from './UserRoutes';
+import AdminNavbar from './Components/Admin/AdminNavbar/AdminNavbar';
+import AdminLogin from './Components/Admin/Login/AdminLogin';
+
+
 
 
 function App() {
   return (
     <div className="wrapper">
-      <Navbar />
+      {/* <Navbar />
       <Routes>
         <Route element={<Hero />} path="/" />
         <Route element={<Signup />} path="/signup" />
         <Route element={<Login />} path="/login" />
-       <Route element={<UserRoutes />}>
+        <Route element={<UserRoutes />}>
+          <Route element={<Feed />} path="/Home" />
+        </Route>
+      </Routes> */}
+      <AdminNavbar />
+      <Routes>
+        <Route element={<AdminLogin/>} path="/AdminLogin" />
+        <Route element={<UserRoutes />}>
           <Route element={<Feed />} path="/Home" />
         </Route>
       </Routes>
