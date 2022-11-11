@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 
-const userSchema = new mongoose.Schema({
+const userSchema = mongoose.Schema({
   email: { type: String, required: true },
   password: { type: String, required: true },
 });
@@ -13,5 +13,8 @@ userSchema.methods.generateAuthToken = (payload)=>{
 }
 
 
+const User = mongoose.model("user", userSchema);
 
-module.exports = { User, validate };
+
+
+module.exports = { User };

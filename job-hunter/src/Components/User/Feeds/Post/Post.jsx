@@ -35,7 +35,7 @@ export default function RecipeReviewCard() {
 
   return (
     <Card
-      sx={{ width: "100%", height: "500px", marginTop: 4, bgcolor: "#F4F5F5" }}
+      sx={{ width: "100%", height: "500px", marginTop: 3, bgcolor: "#F4F5F5" }}
     >
       <CardHeader
         avatar={

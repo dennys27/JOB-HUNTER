@@ -5,7 +5,10 @@ import "./Navbar.css"
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled, alpha } from "@mui/material/styles";
-import { Avatar, Badge, IconButton, Toolbar, Typography } from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { Avatar, Badge, Button, IconButton, Link, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
+import { logout } from "../../../features/Auth/AuthSlice";
 
 import {
   AiOutlineHome,
@@ -14,6 +17,7 @@ import {
   AiOutlineSnippets,
   AiOutlineForm
 } from "react-icons/ai";
+
 
 
 
@@ -63,9 +67,27 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 const Navbar = () => {
- 
-  //const token = localStorage.getItem("token-user")
- let token=false
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const token = JSON.parse(localStorage.getItem("user"));
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleOptionClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login")
+  }
+
 
   return (
     <>
@@ -81,7 +103,7 @@ const Navbar = () => {
             sx={{ display: "flex", justifyContent: "space-around" }}
             disableGutters
           >
-            <Box  sx={{ display: "flex",flexDirection:"flex-start", }}>
+            <Box sx={{ display: "flex", flexDirection: "flex-start" }}>
               <Typography
                 variant="h6"
                 noWrap
@@ -229,18 +251,190 @@ const Navbar = () => {
                   </Typography>
                 </Box>
 
-                <Avatar
-                  sx={{
-                    mt: 0.5,
-                    width: "40px",
-                    height: "40px",
+                <Box>
+                  <Avatar
+                    onClick={(event) => handleOptionClick(event)}
+                    id="basic-button"
+                    aria-controls={open ? "basic-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    sx={{
+                      mt: 0.5,
+                      width: "40px",
+                      height: "40px",
+                    }}
+                    alt="Remy Sharp"
+                    src="https://www.boxymo.ie/news/img/ferrari.jpg"
+                  />
+                </Box>
+
+                <Menu
+                  id="basic-menu"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    "aria-labelledby": "basic-button",
                   }}
-                  alt="Remy Sharp"
-                  src="https://www.boxymo.ie/news/img/ferrari.jpg"
-                />
+                >
+                  <MenuItem onClick={handleClose}>Profile</MenuItem>
+                  <MenuItem onClick={handleClose}>My account</MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Box onClick={()=>{handleLogout()}}>Logout</Box>
+                  </MenuItem>
+                </Menu>
               </Box>
             ) : (
-              ""
+              <Box>
+                <Box
+                  sx={{
+                    visibility: "hidden",
+                    display: { xs: "none", md: "flex" },
+                    postion: "right",
+                    mr: 3,
+                    mb: 1.5,
+                    color: "black",
+                    fontWeight: "200",
+                  }}
+                >
+                  <Box
+                    display={"flex"}
+                    flexDirection={"column"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    mr={3}
+                    mt={0.5}
+                    className="hover"
+                  >
+                    <AiOutlineHome size={23} />
+                    <Typography
+                      sx={{
+                        display: "block",
+                        top: 0,
+                        fontSize: 14,
+                      }}
+                    >
+                      Home
+                    </Typography>
+                  </Box>
+
+                  <Box
+                    display={"flex"}
+                    flexDirection={"column"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    mr={2}
+                    mt={0.5}
+                    className="hover"
+                  >
+                    <AiOutlineMessage size={23} />
+                    <Typography
+                      sx={{
+                        display: "block",
+                        top: 0,
+                        fontSize: 14,
+                      }}
+                    >
+                      Messages
+                    </Typography>
+                  </Box>
+
+                  <Box
+                    display={"flex"}
+                    flexDirection={"column"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    mr={3}
+                    mt={0.5}
+                    className="hover"
+                  >
+                    <AiOutlineBell size={23} />
+                    <Typography
+                      sx={{
+                        display: "block",
+                        top: 0,
+                        fontSize: 14,
+                      }}
+                    >
+                      Notifications
+                    </Typography>
+                  </Box>
+
+                  <Box
+                    display={"flex"}
+                    flexDirection={"column"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    mr={3}
+                    mt={0.5}
+                    className="hover"
+                  >
+                    <AiOutlineSnippets size={23} />
+                    <Typography
+                      sx={{
+                        display: "block",
+                        top: 0,
+                        fontSize: 14,
+                      }}
+                    >
+                      Jobs
+                    </Typography>
+                  </Box>
+
+                  <Box
+                    display={"flex"}
+                    flexDirection={"column"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    mr={3}
+                    mt={0.5}
+                    className="hover"
+                  >
+                    <AiOutlineForm size={23} />
+                    <Typography
+                      sx={{
+                        display: "block",
+                        top: 0,
+                        fontSize: 14,
+                      }}
+                    >
+                      Post a job
+                    </Typography>
+                  </Box>
+
+                  <div>
+                    <Box onClick={(event) => handleOptionClick(event)}>
+                      <Avatar
+                        id="basic-button"
+                        aria-controls={open ? "basic-menu" : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? "true" : undefined}
+                        sx={{
+                          mt: 0.5,
+                          width: "40px",
+                          height: "40px",
+                        }}
+                        alt="Remy Sharp"
+                        src="https://www.boxymo.ie/news/img/ferrari.jpg"
+                      />
+                    </Box>
+
+                    <Menu
+                      id="basic-menu"
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      MenuListProps={{
+                        "aria-labelledby": "basic-button",
+                      }}
+                    >
+                      <MenuItem onClick={handleClose}>Profile</MenuItem>
+                      <MenuItem onClick={handleClose}>My account</MenuItem>
+                      <MenuItem onClick={handleClose}>Logout</MenuItem>
+                    </Menu>
+                  </div>
+                </Box>
+              </Box>
             )}
           </Toolbar>
         </Box>

@@ -1,15 +1,21 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { login } from "../../../features/Auth/AuthSlice";
+import { login} from "../../../features/Auth/AuthSlice";
+import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
+import { useEffect } from "react";
 
 
 
 const Login = () => {
+
+   const navigate = useNavigate();
+  
   const [formData, setFormData] = useState({
     email: "",
     password:""
   })
+  const [errorData, setErrorData] = useState("")
 
   const dispatch = useDispatch();
 
@@ -26,7 +32,21 @@ const Login = () => {
 
   const onSubmit = (e) =>{
      dispatch(login(formData));
-}
+  }
+  
+      useEffect(() => {
+        // if (isError) {
+        //   toast.error(message);
+        // }
+        setErrorData(message)
+      
+        if (user) {
+          console.log(user);
+          navigate("/Home");
+        }
+
+        // dispatch(reset());
+      }, [user, isError, isSuccess, message, navigate, dispatch]);
 
   return (
     <>
@@ -50,6 +70,7 @@ const Login = () => {
               type="password"
               value={formData.password}
             />
+            <p>{errorData}</p>
 
             <p className="policy">
               By clicking Agree & Join, you agree to <br /> the Jobhunter User

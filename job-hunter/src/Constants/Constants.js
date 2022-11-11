@@ -4,13 +4,16 @@ export const userUrl = "http://localhost:5000";
 
 export const adminUrl = "http://localhost:5000/admin/";
 
-const TOKEN = localStorage.getItem("userToken");
+const TOKEN = JSON.parse(localStorage.getItem("user")).token;
+
 
 const ADMINTOKEN = localStorage.getItem("admintoken");
 
 export const userRequest = axios.create({
   baseURL: userUrl,
-  header: { token: `Bearer ${TOKEN}` },
+  header: {
+    token: `Bearer ${TOKEN}`,
+  },
 });
 
 

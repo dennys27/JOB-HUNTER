@@ -1,7 +1,6 @@
-import axios from "axios";
 import { userRequest } from "../../Constants/Constants";
 
-const API_URL = "/api/users/";
+
 
 // Register user
 const register = async (userData) => {
@@ -14,16 +13,20 @@ const register = async (userData) => {
     localStorage.setItem("user", JSON.stringify(response.data));
   }
 
+  //console.log(response,"lets seeeeeeeeee");
+
   return response.data;
 };
 
 // Login user
 const login = async (userData) => {
     const response = await userRequest({
-        'method': 'POST',
-        'url': '/user',
-        "data":userData
+        method: 'POST',
+        url: '/user/login',
+        data:userData
     });
+  
+  console.log(response,"hhhhhhhhhhhh");
 
   if (response.data) {
     localStorage.setItem("user", JSON.stringify(response.data));
