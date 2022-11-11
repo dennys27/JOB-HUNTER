@@ -8,7 +8,7 @@ import validate from 'neo-form-validations'
 
 const Signup = () => {
   
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password:""
@@ -26,18 +26,18 @@ const Signup = () => {
      }));
   }
 
-  const onSubmit = (e,prevState) => {
+  const onSubmit = (e) => {
     if (validate.isEmail(formData.email) === false) {
      setErrorEmail("invalid email")
     }
     
-    else if (validate.isPassword(formData.password).status==false) {
+    else if (validate.isPassword(formData.password).status===false) {
       setErrorPassword("invalid password");
     } else {
       
-       e.preventDefault();
-
-       dispatch(register(formData));
+      e.preventDefault();
+      dispatch(register(formData));
+      
     }
      
      

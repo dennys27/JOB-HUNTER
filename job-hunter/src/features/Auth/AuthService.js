@@ -9,11 +9,9 @@ const register = async (userData) => {
     url: "/user/register",
     data: userData,
   });
-  if (response.status == 201) {
+  if (response.status === 201) {
     localStorage.setItem("user", JSON.stringify(response.data));
   }
-
-  //console.log(response,"lets seeeeeeeeee");
 
   return response.data;
 };
@@ -26,7 +24,6 @@ const login = async (userData) => {
         data:userData
     });
   
-  console.log(response,"hhhhhhhhhhhh");
 
   if (response.data) {
     localStorage.setItem("user", JSON.stringify(response.data));

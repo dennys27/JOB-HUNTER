@@ -16,7 +16,7 @@ function App() {
         <Route element={<Hero />} path="/" />
         <Route element={<Signup />} path="/signup" />
         <Route element={<Login />} path="/login" />
-        <Route element={<UserRoutes />}>
+       <Route element={<UserRoutes />}>
           <Route element={<Feed />} path="/Home" />
         </Route>
       </Routes>

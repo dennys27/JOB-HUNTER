@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 //import { AuthContext } from "../Store/context";
 
 const UserRoutes = () => {
  
   //const token = localStorage.getItem("token");
-  const token2 = localStorage.getItem("user");
+  const token2 = JSON.parse(localStorage.getItem("user")).token;
   //  if (token2) {
   //    const userAuth = JSON.parse(localStorage.getItem("user"))
   //    setUser(userAuth);

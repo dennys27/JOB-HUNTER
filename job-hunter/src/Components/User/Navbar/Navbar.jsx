@@ -69,7 +69,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const token = JSON.parse(localStorage.getItem("user"));
+  const token = JSON.parse(localStorage.getItem("user"))?.token;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -403,12 +403,9 @@ const Navbar = () => {
                   </Box>
 
                   <div>
-                    <Box onClick={(event) => handleOptionClick(event)}>
+                    <Box >
                       <Avatar
-                        id="basic-button"
-                        aria-controls={open ? "basic-menu" : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? "true" : undefined}
+                        
                         sx={{
                           mt: 0.5,
                           width: "40px",
@@ -419,19 +416,7 @@ const Navbar = () => {
                       />
                     </Box>
 
-                    <Menu
-                      id="basic-menu"
-                      anchorEl={anchorEl}
-                      open={open}
-                      onClose={handleClose}
-                      MenuListProps={{
-                        "aria-labelledby": "basic-button",
-                      }}
-                    >
-                      <MenuItem onClick={handleClose}>Profile</MenuItem>
-                      <MenuItem onClick={handleClose}>My account</MenuItem>
-                      <MenuItem onClick={handleClose}>Logout</MenuItem>
-                    </Menu>
+                    
                   </div>
                 </Box>
               </Box>
