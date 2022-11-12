@@ -2,20 +2,18 @@ import './App.css';
 import Feed from './Components/User/Feeds/Feed';
 import Hero from './Components/User/Hero/Hero';
 import Login from './Components/User/Login/Login';
-import Navbar from './Components/User/Navbar/Navbar';
 import Signup from './Components/User/Signup/Signup';
 import { Routes, Route } from "react-router-dom";
 import UserRoutes from './UserRoutes';
-import AdminNavbar from './Components/Admin/AdminNavbar/AdminNavbar';
 import AdminLogin from './Components/Admin/Login/AdminLogin';
 import AdminHome from './Components/Admin/AdminHome/AdminHome';
-
+import AdminRoutes from './AdminRoutes';
 
 
 
 function App() {
   return (
-    <div className="wrapper">
+    <div  className="wrapper">
       {/* <Navbar /> */}
       <Routes>
         <Route element={<Hero />} path="/" />
@@ -25,11 +23,13 @@ function App() {
           <Route element={<Feed />} path="/Home" />
         </Route>
       </Routes>
-     
+
+      
+
       <Routes>
-        <Route element={<AdminLogin/>} path="/AdminLogin" />
-        <Route element={<UserRoutes />}>
-          <Route element={<AdminHome />} path="/AdminHome" />
+        <Route element={<AdminLogin />} path="/admin" />
+        <Route element={< AdminRoutes/>}>
+          <Route element={<AdminHome />} path="/adminhome" />
         </Route>
       </Routes>
     </div>

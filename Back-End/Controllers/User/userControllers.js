@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const nodemailer = require("nodemailer");
 const asyncHandler = require("express-async-handler");
 const { User } = require("../../Models/UserSchema");
 
@@ -76,14 +77,81 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
+const forgotPassword = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  email.toString();
+  await User.updateOne({ email },{otp: Math.floor(1000 + Math.random() * 9000),});
+  User.findOne({ email }).exec(async (error, data) => {
+    if (error) {
+      console.log(error,"yyyyyyyyyyyyyyyyyyyyyyy");
+    } else {
+      try {
+
+        if(data._id){
+          let transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+              user: "dennysjoseph80@gmail.com",
+              pass: "pcftxlmohdtycfvs",
+            },
+            tls: {
+              rejectUnauthorized: false,
+            },
+          });
+
+          let info = await transporter.sendMail({
+            from: "dennysjoseph80@gmail.com",
+            to: email,
+            subject: "job-hunter - forgotpassword otp",
+            text: `Your one time password is  ${data.otp}`,
+          });
+
+          res.send({ status: true, message: "success" });
+        } else {
+          res.send({ status: false, message: "account doesnot exist" });
+        }
+      } catch (err) {
+        res.send({ status: false, message: "success" });
+        console.log(err);
+      }
+    }
+  });
+ 
+
+})
+
+const emailVerification = asyncHandler(async (req, res) => {
+  console.log(req.body);
+  const {otp} = req.body;
+  User.findOne({ otp }).exec(async (error, data) => { 
+    
+    if (data) {
+       const token = await jwt.sign(
+         { userId: data._id },
+         process.env.JWTPRIVATEKEY,
+         { expiresIn: "7d" }
+      );
+       await User.updateOne({ email }, { otp: 0 });
+      res.status(200).json({ token: token, user: data.email, status: true })
+      
+    } else {
+      res.json({ message:"invalid otp", status: false });
+    }
+
+  })
+
+});
+
+
 
 
 module.exports = {
   registerUser,
-   loginUser,
-//   getMe,
-//   findOneuser,
-//   findUsers,
-//   deleteUser,
-//   editUser,
+  loginUser,
+  forgotPassword,
+  emailVerification,
+  //   findOneuser,
+  //   findUsers,
+  //   deleteUser,
+  //   editUser,
 };

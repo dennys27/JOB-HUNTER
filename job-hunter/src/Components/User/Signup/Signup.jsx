@@ -64,7 +64,7 @@ const Signup = () => {
       <div className="sign_wrapper">
         <div className="sign_in">
           <div className="content">
-            <h5 className="title">Signup</h5>
+            <h5 className="title">Sign up</h5>
             <input
               onChange={(e) => handleChange(e)}
               name="email"

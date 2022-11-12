@@ -5,7 +5,18 @@ import "./AdminNavbar.css";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled, alpha } from "@mui/material/styles";
-import { Avatar, Badge, IconButton, Toolbar, Typography } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
+import { logout } from "../../../features/Auth/AdminAuthSlice"; 
+import {
+  Avatar,
+  Button,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+
 
 import {
   AiOutlineHome,
@@ -59,6 +70,30 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const AdminNavbar = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const token = JSON.parse(localStorage.getItem("admin"))?.token;
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleOptionClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = async () => {
+    await dispatch(logout());
+    window.location.reload();
+  };
+
+  let url = window.location.href.endsWith("/");
+
+  console.log(url, "urllll");
+
   return (
     <>
       <AppBar
@@ -73,7 +108,7 @@ const AdminNavbar = () => {
             sx={{ display: "flex", justifyContent: "space-around" }}
             disableGutters
           >
-            <Box sx={{ display: "flex" }}>
+            <Box sx={{ display: "flex", flexDirection: "flex-start" }}>
               <Typography
                 variant="h6"
                 noWrap
@@ -105,113 +140,280 @@ const AdminNavbar = () => {
                 />
               </Search>
             </Box>
-
-            <Box
-              sx={{
-                display: { xs: "none", md: "flex" },
-                postion: "right",
-                mr: 3,
-                mb: 1.5,
-                color: "black",
-                fontWeight: "200",
-              }}
-            >
+            {token && url === false ? (
               <Box
-                display={"flex"}
-                flexDirection={"column"}
-                justifyContent={"center"}
-                alignItems={"center"}
-                mr={3}
-                mt={0.5}
-                className="hover"
-              >
-                <AiOutlineHome size={23} />
-                <Typography
-                  sx={{
-                    display: "block",
-                    top: 0,
-                    fontSize: 14,
-                  }}
-                >
-                  Home
-                </Typography>
-              </Box>
-
-            
-
-              <Box
-                display={"flex"}
-                flexDirection={"column"}
-                justifyContent={"center"}
-                alignItems={"center"}
-                mr={3}
-                mt={0.5}
-                className="hover"
-              >
-                <AiOutlineBell size={23} />
-                <Typography
-                  sx={{
-                    display: "block",
-                    top: 0,
-                    fontSize: 14,
-                  }}
-                >
-                  Notifications
-                </Typography>
-              </Box>
-
-              <Box
-                display={"flex"}
-                flexDirection={"column"}
-                justifyContent={"center"}
-                alignItems={"center"}
-                mr={3}
-                mt={0.5}
-                className="hover"
-              >
-                <AiOutlineSnippets size={23} />
-                <Typography
-                  sx={{
-                    display: "block",
-                    top: 0,
-                    fontSize: 14,
-                  }}
-                >
-                  Jobs
-                </Typography>
-              </Box>
-
-              <Box
-                display={"flex"}
-                flexDirection={"column"}
-                justifyContent={"center"}
-                alignItems={"center"}
-                mr={3}
-                mt={0.5}
-                className="hover"
-              >
-                <AiOutlineForm size={23} />
-                <Typography
-                  sx={{
-                    display: "block",
-                    top: 0,
-                    fontSize: 14,
-                  }}
-                >
-                  Post a job
-                </Typography>
-              </Box>
-
-              <Avatar
                 sx={{
-                  mt: 0.5,
-                  width: "40px",
-                  height: "40px",
+                  display: { xs: "none", md: "flex" },
+                  postion: "right",
+                  mr: 3,
+                  mb: 1.5,
+                  color: "black",
+                  fontWeight: "200",
                 }}
-                alt="Remy Sharp"
-                src="https://www.boxymo.ie/news/img/ferrari.jpg"
-              />
-            </Box>
+              >
+                <Box
+                  display={"flex"}
+                  flexDirection={"column"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                  mr={3}
+                  mt={0.5}
+                  className="hover"
+                >
+                  <AiOutlineHome size={23} />
+                  <Typography
+                    sx={{
+                      display: "block",
+                      top: 0,
+                      fontSize: 14,
+                    }}
+                  >
+                    Home
+                  </Typography>
+                </Box>
+
+
+                <Box
+                  display={"flex"}
+                  flexDirection={"column"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                  mr={3}
+                  mt={0.5}
+                  className="hover"
+                >
+                  <AiOutlineBell size={23} />
+                  <Typography
+                    sx={{
+                      display: "block",
+                      top: 0,
+                      fontSize: 14,
+                    }}
+                  >
+                    Notifications
+                  </Typography>
+                </Box>
+
+                <Box
+                  display={"flex"}
+                  flexDirection={"column"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                  mr={3}
+                  mt={0.5}
+                  className="hover"
+                >
+                  <AiOutlineSnippets size={23} />
+                  <Typography
+                    sx={{
+                      display: "block",
+                      top: 0,
+                      fontSize: 14,
+                    }}
+                  >
+                    Jobs
+                  </Typography>
+                </Box>
+
+                <Box
+                  display={"flex"}
+                  flexDirection={"column"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                  mr={3}
+                  mt={0.5}
+                  className="hover"
+                >
+                  <AiOutlineForm size={23} />
+                  <Typography
+                    sx={{
+                      display: "block",
+                      top: 0,
+                      fontSize: 14,
+                    }}
+                  >
+                    Post a job
+                  </Typography>
+                </Box>
+
+                <Box>
+                  <Avatar
+                    onClick={(event) => handleOptionClick(event)}
+                    id="basic-button"
+                    aria-controls={open ? "basic-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    sx={{
+                      mt: 0.5,
+                      width: "40px",
+                      height: "40px",
+                    }}
+                    alt="Remy Sharp"
+                    src="https://www.boxymo.ie/news/img/ferrari.jpg"
+                  />
+                </Box>
+
+                <Menu
+                  id="basic-menu"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    "aria-labelledby": "basic-button",
+                  }}
+                >
+                  <MenuItem onClick={handleClose}>Profile</MenuItem>
+                  <MenuItem onClick={handleClose}>My account</MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Box
+                      onClick={() => {
+                        handleLogout();
+                      }}
+                    >
+                      Logout
+                    </Box>
+                  </MenuItem>
+                </Menu>
+              </Box>
+            ) : (
+              <Box>
+                <Box
+                  sx={{
+                    display: { xs: "none", md: "flex" },
+                    postion: "right",
+                    mr: 3,
+                    mb: 1.5,
+                    color: "black",
+                    fontWeight: "200",
+                  }}
+                >
+                  <Box
+                    sx={{ visibility: "hidden" }}
+                    display={"flex"}
+                    flexDirection={"column"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    mr={3}
+                    mt={0.5}
+                    className="hover"
+                  >
+                    <AiOutlineHome size={23} />
+                    <Typography
+                      sx={{
+                        display: "block",
+                        top: 0,
+                        fontSize: 14,
+                      }}
+                    >
+                      Home
+                    </Typography>
+                  </Box>
+
+                  <Box
+                    sx={{ visibility: "hidden" }}
+                    display={"flex"}
+                    flexDirection={"column"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    mr={2}
+                    mt={0.5}
+                    className="hover"
+                  >
+                    <AiOutlineMessage size={23} />
+                    <Typography
+                      sx={{
+                        display: "block",
+                        top: 0,
+                        fontSize: 14,
+                      }}
+                    >
+                      Messages
+                    </Typography>
+                  </Box>
+
+                  <Box
+                    sx={{ visibility: "hidden" }}
+                    display={"flex"}
+                    flexDirection={"column"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    mr={3}
+                    mt={0.5}
+                    className="hover"
+                  >
+                    <AiOutlineBell size={23} />
+                    <Typography
+                      sx={{
+                        display: "block",
+                        top: 0,
+                        fontSize: 14,
+                      }}
+                    >
+                      Notifications
+                    </Typography>
+                  </Box>
+
+                  <Box
+                    sx={{ visibility: "hidden" }}
+                    display={"flex"}
+                    flexDirection={"column"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    mr={3}
+                    mt={0.5}
+                    className="hover"
+                  >
+                    <AiOutlineSnippets size={23} />
+                    <Typography
+                      sx={{
+                        display: "block",
+                        top: 0,
+                        fontSize: 14,
+                      }}
+                    >
+                      Jobs
+                    </Typography>
+                  </Box>
+
+                  <Box
+                    sx={{ visibility: "hidden" }}
+                    display={"flex"}
+                    flexDirection={"column"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    mr={3}
+                    mt={0.5}
+                    className="hover"
+                  >
+                    <AiOutlineForm size={23} />
+                    <Typography
+                      sx={{
+                        display: "block",
+                        top: 0,
+                        fontSize: 14,
+                      }}
+                    >
+                      Post a job
+                    </Typography>
+                  </Box>
+
+                  <div>
+                    <Box sx={{ visibility: "hidden" }}>
+                      <Avatar
+                        sx={{
+                          mt: 0.5,
+                          width: "40px",
+                          height: "40px",
+                        }}
+                        alt="Remy Sharp"
+                        src="https://www.boxymo.ie/news/img/ferrari.jpg"
+                      />
+                    </Box>
+                  </div>
+                 
+                </Box>
+              </Box>
+            )}
           </Toolbar>
         </Box>
       </AppBar>

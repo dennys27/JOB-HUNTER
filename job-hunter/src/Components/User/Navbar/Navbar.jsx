@@ -83,10 +83,15 @@ const Navbar = () => {
     setAnchorEl(null);
   };
 
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate("/login")
+  const handleLogout = async() => {
+    await dispatch(logout());
+    window.location.reload()
+   
   }
+
+  let url = window.location.href.endsWith("/");
+
+  console.log(url,"urllll");
 
 
   return (
@@ -135,7 +140,7 @@ const Navbar = () => {
                 />
               </Search>
             </Box>
-            {token ? (
+            {token && url===false ? (
               <Box
                 sx={{
                   display: { xs: "none", md: "flex" },

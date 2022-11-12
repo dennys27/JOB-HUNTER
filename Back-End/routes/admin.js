@@ -1,10 +1,8 @@
 var express = require('express');
+const { adminLogin } = require('../Controllers/Admin/adminControllers');
 var router = express.Router();
 
 /* GET home page. */
-router.post('/login', function (req, res, next) {
-  console.log(req.body,"lets figure this out")
-  res.send({message:"you are hitting the admin route"})
-});
+router.post('/login', adminLogin);
 
-module.exports = router;
+module.exports = router; 

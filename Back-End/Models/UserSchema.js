@@ -6,6 +6,8 @@ require("dotenv").config();
 const userSchema = mongoose.Schema({
   email: { type: String, required: true },
   password: { type: String, required: true },
+  verification: { type: Boolean },
+  otp: { type: Number },
 });
 
 userSchema.methods.generateAuthToken = (payload)=>{
