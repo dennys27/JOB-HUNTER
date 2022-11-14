@@ -29,3 +29,12 @@
     margin-left: 15px;
     background-color:#D9D9D9 ;
 }
+
+.post_description{
+    margin: 10px;
+    padding: 20px;
+    width:85%;
+    outline: none;
+    border: none;
+    background: none;
+}

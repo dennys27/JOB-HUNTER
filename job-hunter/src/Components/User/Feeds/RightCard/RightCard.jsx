@@ -13,11 +13,7 @@ const RightCard = () => {
      
      
         <List>
-          <ListItem disablePadding>
-            <CircleIcon fontSize={"10px"} />
-              <ListItemText primary="Trash" />
-           
-          </ListItem>
+          
           <ListItem disablePadding>
            <Typography>latest</Typography> 
           </ListItem>

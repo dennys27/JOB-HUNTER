@@ -10,12 +10,14 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 500,
+  height:450,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
   border: "none",
-  outline:"none"
+  outline: "none",
+  borderRadius:2
 };
 
 const CreatePost = () => {
@@ -49,11 +51,9 @@ const CreatePost = () => {
         >
           <Box sx={style}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
-              Text in a modal
+              Create a Post
             </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-            </Typography>
+             <input placeholder='whats on your mind...' className='post_description' />
           </Box>
         </Modal>
       </div>

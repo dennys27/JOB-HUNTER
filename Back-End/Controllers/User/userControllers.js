@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+require('dotenv').config()
 const nodemailer = require("nodemailer");
 const asyncHandler = require("express-async-handler");
 const { User } = require("../../Models/UserSchema");
@@ -83,7 +84,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
   await User.updateOne({ email },{otp: Math.floor(1000 + Math.random() * 9000),});
   User.findOne({ email }).exec(async (error, data) => {
     if (error) {
-      console.log(error,"yyyyyyyyyyyyyyyyyyyyyyy");
+      console.log(error);
     } else {
       try {
 
@@ -92,7 +93,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
             service: "gmail",
             auth: {
               user: "dennysjoseph80@gmail.com",
-              pass: "pcftxlmohdtycfvs",
+              pass: process.env.GOOGLEAPPS,
             },
             tls: {
               rejectUnauthorized: false,
@@ -124,14 +125,14 @@ const emailVerification = asyncHandler(async (req, res) => {
   console.log(req.body);
   const {otp} = req.body;
   User.findOne({ otp }).exec(async (error, data) => { 
-    
+    console.log(data);
     if (data) {
        const token = await jwt.sign(
          { userId: data._id },
          process.env.JWTPRIVATEKEY,
          { expiresIn: "7d" }
       );
-       await User.updateOne({ email }, { otp: 0 });
+       await User.updateOne({  email:data.email }, { otp: 0 });
       res.status(200).json({ token: token, user: data.email, status: true })
       
     } else {
