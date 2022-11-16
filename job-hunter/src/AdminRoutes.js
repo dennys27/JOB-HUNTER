@@ -14,4 +14,20 @@ const AdminRoutes = () => {
   return token2 ? <Outlet /> : <Navigate to="/admin" />;
 };
 
+export const AdminRoutesTwo = () => {
+  //const token = localStorage.getItem("token");
+  const token2 = JSON.parse(localStorage.getItem("admin"))?.token;
+  //  if (token2) {
+  //    const userAuth = JSON.parse(localStorage.getItem("user"))
+  //    setUser(userAuth);
+
+  //  }
+
+   return token2 === ("" || null || undefined) ? (
+     <Outlet />
+   ) : (
+     <Navigate to="/adminhome" />
+   );
+};
+
 export default AdminRoutes;

@@ -2,9 +2,14 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 require('dotenv').config()
 const nodemailer = require("nodemailer");
+const multer = require("multer");
+const path = require("path");
 const asyncHandler = require("express-async-handler");
 const { User } = require("../../Models/UserSchema");
+const { Post } = require("../../Models/Post");
 
+
+// const store = require("../../multer/multer");
 
 
 
@@ -41,13 +46,19 @@ const registerUser = asyncHandler(async (req, res) => {
       email,
       password: hashedPassword,
     });
+    const token = await jwt.sign(
+      { userId: user._id },
+      process.env.JWTPRIVATEKEY,
+      { expiresIn: "7d" }
+    );
 
     if (user) {
       res.status(201).json({
         email: user.email,
         _id: user._id,
         status: true,
-        message:"account created successfully"
+        message: "account created successfully",
+        token
       });
     } else {
       res.status(400);
@@ -62,9 +73,9 @@ const loginUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email }); 
 
   const token = await jwt.sign({ userId: user._id }, process.env.JWTPRIVATEKEY, { expiresIn: "7d", });
-  
+ 
   if (user && (await bcrypt.compare(password, user.password))) {
-  
+    
     res.send({
       name: user.name,
       email: user.email,
@@ -72,12 +83,15 @@ const loginUser = asyncHandler(async (req, res) => {
       role: user.role,
       token
     });
-  } else {
-    res.status(400).json({status:false,message:"invalid user credentials"});
-    throw new Error("invalid  details");
+    
+  } else{
+    console.log("dfhgssssssssssssssssssssssss");
+   res.status(400).json({ message: "invalid credentials", status: false });
+     throw new Error("invalid  details");
   }
 });
 
+ 
 const forgotPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
   email.toString();
@@ -88,7 +102,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
     } else {
       try {
 
-        if(data._id){
+        if(data?._id){
           let transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
@@ -118,7 +132,6 @@ const forgotPassword = asyncHandler(async (req, res) => {
     }
   });
  
-
 })
 
 const emailVerification = asyncHandler(async (req, res) => {
@@ -133,7 +146,7 @@ const emailVerification = asyncHandler(async (req, res) => {
          { expiresIn: "7d" }
       );
        await User.updateOne({  email:data.email }, { otp: 0 });
-      res.status(200).json({ token: token, user: data.email, status: true })
+      res.status(200).json({ token: token, email: data.email,userId:data._id, status: true })
       
     } else {
       res.json({ message:"invalid otp", status: false });
@@ -145,14 +158,91 @@ const emailVerification = asyncHandler(async (req, res) => {
 
 
 
+const post = async (req, res) => {
+ const data = req.query;
+
+  userPost = {
+    userId:"",
+    description: "",
+    image: "",
+    video: "",
+    likes: [],
+    comments: [],
+    date: "",
+  }; 
+
+        
+    try {
+      const storage = multer.diskStorage({
+        destination: path.join(__dirname, "../../public/images"),
+        filename: (req, file, cb) => {
+          cb(null, Date.now() + "-" + ".png");
+        },
+      });
+
+
+    const upload = multer({ storage: storage }).single("file");
+
+  upload(req, res,async (err) => {
+        if (!req.file) {
+          console.log("no image");
+          res.json({ noImage: "select image" });
+        } else {
+          userPost.userId = data.userId
+          userPost.description = data.description
+          userPost.date = data.date
+          userPost.timeStamp = data.timeStamp
+          userPost.image = req.file.filename;
+
+          const post = await Post(userPost).save()
+          
+          console.log(post, "post.....");
+          
+          if (post) {
+            res.Status(201).json({status:true,message:"post created succesfully"})
+          }
+        }
+    });
+      
+    } catch (error) {
+      res.Status(500).json({err,status:false,message:"operation failed"})
+      console.log(error);
+  }
+  
+
+
+};
+
+
+
+
+const feeds = asyncHandler(async (req, res) => {
+  console.log("yup hitting........");
+
+
+  Post.find().exec(async (error, data) => {
+    if (error) {
+      console.log(error);
+    } else {
+      try {
+        console.log(data,"dddddddddatttttttttttttttt");
+        res.json({data:data})
+      } catch (err) {
+        res.send({ status: false, message: "failed" });
+        console.log(err);
+      }
+    }
+  });
+});
+
+
+
 
 module.exports = {
   registerUser,
   loginUser,
   forgotPassword,
   emailVerification,
-  //   findOneuser,
-  //   findUsers,
-  //   deleteUser,
-  //   editUser,
+  post,
+  feeds,
 };

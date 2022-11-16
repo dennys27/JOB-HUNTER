@@ -43,21 +43,17 @@ const AdminLogin = () => {
    }
   };
 
-  let localAdmin = localStorage.getItem("admin");
+ 
 
   useEffect(() => {
-    // if (isError) {
-    //   toast.error(message);
-    // }
-    setErrorData(message);
-
-    if (user || localAdmin) {
+    let localAdmin = localStorage.getItem("admin");
+    if (localAdmin) {
       console.log(user);
       navigate("/adminhome");
     }
 
-    // dispatch(reset());
-  }, [user, isError, isSuccess, message, navigate, dispatch]);
+    
+  }, [user, message, navigate,]);
 
   return (
     <>
@@ -89,9 +85,6 @@ const AdminLogin = () => {
               Login
             </button>
 
-            <p className="dont">
-              Dont have an account? <a>Signup</a>
-            </p>
           </div>
         </div>
       </div>

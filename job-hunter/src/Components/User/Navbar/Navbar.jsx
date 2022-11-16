@@ -85,14 +85,11 @@ const Navbar = () => {
 
   const handleLogout = async() => {
     await dispatch(logout());
-    window.location.reload()
+   navigate("/login")
    
   }
 
   let url = window.location.href.endsWith("/");
-
-  console.log(url,"urllll");
-
 
   return (
     <>

@@ -87,7 +87,8 @@ const AdminNavbar = () => {
 
   const handleLogout = async () => {
     await dispatch(logout());
-    window.location.reload();
+    navigate("/admin")
+    // window.location.reload();
   };
 
   let url = window.location.href.endsWith("/");

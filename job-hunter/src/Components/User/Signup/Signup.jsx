@@ -1,4 +1,6 @@
 import React, { useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+   import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
 import "./Signup.css";
 import { register } from "../../../features/Auth/AuthSlice";
@@ -29,8 +31,15 @@ const Signup = () => {
     
     if (validate.isEmail(formData.email) === false) {
       setErrorEmail("invalid email");
+       setTimeout(() => {
+         setErrorEmail("");
+       }, 4000);
     } else if (validate.isPassword(formData.password).status === false) {
       setErrorPassword("invalid password");
+        setTimeout(() => {
+          setErrorPassword("");
+        }, 4000);
+      
     } else {
       e.preventDefault();
       dispatch(register(formData));
@@ -39,28 +48,40 @@ const Signup = () => {
 
   //testing...
 
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
+  const { user, message } = useSelector(
     (state) => state.auth
   );
+   let localUser =JSON.parse(localStorage.getItem("user")) 
 
-  console.log(message, "yuudfdsfjshdf");
-
-  useEffect(() => {
-    // if (isError) {
-    //   toast.error(message);
-    // }
-    setAlready(message);
-    if (user) {
-      console.log(user);
-      navigate("/login");
+ 
+  
+  const toasts = async (user) => {
+    if (user?.status) {
+      console.log("inside...");
+      await toast("Wow so easy!");
     }
 
-    // dispatch(reset());
-  }, [user, isError, isSuccess, message,  dispatch]);
+  }
+
+  
+  
+  useEffect(() => {
+   
+    if (localUser) {
+        
+         navigate("/Home");
+     
+         
+       
+        
+      }
+   
+  }, [user]);
 
   return (
     <>
       <Navbar />
+      <ToastContainer />
       <div className="sign_wrapper">
         <div className="sign_in">
           <div className="content">
@@ -84,7 +105,7 @@ const Signup = () => {
             />
 
             <p style={{ color: "red" }}>{errorPassword}</p>
-            <p style={{ color: "red" }}>{already}</p>
+            <p style={{ color: "red" }}>{message}</p>
 
             <p className="policy">
               By clicking Agree & Join, you agree to <br /> the Jobhunter User
@@ -97,7 +118,10 @@ const Signup = () => {
 
             <p className="dont">
               Already have an account?{" "}
-              <Link style={{ textDecoration: "none" }} to="/login">
+              <Link
+                style={{ textDecoration: "none", color: "#01A9C1" }}
+                to="/login"
+              >
                 Login
               </Link>
             </p>

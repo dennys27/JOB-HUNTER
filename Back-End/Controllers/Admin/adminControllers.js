@@ -14,6 +14,7 @@ const adminLogin = asyncHandler(async (req, res) => {
     { expiresIn: "7d" }
   );
 
+
   if (user && (await bcrypt.compare(password, user.password))) {
     res.send({
       name: user.name,
@@ -29,6 +30,8 @@ const adminLogin = asyncHandler(async (req, res) => {
     throw new Error("invalid  details");
   }
 });
+
+
 
 module.exports = {
   adminLogin,

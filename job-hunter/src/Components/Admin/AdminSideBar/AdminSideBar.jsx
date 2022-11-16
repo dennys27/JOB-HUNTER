@@ -46,7 +46,7 @@ const AdminSideBar = () => {
               <ListItemIcon>
                 <AppsIcon sx={{ color: "white" }} />
               </ListItemIcon>
-              <ListItemText onClick={() => {}} primary="Booking Slots" />
+              <ListItemText onClick={() => {}} primary="Users" />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
@@ -54,7 +54,7 @@ const AdminSideBar = () => {
               <ListItemIcon>
                 <ReceiptLongIcon sx={{ color: "white" }} />
               </ListItemIcon>
-              <ListItemText onClick={() => {}} primary="Record Track" />
+              <ListItemText onClick={() => {}} primary="Verification Requests" />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
@@ -62,7 +62,7 @@ const AdminSideBar = () => {
               <ListItemIcon>
                 <Diversity2Icon sx={{ color: "white" }} />
               </ListItemIcon>
-              <ListItemText primary="Record List" />
+              <ListItemText primary="Reported posts" />
             </ListItemButton>
           </ListItem>
 
@@ -71,7 +71,7 @@ const AdminSideBar = () => {
               <ListItemIcon>
                 <SettingsSuggestIcon sx={{ color: "white" }} />
               </ListItemIcon>
-              <ListItemText primary="Settings" />
+              <ListItemText primary="Reported users" />
             </ListItemButton>
           </ListItem>
         </List>

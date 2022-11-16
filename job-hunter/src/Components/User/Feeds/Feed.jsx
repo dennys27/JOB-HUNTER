@@ -9,6 +9,9 @@ import CreatePost from './CreatePost/CreatePost';
 import RecipeReviewCard from './Post/Post';
 import RightCard from './RightCard/RightCard';
 import Navbar from '../Navbar/Navbar';
+import { userRequest } from '../../../Constants/Constants';
+import { useEffect } from 'react';
+
 
 
 
@@ -19,7 +22,26 @@ const Item = styled(Paper)(({ theme }) => ({
  
 }));
 
+
+
 const Feed = () => {
+  
+
+
+  useEffect(() => {
+     
+   getFeed()
+
+  },[])
+ 
+let getFeed = async () => {
+  let response = await userRequest({
+    method: "GET",
+    url: "/user/feed",
+  })
+  console.log(response, "yoooooooyyyy");
+};
+
   return (
     <>
       <Navbar/>

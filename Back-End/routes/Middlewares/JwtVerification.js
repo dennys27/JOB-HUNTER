@@ -1,12 +1,15 @@
 const jwt = require("jsonwebtoken");
 
+
+
+//user token verification
 const verifyToken = (req, res, next) => {
+
   let authHeader = req.headers.token;
-  console.log(req.headers, "heyyyyyyyy");
+
   if (authHeader) {
     authHeader = authHeader.replaceAll('"', "");
     const token = authHeader.split(" ")[1];
-    console.log(token, "user tokennnnn");
     jwt.verify(token, process.env.JWTPRIVATEKEY, (err, user) => {
       if (err) {
         console.log(err, "invalid token");
@@ -16,11 +19,14 @@ const verifyToken = (req, res, next) => {
         next();
       }
     });
+    
   } else {
     return res.status(401).json("you are not authenticated");
   }
 };
 
+
+//admin token verification
 const AdminVerifyToken = (req, res, next) => {
   let authHeader = req.headers.token;
   if (authHeader) {

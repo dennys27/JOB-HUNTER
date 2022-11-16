@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { login } from "../../../features/Auth/AuthSlice";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import validate from "neo-form-validations";
 import "./Login.css";
 import { useEffect } from "react";
@@ -48,9 +48,11 @@ const Login = () => {
 
    
 
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
+  const { user,  isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
+
+ 
 
   let localUser = localStorage.getItem("user");
 
@@ -108,8 +110,14 @@ const Login = () => {
   const onSubmit = (e) => {
     if (validate.isEmail(formData.email) === false) {
       setErrorEmail("invalid email");
+       setTimeout(() => {
+        setErrorEmail("");
+       }, 4000);
     } else if (validate.isPassword(formData.password).status === false) {
       setErrorPassword("invalid password");
+      setTimeout(() => {
+        setErrorPassword("");
+      }, 4000);
     } else {
       dispatch(login(formData));
     }
@@ -124,21 +132,15 @@ const Login = () => {
     setExpanded(!expanded);
     setExpandedTwo(!expandedTwo);
     
-   };
-
+  };
+  
   useEffect(() => {
-    // if (isError) {
-    //   toast.error(message);
-    // }
-    setErrorData(message);
-
-    if (user || localUser) {
-      console.log(user);
-      navigate("/Home");
+    if (localUser) {
+      navigate("/Home")
     }
+  },[user])
 
-    // dispatch(reset());
-  }, [user, isError, isSuccess, message, navigate, dispatch]);
+
 
   return (
     <>
@@ -227,7 +229,7 @@ const Login = () => {
               value={formData.password}
             />
             <p style={{ color: "red" }}>{errorPassword}</p>
-            <p>{errorData}</p>
+            <p style={{ color: "red" }}>{message}</p>
 
             <p className="policy">
               By clicking Agree & Join, you agree to <br /> the Jobhunter User
