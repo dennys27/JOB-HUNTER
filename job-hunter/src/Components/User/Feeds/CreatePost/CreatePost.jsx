@@ -1,5 +1,7 @@
 import { Box, Collapse, Modal, Typography } from '@mui/material';
 import SmartDisplayIcon from "@mui/icons-material/SmartDisplay";
+ import { ToastContainer, toast } from "react-toastify";
+ import "react-toastify/dist/ReactToastify.css";
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
@@ -27,101 +29,82 @@ const style = {
   borderRadius:2
 };
 
-const CreatePost = () => {
+const CreatePost = ({ setRefresh }) => {
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [video, setVideo] = useState(false);
   const [image, setImage] = useState();
   const [description, setDescription] = useState("");
+  const [type, setType] = useState("");
+  const [postError, setPostError] = useState("");
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
- 
 
- const TOKEN = JSON.parse(localStorage?.getItem("user"))?.token;
+  const TOKEN = JSON.parse(localStorage?.getItem("user"))?.token;
 
-   const handleFileChange = (e) => {
-     if (e.target.files[0].type == "video/mp4") {
-       setVideo(true);
-       setExpanded(false);
-     } else {
-       setExpanded(true);
-       setVideo(false);
-     }
-     setImage(
-      e.target.files[0]
-     );
-   };
-
-
+  const handleFileChange = (e) => {
+    if (e.target.files[0].type == "video/mp4") {
+    
+      setVideo(true);
+      setExpanded(false);
+      setType("video")
+    } else {
+        console.log("im an image.......");
+       setType("image")
+      setExpanded(true);
+      setVideo(false);
+    }
+    setImage(e.target.files[0]);
+  };
 
   const handleDesc = (e) => {
-     setDescription(e.target.value)
-    
-  }
-
-
+    setDescription(e.target.value);
+  };
 
   const handleSubmit = () => {
-     
-    const userId = JSON.parse(localStorage?.getItem("user"))?.userId;
-    console.log(userId,"fffffffffffffffffff");
-     const data = new FormData();
-     data.append("file", image);
-     console.log(data, "oooo");
-     axios
-       .post("http://localhost:5000/user/posts", data, {
-         params: {
-           userId: userId,
-           description: description,
-           date: new Date().toDateString(),
-           timeStamp:new Date()
-         },
-         headers: {
-           token: `Bearer ${TOKEN}`,
-           "Access-Control-Allow-Origin": "*",
-           "Content-Type": "multipart/form-data",
-         },
-       })
-      
-   };
 
-  // const handleSubmit = async () => {
-  //   let formData = new FormData();
-  //   console.log(image.file,"kkkkkkkkkk");
-  //   formData.append("file", image.file);
-   
-  //   console.log(formData,"form data");
-  //   // await userRequest({
-  //   //   method: "POST",
-  //   //   url: "/user/posts",
-  //   //   data: {
-  //   //     formdata: formData,
-  //   //     description: description,
-  //   //   },
-  //   // });
+    const { _id, name } = JSON.parse(localStorage?.getItem("user"));
+    const data = new FormData();
+    data.append("file", image);
 
+    if (!_id || !name || !description) {
+      setPostError("please fillout the description")
+      setTimeout(() => {
+        setPostError("");
+      },3000)
+    } else {
+        axios
+      .post("http://localhost:5000/user/posts", data, {
+        params: {
+          name:name, 
+          userId: _id,
+          description: description,
+          date: new Date().toDateString(),
+          timeStamp: new Date(),
+          type:type
+        },
+        headers: {
+          token: `Bearer ${TOKEN}`,
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((data) => {
+        if (data.status === 201) {
+          toast("success");
+          setOpen(false);
+          setRefresh(Math.random() * Math.random()/2)
 
-    
-
-  // // axios.post(
-  // //   "http://localhost:5000/user/posts",
-  // //   {
-  // //     formData,
-  // //     description: description,
-  // //   },
-  // //   {
-  // //     headers: {
-  // //       token: `Bearer ${TOKEN}`,
-
-  // //       "Access-Control-Allow-Origin": "*",
-  // //       "Content-Type": "multipart/form-data",
-  // //     },
-  // //   }
-  // // );
-  // // }
+        }
+      });
+    }
+  
+  };
 
   return (
     <>
+      <ToastContainer />
       <Box className="Create_Post_Wrapper">
         <div className="content_wrapper2">
           <Box display={{ xs: "none", sm: "none", md: "none", lg: "flex" }}>
@@ -156,9 +139,10 @@ const CreatePost = () => {
             <input
               onChange={(e) => handleDesc(e)}
               value={description}
-              placeholder="whats on your mind..."
+              placeholder={postError ===""? 'whats on your mind...':postError}
               className="post_description"
             />
+            
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <div
                 style={{
@@ -186,13 +170,13 @@ const CreatePost = () => {
             </Collapse>
 
             <Collapse in={video} timeout="auto" unmountOnExit>
-              {image ?
-                  <video width="320" height="240" controls>
+              {image ? (
+                <video width="320" height="240" controls>
                   <source src={URL.createObjectURL(image)} type="video/mp4" />
-              </video>:""
-
-              }
-            
+                </video>
+              ) : (
+                ""
+              )}
             </Collapse>
 
             <Box
@@ -246,6 +230,6 @@ const CreatePost = () => {
       </div>
     </>
   );
-}
+};
 
 export default CreatePost

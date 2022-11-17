@@ -9,7 +9,7 @@ const { User } = require("../../Models/UserSchema");
 const { Post } = require("../../Models/Post");
 
 
-// const store = require("../../multer/multer");
+
 
 
 
@@ -18,11 +18,11 @@ const { Post } = require("../../Models/Post");
 // @route : POST /api/users
 // @access : public
  
-const registerUser = asyncHandler(async (req, res) => { 
+const registerUser = asyncHandler(async (req, res) => {
    
-    const { email, password } = req.body;
+  const { name, email, password } = req.body;
     
-  if (!email || !password) {
+  if (!name||!email || !password) {
     res.status(400);
     throw new Error("Please add all fields");
   }
@@ -43,6 +43,7 @@ const registerUser = asyncHandler(async (req, res) => {
     // create User
 
     const user = await User.create({
+      name,
       email,
       password: hashedPassword,
     });
@@ -54,6 +55,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
     if (user) {
       res.status(201).json({
+        name:user.name,
         email: user.email,
         _id: user._id,
         status: true,
@@ -78,16 +80,15 @@ const loginUser = asyncHandler(async (req, res) => {
     
     res.send({
       name: user.name,
-      email: user.email,
+      email: user.email,  
       _id: user._id,
-      role: user.role,
       token
     });
     
   } else{
-    console.log("dfhgssssssssssssssssssssssss");
+    
    res.status(400).json({ message: "invalid credentials", status: false });
-     throw new Error("invalid  details");
+   throw new Error("invalid  details");
   }
 });
 
@@ -160,9 +161,10 @@ const emailVerification = asyncHandler(async (req, res) => {
 
 const post = async (req, res) => {
  const data = req.query;
-
+ console.log(req.files,"ffffffffffffff");
   userPost = {
-    userId:"",
+    name:"", 
+    userId:"", 
     description: "",
     image: "",
     video: "",
@@ -170,8 +172,8 @@ const post = async (req, res) => {
     comments: [],
     date: "",
   }; 
-
-        
+  
+  if (data.type === "image") {
     try {
       const storage = multer.diskStorage({
         destination: path.join(__dirname, "../../public/images"),
@@ -180,52 +182,122 @@ const post = async (req, res) => {
         },
       });
 
+      const upload = multer({ storage: storage }).single("file");
 
-    const upload = multer({ storage: storage }).single("file");
-
-  upload(req, res,async (err) => {
+      upload(req, res, async (err) => {
         if (!req.file) {
           console.log("no image");
           res.json({ noImage: "select image" });
         } else {
-          userPost.userId = data.userId
-          userPost.description = data.description
-          userPost.date = data.date
-          userPost.timeStamp = data.timeStamp
+          userPost.name = data.name;
+          userPost.userId = data.userId;
+          userPost.description = data.description;
+          userPost.date = data.date;
+          userPost.timeStamp = data.timeStamp;
           userPost.image = req.file.filename;
 
-          const post = await Post(userPost).save()
-          
+          const post = await Post(userPost).save();
+
           console.log(post, "post.....");
-          
+
           if (post) {
-            res.Status(201).json({status:true,message:"post created succesfully"})
+            res
+              .status(201)
+              .json({ status: true, message: "post created succesfully" });
           }
         }
-    });
-      
+      });
     } catch (error) {
-      res.Status(500).json({err,status:false,message:"operation failed"})
+      res.Status(500).json({ err, status: false, message: "operation failed" });
       console.log(error);
+    }
+  } else if (data.type === "video") {
+    try {
+      const storage = multer.diskStorage({
+        destination: path.join(__dirname, "../../public/images"),
+        filename: (req, file, cb) => {
+          cb(null, Date.now() + "-" + ".mp4");
+        },
+      });
+
+      const upload = multer({ storage: storage }).single("file");
+
+      upload(req, res, async (err) => {
+        if (!req.file) {
+          console.log("no video");
+          res.json({ noImage: "select video" });
+        } else {
+          userPost.name = data.name;
+          userPost.userId = data.userId;
+          userPost.description = data.description;
+          userPost.date = data.date;
+          userPost.timeStamp = data.timeStamp;
+          userPost.video = req.file.filename;
+
+          const post = await Post(userPost).save();
+
+          console.log(post, "post.....");
+
+          if (post) {
+            res
+              .status(201)
+              .json({ status: true, message: "post created succesfully" });
+          }
+        }
+      });
+    } catch (error) {
+      res.Status(500).json({ err, status: false, message: "operation failed" });
+      console.log(error);
+    }
+  } else {
+    
+      try {
+       
+
+            userPost.name = data.name;
+            userPost.userId = data.userId;
+            userPost.description = data.description;
+            userPost.date = data.date;
+            userPost.timeStamp = data.timeStamp;
+           
+
+            const post = await Post(userPost).save();
+
+            console.log(post, "post.....");
+
+            if (post) {
+              res
+                .status(201)
+                .json({ status: true, message: "post created succesfully" });
+            }
+       
+       
+      } catch (error) {
+        res
+          .Status(500)
+          .json({ err, status: false, message: "operation failed" });
+        console.log(error);
+      }
+
   }
+        
+    
   
 
 
 };
 
 
-
+ 
 
 const feeds = asyncHandler(async (req, res) => {
-  console.log("yup hitting........");
-
-
+  
   Post.find().exec(async (error, data) => {
     if (error) {
       console.log(error);
     } else {
       try {
-        console.log(data,"dddddddddatttttttttttttttt");
+        data.reverse()
         res.json({data:data})
       } catch (err) {
         res.send({ status: false, message: "failed" });

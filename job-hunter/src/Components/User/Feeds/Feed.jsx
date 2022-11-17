@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { experimentalStyled as styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -26,26 +26,27 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const Feed = () => {
   
-
+const [posts,setPosts] = useState([])
+const [refresh, setRefresh] = useState("");
 
   useEffect(() => {
-     
-   getFeed()
-
-  },[])
+    getFeed();
+  }, [refresh]);
  
 let getFeed = async () => {
   let response = await userRequest({
     method: "GET",
     url: "/user/feed",
   })
-  console.log(response, "yoooooooyyyy");
+  setPosts(response.data.data)
+
+ 
 };
 
   return (
     <>
-      <Navbar/>
-      <Box sx={{ backgroundColor: "#D9D9D9" }}>
+      <Navbar />
+      <Box sx={{ backgroundColor: "#D9D9D9", bottom: 0 }}>
         <Container>
           <Box
             sx={{ width: "100%" }}
@@ -76,12 +77,10 @@ let getFeed = async () => {
               </Grid>
               <Grid item xs={2} sm={4} md={6}>
                 <div>
-                  <CreatePost />
-                  <RecipeReviewCard />
-                  <RecipeReviewCard />
-                  <RecipeReviewCard />
-                  <RecipeReviewCard />
-                  <RecipeReviewCard />
+                  <CreatePost setRefresh={setRefresh} />
+                  {posts.map((post) => (
+                    <RecipeReviewCard post={post} />
+                  ))}
                 </div>
               </Grid>
               <Grid

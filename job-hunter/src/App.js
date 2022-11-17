@@ -8,6 +8,7 @@ import UserRoutes, { UserRoutesTwo } from './UserRoutes';
 import AdminLogin from './Components/Admin/Login/AdminLogin';
 import AdminHome from './Components/Admin/AdminHome/AdminHome';
 import AdminRoutes, { AdminRoutesTwo } from './AdminRoutes';
+import Jobs from './Components/User/Jobs/Jobs';
 
 
 
@@ -19,6 +20,7 @@ function App() {
       <Routes>
         <Route element={<UserRoutes />}>
           <Route element={<Feed />} path="/Home" />
+          <Route element={<Jobs />} path="/Jobs" />
         </Route>
 
         <Route element={<UserRoutesTwo />}>

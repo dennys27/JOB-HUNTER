@@ -2,8 +2,9 @@ const mongoose = require("mongoose");
 
 
 const userSchema = mongoose.Schema({
+    name:{type:String,required:true},
     userId:{type:String,required:true},
-    description: { type: String, required: true },
+    description: { type: String },
     image: { type: String },
     video:{type:String},
     likes: { type: Array, required: true },

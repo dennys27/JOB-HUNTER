@@ -137,7 +137,7 @@ const Navbar = () => {
                 />
               </Search>
             </Box>
-            {token && url===false ? (
+            {token && url === false ? (
               <Box
                 sx={{
                   display: { xs: "none", md: "flex" },
@@ -221,15 +221,18 @@ const Navbar = () => {
                   className="hover"
                 >
                   <AiOutlineSnippets size={23} />
-                  <Typography
-                    sx={{
-                      display: "block",
-                      top: 0,
-                      fontSize: 14,
-                    }}
-                  >
-                    Jobs
-                  </Typography>
+                  <Link style={{ textDecoration: "none",textDecorationStyle:"none" }} to="/Jobs">
+                    <Typography
+                      sx={{
+                        display: "block",
+                        top: 0,
+                        fontSize: 14,
+                        color:"black"
+                      }}
+                    >
+                      Jobs
+                    </Typography>
+                  </Link>
                 </Box>
 
                 <Box

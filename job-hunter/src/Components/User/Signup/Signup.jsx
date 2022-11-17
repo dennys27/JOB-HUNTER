@@ -12,10 +12,12 @@ import Navbar from "../Navbar/Navbar";
 const Signup = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
   });
   const [errorEmail, setErrorEmail] = useState("");
+  const [errorName, setErrorName] = useState("");
   const [already, setAlready] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
   const dispatch = useDispatch();
@@ -36,6 +38,13 @@ const Signup = () => {
        }, 4000);
     } else if (validate.isPassword(formData.password).status === false) {
       setErrorPassword("invalid password");
+        setTimeout(() => {
+          setErrorPassword("");
+        }, 4000);
+      
+    
+    } else if (validate.isUser(formData.password).status === false) {
+      setErrorName("invalid userName")
         setTimeout(() => {
           setErrorPassword("");
         }, 4000);
@@ -86,6 +95,15 @@ const Signup = () => {
         <div className="sign_in">
           <div className="content">
             <h5 className="title">Sign up</h5>
+            <input
+              onChange={(e) => handleChange(e)}
+              name="name"
+              placeholder="name"
+              className="text"
+              type="text"
+              value={formData.name}
+            />
+            <p style={{ color: "red" }}>{errorName}</p>
             <input
               onChange={(e) => handleChange(e)}
               name="email"
