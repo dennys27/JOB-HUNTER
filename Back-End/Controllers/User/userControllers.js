@@ -289,19 +289,22 @@ const post = async (req, res) => {
 
 const feeds = asyncHandler(async (req, res) => {
   
-  Post.find().exec(async (error, data) => {
-    if (error) {
-      console.log(error);
-    } else {
-      try {
-        data.reverse()
-        res.json({data:data})
-      } catch (err) {
-        res.send({ status: false, message: "failed" });
-        console.log(err);
+  Post.find()
+    .populate("userId")
+    .exec(async (error, data) => {
+      if (error) {
+        console.log(error);
+      } else {
+        try {
+          console.log(data);
+          data.reverse();
+          res.json({ data: data });
+        } catch (err) {
+          res.send({ status: false, message: "failed" });
+          console.log(err);
+        }
       }
-    }
-  });
+    });
 });
 
 const Like = asyncHandler(async (req, res) => {
@@ -338,21 +341,28 @@ const Like = asyncHandler(async (req, res) => {
 
 const Comment = asyncHandler(async (req, res) => {
   console.log("im being hit", req.body);
-  let comments = {
+  let commentData = {
     userId: req.body.userId,
     comment: req.body.comments,
     timeStamp:new Date()
   }
 
     await Post.findByIdAndUpdate(
-        req.body.postId,
-        {
-          $push: { comments: comment },
-        },
-        {
-          new: true,
-        }
-      )
+      req.body.postId,
+      {
+        $push: { comments: commentData },
+      },
+      {
+        new: true,
+      }
+    ).then((data) => {
+      res
+        .status(200)
+        .json({ status: true, message: "comment success", comment: data });
+    }).catch((error) => {
+        res.status(200)
+          .json({ status: false, message: "comment failed", error: error });
+    })
   
 })
 module.exports = {

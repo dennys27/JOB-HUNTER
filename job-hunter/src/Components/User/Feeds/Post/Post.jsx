@@ -59,6 +59,8 @@ export default function RecipeReviewCard({ post, setLiked }) {
         postId: postId,
         comments:comments
       }
+    }).then((data) => {
+      setLiked(Math.random() * Math.random());
     })
 
   }
@@ -129,7 +131,7 @@ export default function RecipeReviewCard({ post, setLiked }) {
             }}
           >
             <TextField
-              onChange={(e)=>handleComment(e)}
+              onChange={(e) => handleComment(e)}
               height={4}
               sx={{ width: "70%", outline: "none", border: "none" }}
               id="standard-basic"
@@ -137,30 +139,35 @@ export default function RecipeReviewCard({ post, setLiked }) {
               label="Comment"
               value={comments}
             />
-            <SendIcon onClick={(e)=>addComment(user,post._id)} sx={{ color: "#01A9C1",padding:2 }} />
+            <SendIcon
+              onClick={(e) => addComment(user, post._id)}
+              sx={{ color: "#01A9C1", padding: 2 }}
+            />
           </Box>
 
           <Box style={{ padding: "40px 20px" }}>
-            <Grid container wrap="nowrap" spacing={2}>
-              <Grid item>
-                <Avatar
-                  alt="Remy Sharp"
-                  src="https://i.pinimg.com/originals/49/e3/a4/49e3a4562c511f9efb29b1d72f435d8a.jpg"
-                />
+            {post.comments.map((comment) => (
+              <Grid container wrap="nowrap" spacing={2}>
+                <Grid item>
+                  <Avatar
+                    alt="Remy Sharp"
+                    src="https://i.pinimg.com/originals/49/e3/a4/49e3a4562c511f9efb29b1d72f435d8a.jpg"
+                  />
+                </Grid>
+                <Grid justifyContent="left" item xs zeroMinWidth>
+                  <h4 style={{ margin: 0, textAlign: "left" }}>
+                    Michel Michel
+                  </h4>
+                  <p style={{ textAlign: "left" }}>
+                   {comment.comment}
+                  </p>
+                  <p style={{ textAlign: "left", color: "gray" }}>
+                    posted 1 minute ago
+                  </p>
+                </Grid>
+                <Divider variant="fullWidth" style={{ margin: "15px 0" }} />
               </Grid>
-              <Grid justifyContent="left" item xs zeroMinWidth>
-                <h4 style={{ margin: 0, textAlign: "left" }}>Michel Michel</h4>
-                <p style={{ textAlign: "left" }}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Aenean luctus ut est sed faucibus. Duis bibendum ac ex
-                  vehicula laoreet.
-                </p>
-                <p style={{ textAlign: "left", color: "gray" }}>
-                  posted 1 minute ago
-                </p>
-              </Grid>
-            </Grid>
-            <Divider variant="fullWidth" style={{ margin: "15px 0" }} />
+            ))}
           </Box>
         </div>
       </Collapse>

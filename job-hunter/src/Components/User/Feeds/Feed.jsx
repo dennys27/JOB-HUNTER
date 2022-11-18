@@ -38,6 +38,7 @@ let getFeed = async () => {
     url: "/user/feed",
   })
   setPosts(response.data.data)
+  console.log(response.data.data);
 
  
   };

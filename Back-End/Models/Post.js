@@ -1,17 +1,29 @@
 
 const mongoose = require("mongoose");
+const { User } = require("./UserSchema");
+
 
 
 const postSchema = mongoose.Schema({
-    name:{type:String,required:true},
-    userId:{type:String,required:true},
-    description: { type: String },
-    image: { type: String },
-    video:{type:String},
-    likes: [{ type: String }],
-    comments:[{type:Object,required:true}],
-    date: { type: String, required: true },
-    timeStamp:{type:String,required:true}
+  name: { type: String, required: true },
+  userId: { type: String, required: true },
+  description: { type: String },
+  image: { type: String },
+  video: { type: String },
+  likes: [{ type: String }],
+  // comments:[{type:Object,required:true}],
+  comments: [
+    {
+      userId: {
+        type: [String],
+        ref: User,
+      },
+      comment: String,
+      timeStamp: Date,
+    },
+  ],
+  date: { type: String, required: true },
+  timeStamp: { type: String, required: true },
 });
 
 
