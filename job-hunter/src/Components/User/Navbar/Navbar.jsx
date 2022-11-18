@@ -83,6 +83,10 @@ const Navbar = () => {
     setAnchorEl(null);
   };
 
+  const handleNavigate = (route) => {
+    navigate(`/${route}`)
+  }
+
   const handleLogout = async() => {
     await dispatch(logout());
    navigate("/login")
@@ -156,6 +160,7 @@ const Navbar = () => {
                   mr={3}
                   mt={0.5}
                   className="hover"
+                  onClick={() => handleNavigate("Home")}
                 >
                   <AiOutlineHome size={23} />
                   <Typography
@@ -219,20 +224,19 @@ const Navbar = () => {
                   mr={3}
                   mt={0.5}
                   className="hover"
+                  onClick={() => handleNavigate("Jobs")}
                 >
                   <AiOutlineSnippets size={23} />
-                  <Link style={{ textDecoration: "none",textDecorationStyle:"none" }} to="/Jobs">
-                    <Typography
-                      sx={{
-                        display: "block",
-                        top: 0,
-                        fontSize: 14,
-                        color:"black"
-                      }}
-                    >
-                      Jobs
-                    </Typography>
-                  </Link>
+
+                  <Typography
+                    sx={{
+                      display: "block",
+                      top: 0,
+                      fontSize: 14,
+                    }}
+                  >
+                    Jobs
+                  </Typography>
                 </Box>
 
                 <Box

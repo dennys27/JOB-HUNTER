@@ -160,8 +160,9 @@ const emailVerification = asyncHandler(async (req, res) => {
 
 
 const post = async (req, res) => {
- const data = req.query;
- console.log(req.files,"ffffffffffffff");
+
+  const data = req.query;
+  
   userPost = {
     name:"", 
     userId:"", 
@@ -281,10 +282,6 @@ const post = async (req, res) => {
 
   }
         
-    
-  
-
-
 };
 
 
@@ -307,7 +304,13 @@ const feeds = asyncHandler(async (req, res) => {
   });
 });
 
+const Like = asyncHandler(async (req, res) => {
+   console.log(req.body,"fffff");
+  Post.findByIdAndUpdate({
+     
+  })
 
+});
 
 
 module.exports = {
@@ -317,4 +320,5 @@ module.exports = {
   emailVerification,
   post,
   feeds,
+  Like
 };

@@ -10,11 +10,18 @@ import IconButton from "@mui/material/IconButton";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Skeleton from "@mui/material/Skeleton";
 
-function Media(props) {
+export default function Media(props) {
   const { loading = false } = props;
 
   return (
-    <Card sx={{ maxWidth: 345, m: 2 }}>
+    <Card
+      sx={{
+        width: "100%",
+        maxHeight: "800px",
+        marginTop: 3,
+        bgcolor: "#F4F5F5",
+      }}
+    >
       <CardHeader
         avatar={
           loading ? (
@@ -59,7 +66,7 @@ function Media(props) {
         }
       />
       {loading ? (
-        <Skeleton sx={{ height: 190 }} animation="wave" variant="rectangular" />
+        <Skeleton sx={{ height: 490 }} animation="wave" variant="rectangular" />
       ) : (
         <CardMedia
           component="img"
@@ -95,10 +102,4 @@ Media.propTypes = {
   loading: PropTypes.bool,
 };
 
-export default function Facebook() {
-  return (
-    <div>
-      <Media loading />
-    </div>
-  );
-}
+

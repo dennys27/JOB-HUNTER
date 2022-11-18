@@ -11,15 +11,13 @@ import RightCard from './RightCard/RightCard';
 import Navbar from '../Navbar/Navbar';
 import { userRequest } from '../../../Constants/Constants';
 import { useEffect } from 'react';
+import Media from './Skeleton/Skeleton';
 
 
 
 
 const Item = styled(Paper)(({ theme }) => ({
- 
- 
-  
- 
+
 }));
 
 
@@ -41,7 +39,11 @@ let getFeed = async () => {
   setPosts(response.data.data)
 
  
-};
+  };
+  
+
+   
+
 
   return (
     <>
@@ -78,9 +80,17 @@ let getFeed = async () => {
               <Grid item xs={2} sm={4} md={6}>
                 <div>
                   <CreatePost setRefresh={setRefresh} />
-                  {posts.map((post) => (
-                    <RecipeReviewCard post={post} />
-                  ))}
+                  {
+                  (posts === "" || posts === undefined || posts === null) ?
+                       <Media loading />
+                   :""
+                  }
+                  
+                  {posts ? (
+                    posts.map((post) => <RecipeReviewCard post={post} />)
+                  ) : (
+                    <Media loading />
+                  )}
                 </div>
               </Grid>
               <Grid

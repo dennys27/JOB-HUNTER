@@ -10,11 +10,9 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { AiOutlineLike } from "react-icons/ai";
-import { BiComment } from "react-icons/bi";
-import { RiShareForwardLine } from "react-icons/ri";
+import { Divider } from "@mui/material";
+import PostActions from "./PostActions/PostActions";
 
 
 
@@ -36,14 +34,18 @@ export default function RecipeReviewCard({ post }) {
     setExpanded(!expanded);
   };
 
-  const like = () => {
-    
-  }
+
   
 
   return (
     <Card
-      sx={{ width: "100%", minHeight: "200px",maxHeight:"600px", marginTop: 3, bgcolor: "#F4F5F5" }}
+      sx={{
+        width: "100%",
+        minHeight: "200px",
+        maxHeight: "600px",
+        marginTop: 3,
+        bgcolor: "#F4F5F5",
+      }}
     >
       <CardHeader
         avatar={
@@ -74,39 +76,19 @@ export default function RecipeReviewCard({ post }) {
       ) : (
         ""
       )}
-      {post.video?<CardMedia
-        component="video"
-        height="400"
-        image={`http://localhost:5000/static/images/${post.video}`}
-        alt="video"
-        autoPlay
-        controls
-      /> :"" }
-      
-
-      <CardActions
-        sx={{
-          diplay: "flex",
-          justifyContent: "space-between",
-          verticalAlign: "bottom",
-          paddingTop: "5%",
-        }}
-      >
-        <IconButton aria-label="add to favorites">
-          <AiOutlineLike sx={{ color: "red" }} />
-        </IconButton>
-        <IconButton aria-label="share">
-          <BiComment />
-        </IconButton>
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <RiShareForwardLine />
-        </ExpandMore>
-      </CardActions>
+      {post.video ? (
+        <CardMedia
+          component="video"
+          height="400"
+          image={`http://localhost:5000/static/images/${post.video}`}
+          alt="video"
+          controls
+        />
+      ) : (
+        ""
+      )}
+      <Divider/>
+      <PostActions post={post} />
     </Card>
   );
 }

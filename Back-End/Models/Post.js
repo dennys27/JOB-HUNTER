@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb");
 const mongoose = require("mongoose");
 
 
@@ -7,7 +8,10 @@ const userSchema = mongoose.Schema({
     description: { type: String },
     image: { type: String },
     video:{type:String},
-    likes: { type: Array, required: true },
+    likes: [{
+        userId: String,
+        timeStamp:String
+    }],
     comments:{type:Array,required:true},
     date: { type: String, required: true },
     timeStamp:{type:String,required:true}
