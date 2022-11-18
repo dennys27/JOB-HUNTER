@@ -9,6 +9,7 @@ import { useState } from 'react';
 
 
 
+
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -21,28 +22,32 @@ const ExpandMore = styled((props) => {
 }));
 
 
-const PostActions = ({ post }) => {
-
+const PostActions = ({ post, setLiked, handleExpandComment }) => {
   const [expanded, setExpanded] = useState(false);
   const [like, setLike] = useState(false);
-    
+ 
+  const user = JSON.parse(localStorage.getItem("user"))?._id;
+
   const handleExpandClick = () => {
-      setExpanded(!expanded);
-      
-  };
+    setExpanded(!expanded);
+    };
+    
+   
 
   const postLikeHandler = (post) => {
-  const userId = JSON.parse(localStorage.getItem("user"))?._id
-     setLike(()=>!like)
-        userRequest({
-          method: "POST",
-            url: "/user/like",
-            data: {
-            postId: post._id, 
-            userId:userId    
-          }
-        });
-};
+    const userId = JSON.parse(localStorage.getItem("user"))?._id;
+    setLike(() => !like);
+    userRequest({
+      method: "POST",
+      url: "/user/like",
+      data: {
+        postId: post._id,
+        userId: userId,
+      },
+    }).then((data) => {
+      setLiked(Math.random() * Math.random());
+    });
+  };
 
   return (
     <CardActions
@@ -54,12 +59,12 @@ const PostActions = ({ post }) => {
       }}
     >
       <IconButton sx={{ display: "block" }} aria-label="add to favorites">
-        {like ? (
+        {post.likes.includes(user) ? (
           <AiOutlineLike
             onClick={() => {
               postLikeHandler(post);
             }}
-            color={"blue"}
+            color={"#01A9C1"}
           />
         ) : (
           <AiOutlineLike
@@ -76,7 +81,11 @@ const PostActions = ({ post }) => {
         >{`${post.likes.length} likes`}</Typography>
       </IconButton>
 
-      <IconButton sx={{ display: "block" }} aria-label="share">
+      <IconButton
+        onClick={() => handleExpandComment()}
+        sx={{ display: "block" }}
+        aria-label="share"
+      >
         <BiComment />
         <Typography
           mt={0}
@@ -88,7 +97,6 @@ const PostActions = ({ post }) => {
 
       <ExpandMore
         expand={expanded}
-       
         aria-expanded={expanded}
         aria-label="show more"
         sx={{ display: "block" }}

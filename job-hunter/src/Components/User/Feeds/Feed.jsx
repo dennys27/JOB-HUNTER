@@ -26,10 +26,11 @@ const Feed = () => {
   
 const [posts,setPosts] = useState([])
 const [refresh, setRefresh] = useState("");
+const [liked, setLiked] = useState("");
 
   useEffect(() => {
     getFeed();
-  }, [refresh]);
+  }, [refresh,liked]);
  
 let getFeed = async () => {
   let response = await userRequest({
@@ -80,14 +81,16 @@ let getFeed = async () => {
               <Grid item xs={2} sm={4} md={6}>
                 <div>
                   <CreatePost setRefresh={setRefresh} />
-                  {
-                  (posts === "" || posts === undefined || posts === null) ?
-                       <Media loading />
-                   :""
-                  }
-                  
+                  {posts === "" || posts === undefined || posts === null ? (
+                    <Media loading />
+                  ) : (
+                    ""
+                  )}
+
                   {posts ? (
-                    posts.map((post) => <RecipeReviewCard post={post} />)
+                    posts.map((post) => (
+                      <RecipeReviewCard setLiked={setLiked} post={post} />
+                    ))
                   ) : (
                     <Media loading />
                   )}

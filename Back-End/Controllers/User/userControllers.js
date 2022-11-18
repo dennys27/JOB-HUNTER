@@ -305,14 +305,56 @@ const feeds = asyncHandler(async (req, res) => {
 });
 
 const Like = asyncHandler(async (req, res) => {
-   console.log(req.body,"fffff");
-  Post.findByIdAndUpdate({
-     
-  })
+  try {
+
+   let wait =  await Post.updateOne({ _id: req.body.postId },
+      { $pull: { "likes": req.body.userId } }
+    )
+
+    if (wait.modifiedCount === 0) {
+      await Post.findByIdAndUpdate(
+        req.body.postId,
+        {
+          $push: { likes: req.body.userId },
+        },
+        {
+          new: true,
+        }
+      ).then((data) => {
+        res.status(200).json({ status: true, message: "like success", post: data });
+      });
+    } else {
+       res.status(200).json({ status: true, message: "unlike success", });
+   }
+ 
+  } catch (error) {
+    res.status(500).json({ status: false, message: "something went wrong." });
+    console.log(error);
+}
 
 });
 
 
+
+const Comment = asyncHandler(async (req, res) => {
+  console.log("im being hit", req.body);
+  let comments = {
+    userId: req.body.userId,
+    comment: req.body.comments,
+    timeStamp:new Date()
+  }
+
+    await Post.findByIdAndUpdate(
+        req.body.postId,
+        {
+          $push: { comments: comment },
+        },
+        {
+          new: true,
+        }
+      )
+  
+})
 module.exports = {
   registerUser,
   loginUser,
@@ -320,5 +362,6 @@ module.exports = {
   emailVerification,
   post,
   feeds,
-  Like
+  Like,
+  Comment
 };

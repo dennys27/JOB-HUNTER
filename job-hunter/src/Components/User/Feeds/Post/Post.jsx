@@ -11,9 +11,11 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Divider } from "@mui/material";
+import { Box, Divider, Grid, Paper, TextField } from "@mui/material";
 import PostActions from "./PostActions/PostActions";
-
+import { useState } from "react";
+import SendIcon from "@mui/icons-material/Send";
+import { userRequest } from "../../../../Constants/Constants";
 
 
 const ExpandMore = styled((props) => {
@@ -27,22 +29,46 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function RecipeReviewCard({ post }) {
+export default function RecipeReviewCard({ post, setLiked }) {
+
+  const user = JSON.parse(localStorage.getItem("user"))?._id
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+  const [comments, setComments] = useState("");
+  const [expandedComment, setComment] = useState(false);
 
+  const handleExpandComment = () => {
+    setComment(!expandedComment);
+  };
+
+   const handleComment = (e) => {
+     setComments(e.target.value);
+   };
 
   
+  const addComment = (userId,postId) => {
+     
+    userRequest({
+      method: "POST",
+      url: "/user/comment",
+      data: {
+        userId: userId,
+        postId: postId,
+        comments:comments
+      }
+    })
+
+  }
 
   return (
     <Card
       sx={{
         width: "100%",
         minHeight: "200px",
-        maxHeight: "600px",
+        maxHeight: "auto",
         marginTop: 3,
         bgcolor: "#F4F5F5",
       }}
@@ -87,8 +113,59 @@ export default function RecipeReviewCard({ post }) {
       ) : (
         ""
       )}
-      <Divider/>
-      <PostActions post={post} />
+      <Divider />
+      <PostActions
+        handleExpandComment={handleExpandComment}
+        setLiked={setLiked}
+        post={post}
+      />
+      <Collapse in={expandedComment} timeout="auto" unmountOnExit>
+        <div style={{ padding: 14 }} className="App">
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <TextField
+              onChange={(e)=>handleComment(e)}
+              height={4}
+              sx={{ width: "70%", outline: "none", border: "none" }}
+              id="standard-basic"
+              variant="standard"
+              label="Comment"
+              value={comments}
+            />
+            <SendIcon onClick={(e)=>addComment(user,post._id)} sx={{ color: "#01A9C1",padding:2 }} />
+          </Box>
+
+          <Box style={{ padding: "40px 20px" }}>
+            <Grid container wrap="nowrap" spacing={2}>
+              <Grid item>
+                <Avatar
+                  alt="Remy Sharp"
+                  src="https://i.pinimg.com/originals/49/e3/a4/49e3a4562c511f9efb29b1d72f435d8a.jpg"
+                />
+              </Grid>
+              <Grid justifyContent="left" item xs zeroMinWidth>
+                <h4 style={{ margin: 0, textAlign: "left" }}>Michel Michel</h4>
+                <p style={{ textAlign: "left" }}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Aenean luctus ut est sed faucibus. Duis bibendum ac ex
+                  vehicula laoreet.
+                </p>
+                <p style={{ textAlign: "left", color: "gray" }}>
+                  posted 1 minute ago
+                </p>
+              </Grid>
+            </Grid>
+            <Divider variant="fullWidth" style={{ margin: "15px 0" }} />
+          </Box>
+        </div>
+      </Collapse>
     </Card>
   );
 }
+
+
