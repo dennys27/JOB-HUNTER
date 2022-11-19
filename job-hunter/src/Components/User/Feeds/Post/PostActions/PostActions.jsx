@@ -92,7 +92,7 @@ const PostActions = ({ post, setLiked, handleExpandComment }) => {
           pt={0}
           fontSize={"14px"}
           variant="h6"
-        >{`${post.likes.length} comments`}</Typography>
+        >{`${post.comments.length} comments`}</Typography>
       </IconButton>
 
       <ExpandMore

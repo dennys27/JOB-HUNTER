@@ -333,7 +333,7 @@ const Like = asyncHandler(async (req, res) => {
   } catch (error) {
     res.status(500).json({ status: false, message: "something went wrong." });
     console.log(error);
-}
+} 
 
 });
 
@@ -343,6 +343,7 @@ const Comment = asyncHandler(async (req, res) => {
   console.log("im being hit", req.body);
   let commentData = {
     userId: req.body.userId,
+    name:req.body.name,
     comment: req.body.comments,
     timeStamp:new Date()
   }

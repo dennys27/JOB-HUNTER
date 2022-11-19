@@ -27,8 +27,8 @@ const ProfileCard = () => {
               <p className="impression">impressions of your post 2679</p>
             </span>
             <span className="saved" style={{ display: "flex" }}>
-              {" "}
-              <BsFillBookmarkStarFill sx={{ marginRight: "10px" }} />{" "}
+             
+              <BsFillBookmarkStarFill sx={{ marginRight: "10px" }} />
               <span style={{ marginLeft: 10 }}> Saved items</span>
             </span>
           </div>

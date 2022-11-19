@@ -18,6 +18,7 @@ const postSchema = mongoose.Schema({
         type: [String],
         ref: User,
       },
+      name:String,
       comment: String,
       timeStamp: Date,
     },

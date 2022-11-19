@@ -32,6 +32,7 @@ const ExpandMore = styled((props) => {
 export default function RecipeReviewCard({ post, setLiked }) {
 
   const user = JSON.parse(localStorage.getItem("user"))?._id
+  const name = JSON.parse(localStorage.getItem("user"))?.name
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -57,6 +58,7 @@ export default function RecipeReviewCard({ post, setLiked }) {
       data: {
         userId: userId,
         postId: postId,
+        name:name,
         comments:comments
       }
     }).then((data) => {
@@ -145,8 +147,8 @@ export default function RecipeReviewCard({ post, setLiked }) {
             />
           </Box>
 
-          <Box style={{ padding: "40px 20px" }}>
-            {post.comments.map((comment) => (
+          {post.comments.map((comment) => (
+            <Box style={{ padding: "10px 10px" }}>
               <Grid container wrap="nowrap" spacing={2}>
                 <Grid item>
                   <Avatar
@@ -156,19 +158,17 @@ export default function RecipeReviewCard({ post, setLiked }) {
                 </Grid>
                 <Grid justifyContent="left" item xs zeroMinWidth>
                   <h4 style={{ margin: 0, textAlign: "left" }}>
-                    Michel Michel
+                    {comment.name}
                   </h4>
-                  <p style={{ textAlign: "left" }}>
-                   {comment.comment}
-                  </p>
+                  <p style={{ textAlign: "left" }}>{comment.comment}</p>
                   <p style={{ textAlign: "left", color: "gray" }}>
                     posted 1 minute ago
                   </p>
                 </Grid>
-                <Divider variant="fullWidth" style={{ margin: "15px 0" }} />
               </Grid>
-            ))}
-          </Box>
+              <Divider variant="fullWidth" style={{ margin: "15px 0" }} />
+            </Box>
+          ))}
         </div>
       </Collapse>
     </Card>
