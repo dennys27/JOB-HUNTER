@@ -1,0 +1,10 @@
+.about{
+  
+    overflow-y: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+.about ::-webkit-scrollbar { /* WebKit */
+    width: 0;
+    height: 0;
+}
