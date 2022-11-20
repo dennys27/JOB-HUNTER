@@ -1,4 +1,13 @@
+.exp{
+  border-bottom:solid #ffffff 2px ;
+ 
+}
 .exp:hover{
   border-bottom:solid #01A9C1 2px ;
  
+}
+.experience{
+ -ms-overflow-style: none; 
+  scrollbar-width: none; 
+
 }
