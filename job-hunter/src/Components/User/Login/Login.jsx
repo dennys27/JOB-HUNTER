@@ -231,10 +231,10 @@ const Login = () => {
             <p style={{ color: "red" }}>{errorPassword}</p>
             <p style={{ color: "red" }}>{message}</p>
 
-            <p className="policy">
+            {/* <p className="policy">
               By clicking Agree & Join, you agree to <br /> the Jobhunter User
               Agreement, Privacy Policy, and Cookie Policy.
-            </p>
+            </p> */}
 
             <button onClick={() => onSubmit()} className="login_btn">
               Login

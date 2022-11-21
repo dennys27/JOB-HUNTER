@@ -5,27 +5,22 @@ import React from 'react'
 const RightCard = () => {
   return (
     <div className="card">
-          <Container sx={{ padding: 3 }} >
-              <Typography variant="h6">
-                   Latest
-              </Typography>
+      <Container sx={{ padding: 3 }}>
+        <Typography sx={{ fontSize: 15 }} component="h6" variant="h6">
+          Jobhunter News
+        </Typography>
 
-     
-     
         <List>
-          
           <ListItem disablePadding>
-           <Typography>latest</Typography> 
+            <Typography sx={{ fontSize: 13 }}>UpGrad to hire 1,400</Typography>
           </ListItem>
           <ListItem disablePadding>
-           <Typography>latest</Typography>
+            <Typography sx={{ fontSize: 13 }}>Weak rupee fuelling reveneu rise</Typography>
           </ListItem>
         </List>
-    
-
- </Container>
+      </Container>
     </div>
-  )
+  );
 }
 
 export default RightCard

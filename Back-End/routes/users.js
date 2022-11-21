@@ -8,9 +8,12 @@ const {
   feeds,
   Like,
   Comment,
+  profileCard,
 } = require("../Controllers/User/userControllers");
 const { verifyToken } = require('./Middlewares/JwtVerification');
 var router = express.Router();
+
+
 
 /* GET users listing. */
 router.post('/login',loginUser );
@@ -21,6 +24,7 @@ router.get("/feed", verifyToken, feeds);
 router.post('/posts',verifyToken, post);
 router.post('/like',verifyToken, Like);
 router.post('/comment',verifyToken, Comment);
+router.post("/profilecard", verifyToken, profileCard);
 
 
 module.exports = router;

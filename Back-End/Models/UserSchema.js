@@ -9,6 +9,15 @@ const userSchema = mongoose.Schema({
   password: { type: String, required: true },
   verification: { type: Boolean },
   otp: { type: Number },
+  headline: { type: String },
+  currentPosition: { type: String },
+  industry: { type: String },
+  experience: { type: Array },
+  location: { type: String },
+  availability: { type: String },
+  certifications: { type: Array },
+  education: { type: Array },
+  skills: { type: Array },
 });
 
 userSchema.methods.generateAuthToken = (payload)=>{

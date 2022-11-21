@@ -10,13 +10,10 @@ const { Post } = require("../../Models/Post");
 
 
 
-
-
-
-
 //@description: Register new user
 // @route : POST /api/users
 // @access : public
+
  
 const registerUser = asyncHandler(async (req, res) => {
    
@@ -68,6 +65,7 @@ const registerUser = asyncHandler(async (req, res) => {
     }
   }
 });
+
 
 const loginUser = asyncHandler(async (req, res) => {
 
@@ -135,6 +133,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
  
 })
 
+
 const emailVerification = asyncHandler(async (req, res) => {
   console.log(req.body);
   const {otp} = req.body;
@@ -156,7 +155,6 @@ const emailVerification = asyncHandler(async (req, res) => {
   })
 
 });
-
 
 
 const post = async (req, res) => {
@@ -285,8 +283,6 @@ const post = async (req, res) => {
 };
 
 
- 
-
 const feeds = asyncHandler(async (req, res) => {
   
   Post.find()
@@ -306,6 +302,7 @@ const feeds = asyncHandler(async (req, res) => {
       }
     });
 });
+
 
 const Like = asyncHandler(async (req, res) => {
   try {
@@ -366,6 +363,47 @@ const Comment = asyncHandler(async (req, res) => {
     })
   
 })
+
+
+const profileCard = asyncHandler(async (req, res) => {
+  let profile = {
+    userId: req.body.userId,
+    name:req.body.name,
+    comment: req.body.comments,
+    timeStamp:new Date()
+  }
+  try {
+     await User.updateOne(
+      { _id: req.body._id },
+      { 
+        name: req.body.details.name,
+        headline: req.body.details.headline,
+        currentPosition: req.body.details.currentposition,
+        industry:req.body.details.industry,
+        skills: req.body.skills,
+        
+      }
+     
+     ).then(async(data) => {
+      const user = await User.findOne({ _id:req.body._id }); 
+      console.log(user,"response...........");
+      res
+        .status(200)
+        .json({ status: true, message: "updated successfully", comment: user,data:data });
+    }).catch((error) => {
+        res.status(200)
+          .json({ status: false, message: "operation failed", error: error });
+     })
+  } catch (err) {
+    console.log(err);
+  }
+   
+  
+})
+
+
+
+
 module.exports = {
   registerUser,
   loginUser,
@@ -374,5 +412,6 @@ module.exports = {
   post,
   feeds,
   Like,
-  Comment
+  Comment,
+  profileCard
 };

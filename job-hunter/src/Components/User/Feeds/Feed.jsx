@@ -82,19 +82,19 @@ let getFeed = async () => {
               <Grid item xs={2} sm={4} md={6}>
                 <div>
                   <CreatePost setRefresh={setRefresh} />
-                  {posts === "" || posts === undefined || posts === null ? (
+                  
+                 
+                  {posts.length===0 || posts === "" || posts === undefined || posts === null ? (
                     <Media loading />
                   ) : (
                     ""
                   )}
 
-                  {posts ? (
-                    posts.map((post) => (
-                      <RecipeReviewCard setLiked={setLiked} post={post} />
-                    ))
-                  ) : (
-                    <Media loading />
-                  )}
+                  {posts
+                    ? posts.map((post) => (
+                        <RecipeReviewCard setLiked={setLiked} post={post} />
+                      ))
+                    : ""}
                 </div>
               </Grid>
               <Grid
