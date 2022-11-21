@@ -9,9 +9,11 @@ const {
   Like,
   Comment,
   profileCard,
+  getUser,
 } = require("../Controllers/User/userControllers");
 const { verifyToken } = require('./Middlewares/JwtVerification');
 var router = express.Router();
+
 
 
 
@@ -25,6 +27,7 @@ router.post('/posts',verifyToken, post);
 router.post('/like',verifyToken, Like);
 router.post('/comment',verifyToken, Comment);
 router.post("/profilecard", verifyToken, profileCard);
+router.post("/getuser", verifyToken, getUser);
 
 
 module.exports = router;

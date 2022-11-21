@@ -389,8 +389,28 @@ const profileCard = asyncHandler(async (req, res) => {
       console.log(user,"response...........");
       res
         .status(200)
-        .json({ status: true, message: "updated successfully", comment: user,data:data });
+        .json({ status: true, message: "updated successfully", user: user,data:data });
     }).catch((error) => {
+        res.status(200)
+          .json({ status: false, message: "operation failed", error: error });
+     })
+  } catch (err) {
+    console.log(err);
+  }
+   
+  
+})
+const getUser = asyncHandler(async (req, res) => {
+  
+  try {
+  User.findOne({ _id: req.body._id }).then((data) => {
+
+        res
+          .status(200)
+          .json({ status: true, message: "success", data: data });
+       
+     })
+    .catch((error) => {
         res.status(200)
           .json({ status: false, message: "operation failed", error: error });
      })
@@ -404,6 +424,7 @@ const profileCard = asyncHandler(async (req, res) => {
 
 
 
+
 module.exports = {
   registerUser,
   loginUser,
@@ -413,5 +434,6 @@ module.exports = {
   feeds,
   Like,
   Comment,
-  profileCard
+  profileCard,
+  getUser
 };

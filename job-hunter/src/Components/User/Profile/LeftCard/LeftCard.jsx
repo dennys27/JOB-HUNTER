@@ -32,6 +32,27 @@ const style = {
 
 const LeftCard = () => {
 
+  const [user, setUser] = useState({})
+  
+
+  useState(() => {
+    let _id = JSON.parse(localStorage.getItem("user"))?._id 
+    userRequest({
+      method: "POST",
+      url: "/user/getuser",
+      data: {
+        _id: _id,
+      },
+    }).then((data) => {
+      console.log(data.data.data, 'gggggggggggggg');
+      setUser(data.data.data)
+      setProfile({ ...data.data.data })
+      setSkills([...data.data.data.skills])
+    })
+   
+    
+  },[])
+
 
   let details = {
     name: "",
@@ -47,7 +68,7 @@ const LeftCard = () => {
    const [skills,setSkills] = useState([])
   const [kill, setKill] = useState("")
   
-   const detailChange = (e) => {
+  const detailChange = (e) => {
      setProfile({ ...profile, [e.target.name]: e.target.value });
    };
   
@@ -78,7 +99,11 @@ const LeftCard = () => {
         details: profile,
         skills:skills
       },
-    });
+    }).then((data) => {
+      console.log(data.data.user, "hhhhhhhhhhhhhhhhhhhhhhh");
+      setUser(data.data.user)
+     
+    })
   }
 
 
@@ -99,7 +124,7 @@ const LeftCard = () => {
               variant="h6"
               sx={{ fontSize: 17 }}
             >
-              JOHN DOE
+              {user.name}
             </Typography>
             <Typography
               fontSize={13}
@@ -107,7 +132,7 @@ const LeftCard = () => {
               variant="h6"
               className="designationOne"
             >
-              MERNSTACK DEVELOPER
+              {user.headline}
             </Typography>
           </div>
           <div className="impressionsOne">
@@ -127,47 +152,21 @@ const LeftCard = () => {
               skills
             </Typography>
 
-            <div className="flex_skills">
-              <Typography
-                fontSize={13}
-                component="h6"
-                variant="h6"
-                className="skill"
-              >
-                Html
-              </Typography>
-              <Typography
-                fontSize={13}
-                component="h6"
-                variant="h6"
-                className="skill"
-              >
-                Docker
-              </Typography>
-              <Typography
-                fontSize={13}
-                component="h6"
-                variant="h6"
-                className="skill"
-              >
-                Kubernetes
-              </Typography>
-              <Typography
-                fontSize={13}
-                component="h6"
-                variant="h6"
-                className="skill"
-              >
-                Html
-              </Typography>
-              <Typography
-                fontSize={13}
-                component="h6"
-                variant="h6"
-                className="skill"
-              >
-                Html
-              </Typography>
+            <div className="flex_skills" style={{maxHeight:"75px",overflow:"scroll" , scrollbarWidth:"none"}}>
+              {user.skills?.map((data) => (
+                <Typography
+                  fontSize={13}
+                  component="h6"
+                  variant="h6"
+                  className="skill"
+                >
+                  {data}
+                </Typography>
+              ))}
+
+            
+              
+             
             </div>
 
             <Typography
