@@ -15,30 +15,66 @@ const BasicInfo = () => {
             <Box sx={{ padding: 2 }}>
               <Typography
                 sx={{ fontSize: "18px", fontWeight: "700" }}
-                variant="p"
+                variant="h6"
               >
                 Basic Information :
               </Typography>
               <Box sx={{ display: "flex", justifyContent: "space-around" }}>
                 <div>
                   <div style={{ paddingTop: "10px" }}>
-                    <p style={{ color: "gray" }}>Age</p>
-                    <p>26 Years</p>
+                    <Typography
+                      fontSize={14}
+                      component="h6"
+                      variant="h6"
+                      style={{ color: "gray" }}
+                    >
+                      Age
+                    </Typography>
+                    <Typography fontSize={13} component="h6" variant="h6">
+                      26 Years
+                    </Typography>
                   </div>
                   <div style={{ paddingTop: "10px" }}>
-                    <p style={{ color: "gray" }}>Location</p>
-                    <p>Bangaluru,karnataka</p>
+                    <Typography
+                      fontSize={14}
+                      component="h6"
+                      variant="h6"
+                      style={{ color: "gray" }}
+                    >
+                      Location
+                    </Typography>
+                    <Typography fontSize={13} component="h6" variant="h6">
+                      Bangaluru,karnataka
+                    </Typography>
                   </div>
                 </div>
 
                 <div>
                   <div style={{ paddingTop: "10px" }}>
-                    <p style={{ color: "gray" }}>Years of experiance</p>
-                    <p>6 Years</p>
+                    <Typography
+                      fontSize={14}
+                      component="h6"
+                      variant="h6"
+                      style={{ color: "gray" }}
+                    >
+                      Years of experiance
+                    </Typography>
+                    <Typography fontSize={13} component="h6" variant="h6">
+                      6 Years
+                    </Typography>
                   </div>
                   <div style={{ paddingTop: "10px" }}>
-                    <p style={{ color: "gray" }}>Availability</p>
-                    <p>Full Time</p>
+                    <Typography
+                      fontSize={14}
+                      component="h6"
+                      variant="h6"
+                      style={{ color: "gray" }}
+                    >
+                      Availability
+                    </Typography>
+                    <Typography fontSize={13} component="h6" variant="h6">
+                      Full Time
+                    </Typography>
                   </div>
                 </div>
               </Box>
@@ -48,24 +84,32 @@ const BasicInfo = () => {
             <Box sx={{ padding: 2 }}>
               <Typography
                 sx={{ fontSize: "18px", fontWeight: "700" }}
-                variant="p"
+                variant="h6"
               >
                 About :
               </Typography>
-              <div className="about" style={{ width: "100%",maxHeight:"165px",overflow:"scroll" }}>
-                Lorem Ipsum ha sido el texto de relleno estándar de las
-                industrias desde el año 1500, cuando un impresor (N. del T.
-                persona que se dedica a la imprenta) desconocido usó una galería
-                de textos y los mezcló de tal manera que logró hacer un libro de
-                textos especimen. No sólo sobrevivió 500 años, sino que tambien
-                ingresó como texto de relleno en documentos electrónicos,
-                quedando esencialmente igual al original.
-                ingresó como texto de relleno en documentos electrónicos,
-                quedando esencialmente igual al original.
-                ingresó como texto de relleno en documentos electrónicos,
-                quedando esencialmente igual al original.
-                ingresó como texto de relleno en documentos electrónicos,
-                quedando esencialmente igual al original.
+              <div
+                className="about"
+                style={{
+                  width: "100%",
+                  maxHeight: "165px",
+                  overflow: "scroll",
+                }}
+              >
+                <Typography>
+                  Lorem Ipsum ha sido el texto de relleno estándar de las
+                  industrias desde el año 1500, cuando un impresor (N. del T.
+                  persona que se dedica a la imprenta) desconocido usó una
+                  galería de textos y los mezcló de tal manera que logró hacer
+                  un libro de textos especimen. No sólo sobrevivió 500 años,
+                  sino que tambien ingresó como texto de relleno en documentos
+                  electrónicos, quedando esencialmente igual al original.
+                  ingresó como texto de relleno en documentos electrónicos,
+                  quedando esencialmente igual al original. ingresó como texto
+                  de relleno en documentos electrónicos, quedando esencialmente
+                  igual al original. ingresó como texto de relleno en documentos
+                  electrónicos, quedando esencialmente igual al original.
+                </Typography>
               </div>
             </Box>
           </Grid>

@@ -5,6 +5,7 @@ import './Experience.css'
 
 
 
+
 const Experience = () => {
   return (
     <Box
@@ -15,7 +16,7 @@ const Experience = () => {
         borderRadius: "5px",
         marginTop: "20px",
         paddingTop: "10px",
-        overflow: "scroll",
+       
       }}
     >
       <Container
@@ -23,8 +24,7 @@ const Experience = () => {
           display: "flex",
           justifyContent: "space-around",
           marginBottom: "10px",
-          position: "-webkit-sticky",
-          position: "sticky",
+          
         }}
       >
         <Grid
@@ -44,7 +44,7 @@ const Experience = () => {
             sm={4}
             md={4}
           >
-            <Typography className="exp">Experiance</Typography>
+            <Typography className="exp">Experience</Typography>
           </Grid>
           <Grid
             sx={{
@@ -83,7 +83,7 @@ const Experience = () => {
           height: "400px",
           backgroundColor: "white",
           borderRadius: "5px",
-          marginTop: "20px",
+          marginTop: "5px",
           paddingTop: "10px",
           overflow: "scroll",
         }}
@@ -490,6 +490,7 @@ const Experience = () => {
           </Grid>
         </Container>
         <Divider />
+        
       </Box>
     </Box>
   );

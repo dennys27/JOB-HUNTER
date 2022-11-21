@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import "./Job.css"
 
 import React from 'react'
@@ -18,20 +18,23 @@ const Job = () => {
       >
         <div style={{ display: "flex", alignItems: "center" }}>
           <img
-            src="https://www.freepnglogos.com/uploads/logo-facebook-png/logo-facebook-facebook-png-logo-pic-icons-and-png-backgrounds-19.png"
+            src="https://cdn.pixabay.com/photo/2017/03/24/07/28/facebook-2170419__340.png"
             alt=""
-            style={{ width: "50px", height: "50px" }}
+            style={{ width: "50px", height: "50px",borderRadius:"5px" }}
           />
           <div style={{ padding: "5px", color: "#01A9C1" }}>
             <h4>UI/UX Designer</h4>
-            <p style={{ color: "gray" }}>Facebook</p>
+            <Typography style={{ color: "gray" }}>Facebook</Typography>
           </div>
         </div>
         <div style={{ paddingTop: "10px", textAlign: "left" }}>
-          <p className='job_desc' style={{ overflow: "scroll", maxHeight: "90px" }}>
+          <Typography
+            className="job_desc"
+            style={{ overflow: "scroll", maxHeight: "95px" }}
+          >
             UI/UX Designer responsibilities include gathering user requirements,
             designing graphic elements and building navigation components.
-          </p>
+          </Typography>
           <div style={{ display: "flex", marginTop: 20 }}>
             <div
               style={{
@@ -40,7 +43,7 @@ const Job = () => {
                 borderRadius: "4px",
               }}
             >
-              <p>Full-time</p>
+              <Typography>Full-time</Typography>
             </div>
             <div
               style={{
@@ -50,7 +53,7 @@ const Job = () => {
                 marginLeft: "20px",
               }}
             >
-              <p>wfh</p>
+              <Typography>wfh</Typography>
             </div>
           </div>
         </div>

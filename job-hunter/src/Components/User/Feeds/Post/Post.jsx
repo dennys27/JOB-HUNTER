@@ -16,6 +16,7 @@ import PostActions from "./PostActions/PostActions";
 import { useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
 import { userRequest } from "../../../../Constants/Constants";
+import "./Post.css"
 
 
 const ExpandMore = styled((props) => {
@@ -30,6 +31,12 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function RecipeReviewCard({ post, setLiked }) {
+  let duplicate_comment = [...post.comments];
+  duplicate_comment.reverse();
+  
+
+  console.log(duplicate_comment,"jjjjjjjjjjjjjjjjjj");
+   
 
   const user = JSON.parse(localStorage.getItem("user"))?._id
   const name = JSON.parse(localStorage.getItem("user"))?.name
@@ -74,7 +81,7 @@ export default function RecipeReviewCard({ post, setLiked }) {
         minHeight: "200px",
         maxHeight: "auto",
         marginTop: 3,
-        bgcolor: "#F4F5F5",
+        bgcolor: "#ffffff",
       }}
     >
       <CardHeader
@@ -123,7 +130,7 @@ export default function RecipeReviewCard({ post, setLiked }) {
         setLiked={setLiked}
         post={post}
       />
-      <Collapse in={expandedComment} timeout="auto" unmountOnExit>
+      <Collapse className="comment_collapse" in={expandedComment} sx={{maxHeight:"370px" ,overflow:"scroll"}} timeout="auto" unmountOnExit>
         <div style={{ padding: 14 }} className="App">
           <Box
             sx={{
@@ -147,7 +154,7 @@ export default function RecipeReviewCard({ post, setLiked }) {
             />
           </Box>
 
-          {post.comments.map((comment) => (
+          {duplicate_comment.map((comment) => (
             <Box style={{ padding: "10px 10px" }}>
               <Grid container wrap="nowrap" spacing={2}>
                 <Grid item>

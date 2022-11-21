@@ -1,11 +1,11 @@
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import React from 'react'
 
 const Jobtopbar = () => {
   return (
     <>
       <Box sx={{ display: "flex", justifyContent: "space-around" }}>
-        <div
+        <Typography
           style={{
             backgroundColor: "white",
             padding: "10px 30px 10px 30px",
@@ -13,8 +13,8 @@ const Jobtopbar = () => {
           }}
         >
           Developer
-        </div>
-        <div
+        </Typography>
+        <Typography
           style={{
             backgroundColor: "white",
             padding: "10px 30px 10px 30px",
@@ -22,8 +22,8 @@ const Jobtopbar = () => {
           }}
         >
           Health Care
-        </div>
-        <div
+        </Typography>
+        <Typography
           style={{
             backgroundColor: "white",
             padding: "10px 30px 10px 30px",
@@ -31,8 +31,8 @@ const Jobtopbar = () => {
           }}
         >
           Designer
-        </div>
-        <div
+        </Typography>
+        <Typography
           style={{
             backgroundColor: "white",
             padding: "10px 30px 10px 30px",
@@ -40,8 +40,8 @@ const Jobtopbar = () => {
           }}
         >
           Marketing
-        </div>
-        <div
+        </Typography>
+        <Typography
           style={{
             backgroundColor: "white",
             padding: "10px 30px 10px 30px",
@@ -49,7 +49,7 @@ const Jobtopbar = () => {
           }}
         >
           More...
-        </div>
+        </Typography>
       </Box>
     </>
   );

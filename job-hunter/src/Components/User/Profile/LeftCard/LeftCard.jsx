@@ -1,10 +1,11 @@
 import { Typography } from '@mui/material';
+import { AiOutlineEdit } from "react-icons/ai";
 import React from 'react'
 import "./LeftCard.css"
 const LeftCard = () => {
   return (
     <div className="card_wrapper">
-      <div className="cardOne">
+      <div style={{ backgroundColor: "white" }} className="cardOne">
         <div className="content_wrapper">
           <div className="profile_pic">
             <img
@@ -12,26 +13,85 @@ const LeftCard = () => {
               src="https://t4.ftcdn.net/jpg/03/83/51/07/360_F_383510773_TMTTEn3zQ6ylTW82Sy7Jjs0Fvq34uLVE.jpg"
               alt="profile"
             />
-            <Typography sx={{ fontSize: 17 }}>JOHN DOE</Typography>
-            <p className="designationOne">MERNSTACK DEVELOPER</p>
+            <Typography
+              fontSize={13}
+              component="h6"
+              variant="h6"
+              sx={{ fontSize: 17 }}
+            >
+              JOHN DOE
+            </Typography>
+            <Typography
+              fontSize={13}
+              component="h6"
+              variant="h6"
+              className="designationOne"
+            >
+              MERNSTACK DEVELOPER
+            </Typography>
           </div>
           <div className="impressionsOne">
-            <p>
+            <Typography fontSize={13} component="h6" variant="h6">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sem
               ante, vehicula eu ante non, tristique ullamcorper ex. Mauris
-              dignissim euismod tortor, id elementum augue porta non. In eros
-              libero, mollis eu lectus vitae, aliquam lacinia velit
-            </p>
+              dignissim euismod tortor, id elementum augue porta non.
+            </Typography>
           </div>
           <div className="skills">
-            <p style={{fontWeight:"600",paddingLeft:"15px"}} >skills</p> 
+            <Typography
+              fontSize={13}
+              component="h6"
+              variant="h6"
+              style={{ fontWeight: "600", paddingLeft: "15px" }}
+            >
+              skills
+            </Typography>
 
             <div className="flex_skills">
-              <p className="skill">Html</p>
-              <p className="skill">Docker</p>
-              <p className="skill">Kubernetes</p>
-              <p className="skill">Html</p>
-              <p className="skill">Html</p>
+              <Typography
+                fontSize={13}
+                component="h6"
+                variant="h6"
+                className="skill"
+              >
+                Html
+              </Typography>
+              <Typography
+                fontSize={13}
+                component="h6"
+                variant="h6"
+                className="skill"
+              >
+                Docker
+              </Typography>
+              <Typography
+                fontSize={13}
+                component="h6"
+                variant="h6"
+                className="skill"
+              >
+                Kubernetes
+              </Typography>
+              <Typography
+                fontSize={13}
+                component="h6"
+                variant="h6"
+                className="skill"
+              >
+                Html
+              </Typography>
+              <Typography
+                fontSize={13}
+                component="h6"
+                variant="h6"
+                className="skill"
+              >
+                Html
+              </Typography>
+            </div>
+            <div style={{ width:"100%",alignItem:"end"}} >
+            <AiOutlineEdit />
+
             </div>
           </div>
         </div>

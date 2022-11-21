@@ -101,7 +101,7 @@ const Navbar = () => {
         className="navbar"
         sx={{
           height: "53px",
-          backgroundColor: "#F4F5F5",
+          backgroundColor: "#ffffff",
         }}
       >
         <Box maxWidth="xl" sx={{ width: "100%" }}>
