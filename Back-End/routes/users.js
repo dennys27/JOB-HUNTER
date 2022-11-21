@@ -10,6 +10,7 @@ const {
   Comment,
   profileCard,
   getUser,
+  basicInfo,
 } = require("../Controllers/User/userControllers");
 const { verifyToken } = require('./Middlewares/JwtVerification');
 var router = express.Router();
@@ -28,6 +29,7 @@ router.post('/like',verifyToken, Like);
 router.post('/comment',verifyToken, Comment);
 router.post("/profilecard", verifyToken, profileCard);
 router.post("/getuser", verifyToken, getUser);
+router.post("/basicinfo", verifyToken, basicInfo);
 
 
 module.exports = router;

@@ -18,6 +18,11 @@ const userSchema = mongoose.Schema({
   certifications: { type: Array },
   education: { type: Array },
   skills: { type: Array },
+  age: { type: String },
+  yearsofexperience: { type: String },
+  location: { type: String },
+  availability: { type: String },
+  about: { type: String },
 });
 
 userSchema.methods.generateAuthToken = (payload)=>{

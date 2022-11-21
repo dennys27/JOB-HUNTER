@@ -400,6 +400,8 @@ const profileCard = asyncHandler(async (req, res) => {
    
   
 })
+
+
 const getUser = asyncHandler(async (req, res) => {
   
   try {
@@ -424,6 +426,41 @@ const getUser = asyncHandler(async (req, res) => {
 
 
 
+const basicInfo = asyncHandler(async (req, res) => {
+ console.log(req.body,"incoming.........................");
+  try {
+    await User.updateOne(
+      { _id: req.body._id },
+      {
+        age: req.body.details.age,
+        yearsofexperience: req.body.details.yearsofexperience,
+        location: req.body.details.location,
+        availability: req.body.details.availability,
+        about: req.body.details.about,
+      }
+    )
+      .then(async (data) => {
+        const user = await User.findOne({ _id: req.body._id });
+        console.log(user, "response...........");
+        res.status(200).json({
+          status: true,
+          message: "updated successfully",
+          user: user,
+          data: data,
+        });
+      })
+      .catch((error) => {
+        res
+          .status(200)
+          .json({ status: false, message: "operation failed", error: error });
+      });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+
+
 
 module.exports = {
   registerUser,
@@ -435,5 +472,6 @@ module.exports = {
   Like,
   Comment,
   profileCard,
-  getUser
+  getUser,
+  basicInfo
 };

@@ -1,6 +1,93 @@
-import { Box, Collapse, Grid, Modal, Typography } from '@mui/material';
+import { Box, Button, Collapse, Grid, Modal, TextField, Typography } from '@mui/material';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { userRequest } from '../../../../Constants/Constants';
 import './BasicInfo.css'
+
+
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 700,
+  height: 500,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  border: "none",
+  outline: "none",
+  p: 4,
+  borderRadius: "5px",
+  overflow: "scroll",
+  scrollbarWidth: "none",
+};
+
+
+
+
+
 const BasicInfo = () => {
+
+  const [user,setUser] = useState({})
+
+  useEffect(() => {
+
+     let _id = JSON.parse(localStorage.getItem("user"))?._id;
+     userRequest({
+       method: "POST",
+       url: "/user/getuser",
+       data: {
+         _id: _id,
+       },
+     }).then((data) => {
+       console.log(data.data.data, "gggggggggggggg");
+       setUser(data.data.data);
+       setBasic({ ...data.data.data });
+       
+     });
+    
+  },[])
+   
+  let details = {
+    age: "",
+    yearsofexperience: "",
+    location: "",
+    availability: "",
+    about:""
+  }
+  
+
+     const [open, setOpen] = useState(false);
+     const handleOpen = () => setOpen(true);
+     const handleClose = () => setOpen(false);
+     
+     const [basic, setBasic] = useState(details);
+  
+     const detailChange = (e) => {
+       setBasic({ ...basic, [e.target.name]: e.target.value });
+  };
+  
+
+
+    const submit = () => {
+      let userId = JSON.parse(localStorage.getItem("user"))?._id;
+      userRequest({
+        method: "POST",
+        url: "/user/basicinfo",
+        data: {
+          _id: userId,
+          details:basic
+          
+        },
+      }).then((data) => {
+        console.log(data.data.user, "basic,,,,,<<<<<<<<<<<<>>>>>>>>>>>");
+        // setUser(data.data.user);
+      });
+    };
+
+
+
     return (
       <Box
         sx={{
@@ -31,7 +118,7 @@ const BasicInfo = () => {
                       Age
                     </Typography>
                     <Typography fontSize={13} component="h6" variant="h6">
-                      26 Years
+                    {`${user.age} years`}
                     </Typography>
                   </div>
                   <div style={{ paddingTop: "10px" }}>
@@ -44,7 +131,7 @@ const BasicInfo = () => {
                       Location
                     </Typography>
                     <Typography fontSize={13} component="h6" variant="h6">
-                      Bangaluru,karnataka
+                      {user.location}
                     </Typography>
                   </div>
                 </div>
@@ -60,7 +147,7 @@ const BasicInfo = () => {
                       Years of experiance
                     </Typography>
                     <Typography fontSize={13} component="h6" variant="h6">
-                      6 Years
+                      {`${user.yearsofexperience} years`}
                     </Typography>
                   </div>
                   <div style={{ paddingTop: "10px" }}>
@@ -73,7 +160,7 @@ const BasicInfo = () => {
                       Availability
                     </Typography>
                     <Typography fontSize={13} component="h6" variant="h6">
-                      Full Time
+                      {user.availability}
                     </Typography>
                   </div>
                 </div>
@@ -93,27 +180,132 @@ const BasicInfo = () => {
                 style={{
                   width: "100%",
                   maxHeight: "165px",
+                  minHeight: "165px",
                   overflow: "scroll",
                 }}
               >
                 <Typography>
-                  Lorem Ipsum ha sido el texto de relleno estándar de las
-                  industrias desde el año 1500, cuando un impresor (N. del T.
-                  persona que se dedica a la imprenta) desconocido usó una
-                  galería de textos y los mezcló de tal manera que logró hacer
-                  un libro de textos especimen. No sólo sobrevivió 500 años,
-                  sino que tambien ingresó como texto de relleno en documentos
-                  electrónicos, quedando esencialmente igual al original.
-                  ingresó como texto de relleno en documentos electrónicos,
-                  quedando esencialmente igual al original. ingresó como texto
-                  de relleno en documentos electrónicos, quedando esencialmente
-                  igual al original. ingresó como texto de relleno en documentos
-                  electrónicos, quedando esencialmente igual al original.
+                {user.about}
                 </Typography>
               </div>
             </Box>
+            <div style={{ width: "100%" }}>
+              <Typography
+                sx={{
+                  color: "#01A9C1",
+                  float: "right",
+                  paddingRight: "20px",
+                  fontSize: "13px",
+                }}
+                onClick={(e) => handleOpen()}
+              >
+                Edit
+              </Typography>
+            </div>
           </Grid>
         </Grid>
+
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <Typography component="h4" variant="h6">
+              Edit profile
+            </Typography>
+            <Box sx={{ paddingTop: "10px" }}>
+              <div style={{ marginTop: "10px" }}>
+                <label>
+                  <Typography>Age</Typography>
+                </label>
+                <TextField
+                  id="outlined-basic"
+                  label="Outlined"
+                  variant="outlined"
+                  sx={{ width: "100%" }}
+                  name="age"
+                  value={basic.age}
+                  onChange={(e) => detailChange(e)}
+                />
+              </div>
+              <div style={{ marginTop: "10px" }}>
+                <label>
+                  <Typography>Years of Experience</Typography>
+                </label>
+                <TextField
+                  id="outlined-basic"
+                  label="Outlined"
+                  variant="outlined"
+                  sx={{ width: "100%" }}
+                  name="yearsofexperience"
+                  value={basic.yearsofexperience}
+                  onChange={(e) => detailChange(e)}
+                />
+              </div>
+              <div style={{ marginTop: "10px" }}>
+                <label>
+                  <Typography>Location</Typography>
+                </label>
+                <TextField
+                  id="outlined-basic"
+                  label="Outlined"
+                  variant="outlined"
+                  name="location"
+                  sx={{ width: "100%" }}
+                  value={basic.location}
+                  onChange={(e) => detailChange(e)}
+                />
+              </div>
+              <div style={{ marginTop: "10px" }}>
+                <label>
+                  <Typography>Availability</Typography>
+                </label>
+                <TextField
+                  id="outlined-basic"
+                  label="Outlined"
+                  variant="outlined"
+                  sx={{ width: "100%" }}
+                  name="availability"
+                  value={basic.availability}
+                  onChange={(e) => detailChange(e)}
+                />
+              </div>
+              <div style={{ marginTop: "10px" }}>
+                <label>
+                  <Typography>About</Typography>
+                </label>
+                <TextField
+                  id="outlined-basic"
+                  label="Outlined"
+                  variant="outlined"
+                  sx={{ width: "100%" }}
+                  name="about"
+                  value={basic.about}
+                  onChange={(e) => detailChange(e)}
+                />
+              </div>
+
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "end",
+                  marginTop: "10px",
+                }}
+              >
+                <Button
+                  sx={{ width: "100px", height: "50px" }}
+                  variant="contained"
+                  onClick={(e)=>submit(e)}
+                >
+                  Save
+                </Button>
+              </div>
+            </Box>
+          </Box>
+        </Modal>
       </Box>
     );
 }
