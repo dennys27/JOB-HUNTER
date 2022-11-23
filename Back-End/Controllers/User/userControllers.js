@@ -285,8 +285,9 @@ const post = async (req, res) => {
 
 const feeds = asyncHandler(async (req, res) => {
   
-  Post.find()
+  Post.find({})
     .populate("userId")
+    .populate("comments.userId")
     .exec(async (error, data) => {
       if (error) {
         console.log(error);
@@ -366,38 +367,83 @@ const Comment = asyncHandler(async (req, res) => {
 
 
 const profileCard = asyncHandler(async (req, res) => {
-  let profile = {
-    userId: req.body.userId,
-    name:req.body.name,
-    comment: req.body.comments,
-    timeStamp:new Date()
-  }
-  try {
-     await User.updateOne(
-      { _id: req.body._id },
-      { 
-        name: req.body.details.name,
-        headline: req.body.details.headline,
-        currentPosition: req.body.details.currentposition,
-        industry:req.body.details.industry,
-        skills: req.body.skills,
-        
-      }
+    
      
-     ).then(async(data) => {
-      const user = await User.findOne({ _id:req.body._id }); 
-      console.log(user,"response...........");
-      res
-        .status(200)
-        .json({ status: true, message: "updated successfully", user: user,data:data });
-    }).catch((error) => {
-        res.status(200)
-          .json({ status: false, message: "operation failed", error: error });
-     })
-  } catch (err) {
-    console.log(err);
-  }
+  let data = req.query
+
+  
    
+      const storage = multer.diskStorage({
+        destination: path.join(__dirname, "../../public/resumes"),
+        filename: (req, file, cb) => {
+          cb(null, Date.now() + "-"+".pdf");
+        },
+      });
+
+      const upload = multer({ storage: storage }).single("file");
+
+      upload(req, res, async (err) => {
+        if (!req.file) {
+          await User.updateOne(
+            { _id: data._id },
+
+            {
+              name: JSON.parse(data.details[0]).name,
+              headline: JSON.parse(data.details[0]).headline,
+              currentposition: JSON.parse(data.details[0]).currentposition,
+              industry: JSON.parse(data.details[0]).industry,
+              skills: data.skills,
+            }
+          ).then(async () => {
+            await User.find({
+              _id: data._id
+            }).then((user) => {
+                
+              res.json({
+                status: true,
+                message: "file uploaded",
+                user: user,
+              });
+            })
+              
+          });
+          
+        } else {
+
+          await User.updateOne(
+            data._id,
+            {
+               
+              name: JSON.parse(data.details[0]).name,
+              headline: JSON.parse(data.details[0]).headline,
+              currentposition: JSON.parse(data.details[0]).currentposition,
+              industry: JSON.parse(data.details[0]).industry,
+              skills: data.skills,
+              resume:req.file.filename
+          
+            },
+            
+          ).then(async () => {
+            await User.find({
+              _id: data._id,
+            }).then((user) => {
+              res.json({
+                status: true,
+                message: "file uploaded",
+                user: user,
+              });
+            });
+          });
+
+          
+        }
+
+
+      })
+
+
+  
+
   
 })
 
@@ -422,7 +468,6 @@ const getUser = asyncHandler(async (req, res) => {
    
   
 })
-
 
 
 
@@ -461,6 +506,304 @@ const basicInfo = asyncHandler(async (req, res) => {
 
 
 
+const experience = asyncHandler(async (req, res) => {
+ 
+  let expData = {
+    title: req.body.experience.title,
+    employmenttype: req.body.experience.employmenttype,
+    companyname: req.body.experience.companyname,
+    companylocation: req.body.experience.companylocation,
+    startdate: req.body.experience.startdate,
+    enddate: req.body.experience.enddate,
+    industry: req.body.experience.industry,
+    uId:Date.now(),
+  };
+  try {
+     console.log( "incoming.........................");
+    await User.findByIdAndUpdate(
+      req.body._id,
+      {
+        $push: { experience: expData },
+      },
+      {
+        new: true,
+      }
+    )
+      .then(async (data) => {
+        console.log(data);
+        const user = await User.findOne({ _id: req.body._id });
+        console.log(user, "response...........");
+        res.status(200).json({
+          status: true,
+          message: "updated successfully",
+          user: user,
+          data: data,
+        });
+      })
+      .catch((error) => {
+        res
+          .status(200)
+          .json({ status: false, message: "operation failed", error: error });
+      });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+
+
+const certifications = asyncHandler(async (req, res) => {
+ 
+  let certData = {
+    name: req.body.certification.name,
+    issuingorganization: req.body.certification.issuingorganization,
+    issuedate: req.body.certification.issuedate,
+    credentialid: req.body.certification.credentialid,
+    credentialurl: req.body.certification.credentialurl,
+    uId: Date.now(),
+  };
+  try {
+     console.log( "incoming.........................");
+    await User.findByIdAndUpdate(
+      req.body._id,
+      {
+        $push: { certifications: certData },
+      },
+      {
+        new: true,
+      }
+    )
+      .then(async (data) => {
+        console.log(data);
+        const user = await User.findOne({ _id: req.body._id });
+        console.log(user, "response...........");
+        res.status(200).json({
+          status: true,
+          message: "updated successfully",
+          user: user,
+          data: data,
+        });
+      })
+      .catch((error) => {
+        res
+          .status(200)
+          .json({ status: false, message: "operation failed", error: error });
+      });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+
+
+const education = asyncHandler(async (req, res) => {
+ 
+  let edData = {
+    school: req.body.education.school,
+    degree: req.body.education.degree,
+    fieldofstudy: req.body.education.fieldofstudy,
+    startdate: req.body.education.startdate,
+    enddate: req.body.education.enddate,
+    decription: req.body.education.description,
+    uId: Date.now(),
+  };
+  try {
+     console.log( "incoming.........................");
+    await User.findByIdAndUpdate(
+      req.body._id,
+      {
+        $push: { education: edData },
+      },
+      {
+        new: true,
+      }
+    )
+      .then(async (data) => {
+        console.log(data);
+        const user = await User.findOne({ _id: req.body._id });
+        console.log(user, "response...........");
+        res.status(200).json({
+          status: true,
+          message: "updated successfully",
+          user: user,
+          data: data,
+        });
+      })
+      .catch((error) => {
+        res
+          .status(200)
+          .json({ status: false, message: "operation failed", error: error });
+      });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+
+
+const deleteDetail = asyncHandler(async (req, res) => {
+ 
+  if (req.body.item === "experience") {
+     try {
+       console.log("incoming.........................");
+       await User.findByIdAndUpdate(
+         req.body._id,
+         { $pull: { experience: { uId: req.body.uId } } },
+         {
+           new: true,
+         }
+       )
+         .then(async (data) => {
+           console.log(data);
+           const user = await User.findOne({ _id: req.body._id });
+           // console.log(user, "response...........");
+           res.status(200).json({
+             status: true,
+             message: "updated successfully",
+             user: user,
+             data: data,
+           });
+         })
+         .catch((error) => {
+           res
+             .status(200)
+             .json({
+               status: false,
+               message: "operation failed",
+               error: error,
+             });
+         });
+     } catch (err) {
+       console.log(err);
+     }
+  }
+
+  if (req.body.item === "certificate") {
+    try {
+      console.log("incoming.........................");
+      await User.findByIdAndUpdate(
+        req.body._id,
+        { $pull: { certifications: { uId: req.body.uId } } },
+        {
+          new: true,
+        }
+      )
+        .then(async (data) => {
+          console.log(data);
+          const user = await User.findOne({ _id: req.body._id });
+          // console.log(user, "response...........");
+          res.status(200).json({
+            status: true,
+            message: "updated successfully",
+            user: user,
+            data: data,
+          });
+        })
+        .catch((error) => {
+          res.status(200).json({
+            status: false,
+            message: "operation failed",
+            error: error,
+          });
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+
+  if (req.body.item === "education") {
+    try {
+      console.log("incoming.........................");
+      await User.findByIdAndUpdate(
+        req.body._id,
+        { $pull: { education: { uId: req.body.uId } } },
+        {
+          new: true,
+        }
+      )
+        .then(async (data) => {
+          console.log(data);
+          const user = await User.findOne({ _id: req.body._id });
+          // console.log(user, "response...........");
+          res.status(200).json({
+            status: true,
+            message: "updated successfully",
+            user: user,
+            data: data,
+          });
+        })
+        .catch((error) => {
+          res.status(200).json({
+            status: false,
+            message: "operation failed",
+            error: error,
+          });
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+ 
+
+});
+
+
+const profile = asyncHandler(async (req, res) => {
+
+
+  const data = req.query;
+
+
+  if (data.type === "image") {
+    try {
+      const storage = multer.diskStorage({
+        destination: path.join(__dirname, "../../public/images"),
+        filename: (req, file, cb) => {
+          cb(null, Date.now() + "-" + ".png");
+        },
+      });
+
+      const upload = multer({ storage: storage }).single("file");
+
+      upload(req, res, async (err) => {
+        if (!req.file) {
+          console.log("no image");
+          res.json({ noImage: "select image" });
+        } else {
+
+          await User.findByIdAndUpdate(
+            data.userId,
+            {
+              $push: { profile: req.file.filename },
+            },
+            {
+              new: true,
+            }
+          ).then(async (data) => {
+            res
+              .status(200)
+              .json({ status: true, message: "file uploaded", user:data });
+          });
+
+          
+        }
+      });
+    } catch (error) {
+      res.status(500).json({ err, status: false, message: "operation failed" });
+      console.log(error);
+    }
+  }
+
+ 
+ 
+})
+
+
+
+ 
+
 
 module.exports = {
   registerUser,
@@ -473,5 +816,10 @@ module.exports = {
   Comment,
   profileCard,
   getUser,
-  basicInfo
+  basicInfo,
+  experience,
+  certifications,
+  education,
+  deleteDetail,
+  profile
 };

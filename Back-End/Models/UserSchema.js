@@ -10,7 +10,7 @@ const userSchema = mongoose.Schema({
   verification: { type: Boolean },
   otp: { type: Number },
   headline: { type: String },
-  currentPosition: { type: String },
+  currentposition: { type: String },
   industry: { type: String },
   experience: { type: Array },
   location: { type: String },
@@ -23,6 +23,8 @@ const userSchema = mongoose.Schema({
   location: { type: String },
   availability: { type: String },
   about: { type: String },
+  profile: { type: Array },
+  resume:{ type: String },
 });
 
 userSchema.methods.generateAuthToken = (payload)=>{

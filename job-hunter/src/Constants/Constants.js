@@ -19,7 +19,7 @@ export const userRequest =  axios.create({
 userRequest.interceptors.request.use(function (config) {
   // Do something before request is sent
   config.headers["token"] = `Bearer ${JSON.parse(localStorage.getItem("user"))?.token}`;
-  config.headers["Access-Control-Allow-Origin"] = "*"
+  config.headers["Access-Control-Allow-Origin"] =  "http://localhost:5000"
   config.headers[ 'Content-Type'] = 'application/json'
   return config;
 });

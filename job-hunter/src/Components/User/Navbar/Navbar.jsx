@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from "@mui/material/Box";
 import "./Navbar.css"
@@ -10,6 +10,7 @@ import { useNavigate,Link } from "react-router-dom";
 import { Avatar, Button, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
 import { logout } from "../../../features/Auth/AuthSlice";
 
+
 import {
   AiOutlineHome,
   AiOutlineMessage,
@@ -17,6 +18,8 @@ import {
   AiOutlineSnippets,
   AiOutlineForm
 } from "react-icons/ai";
+import { useEffect } from 'react';
+import { userRequest } from '../../../Constants/Constants';
 
 
 
@@ -66,7 +69,28 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 
+
 const Navbar = () => {
+
+  const [user,setUser]=useState({})
+ 
+  useEffect(() => {
+    let data = JSON.parse(localStorage.getItem("user"))?._id
+    if (data) {
+      userRequest({
+        method: "POST",
+        url: "/user/getuser",
+        data: {
+          _id: data,
+        },
+      }).then((data) => {
+        
+        setUser(data.data.data)
+      })
+    }
+    
+  },[])
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = JSON.parse(localStorage.getItem("user"))?.token;
@@ -261,20 +285,39 @@ const Navbar = () => {
                 </Box>
 
                 <Box>
-                  <Avatar
-                    onClick={(event) => handleOptionClick(event)}
-                    id="basic-button"
-                    aria-controls={open ? "basic-menu" : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? "true" : undefined}
-                    sx={{
-                      mt: 0.5,
-                      width: "40px",
-                      height: "40px",
-                    }}
-                    alt="Remy Sharp"
-                    src="https://www.boxymo.ie/news/img/ferrari.jpg"
-                  />
+                  {user.profile ? (
+                    <Avatar
+                      onClick={(event) => handleOptionClick(event)}
+                      id="basic-button"
+                      aria-controls={open ? "basic-menu" : undefined}
+                      aria-haspopup="true"
+                      aria-expanded={open ? "true" : undefined}
+                      sx={{
+                        mt: 0.5,
+                        width: "40px",
+                        height: "40px",
+                      }}
+                      alt="Remy Sharp"
+                      src={`http://localhost:5000/static/images/${
+                  user?.profile[user.profile.length - 1]
+                }`}
+                    />
+                  ) : (
+                    <Avatar
+                      onClick={(event) => handleOptionClick(event)}
+                      id="basic-button"
+                      aria-controls={open ? "basic-menu" : undefined}
+                      aria-haspopup="true"
+                      aria-expanded={open ? "true" : undefined}
+                      sx={{
+                        mt: 0.5,
+                        width: "40px",
+                        height: "40px",
+                      }}
+                      alt="Remy Sharp"
+                      src="https://www.boxymo.ie/news/img/ferrari.jpg"
+                    />
+                  )}
                 </Box>
 
                 <Menu

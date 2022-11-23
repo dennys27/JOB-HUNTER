@@ -6,19 +6,24 @@ const { User } = require("./UserSchema");
 
 const postSchema = mongoose.Schema({
   name: { type: String, required: true },
-  userId: { type: String, required: true },
+  userId: {
+    type: String,
+    required: true,
+    ref: User,
+  },
   description: { type: String },
   image: { type: String },
   video: { type: String },
   likes: [{ type: String }],
-  // comments:[{type:Object,required:true}],
+
   comments: [
     {
       userId: {
-        type: [String],
+        type: String,
+        required: true,
         ref: User,
       },
-      name:String,
+      name: String,
       comment: String,
       timeStamp: Date,
     },

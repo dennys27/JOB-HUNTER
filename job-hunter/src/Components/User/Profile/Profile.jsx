@@ -1,10 +1,42 @@
-import { Box, Container, Grid } from '@mui/material';
-import React from 'react'
+import { Box, Button, Container, Grid, Modal, TextField, Typography } from '@mui/material';
+import React, { useState } from 'react'
 import Navbar from "../Navbar/Navbar";
 import BasicInfo from './BasicInfo/BasicInfo';
 import Experience from './Experience/Experience';
 import LeftCard from './LeftCard/LeftCard';
+
+
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 700,
+  height: 500,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  border: "none",
+  outline: "none",
+  p: 4,
+  borderRadius: "5px",
+  overflow: "scroll",
+  scrollbarWidth: "none",
+};
+
+
+
 const Profile = () => {
+ 
+  const [user, setUser] = useState({});
+  const [open, setOpen] = useState(false);
+  
+
+  const handleOpen = () => { setOpen(true) }
+  const handleClose = () => setOpen(false);
+
+
+
   return (
     <>
       <div style={{ backgroundColor: "#D9D9D9", paddingBottom: "100px" }}>
@@ -30,6 +62,7 @@ const Profile = () => {
           </Box>
         </Container>
       </div>
+
     </>
   );
 }

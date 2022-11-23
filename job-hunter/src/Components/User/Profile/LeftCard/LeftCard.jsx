@@ -1,4 +1,5 @@
-import { Box, TextField, Typography, useRadioGroup } from '@mui/material';
+import { Box, Collapse, TextField, Typography, useRadioGroup } from '@mui/material';
+import { ToastContainer, toast } from "react-toastify";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
@@ -8,7 +9,7 @@ import "./LeftCard.css"
 import { useState } from 'react';
 import { TiDelete } from "react-icons/ti";
 import { userRequest } from '../../../../Constants/Constants';
-
+import axios from 'axios'
 
 
 const style = {
@@ -27,13 +28,35 @@ const style = {
   overflow: "scroll",
    scrollbarWidth: "none"
 };
+const styles = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  maxWidth: 700,
+  minWidth: 500,
+  maxHeight:500,
+  minHeight:150,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  border: "none",
+  outline:"none",
+  p: 4,
+  borderRadius: "5px",
+  overflow: "scroll",
+  scrollbarWidth: "none"
+};
 
 
 
 const LeftCard = () => {
 
   const [user, setUser] = useState({})
-  
+  const [image, setImage] = useState();
+  const [resume, setResume] = useState("");
+  const handleOpenTwo = () => setOpenTwo(true);
+  const handleCloseTwo = () => setOpenTwo(false);
+  const [expanded, setExpanded] = useState(false);
 
   useState(() => {
     let _id = JSON.parse(localStorage.getItem("user"))?._id 
@@ -44,31 +67,48 @@ const LeftCard = () => {
         _id: _id,
       },
     }).then((data) => {
-      console.log(data.data.data, 'gggggggggggggg');
+      console.log(data.data.data,);
       setUser(data.data.data)
       setProfile({ ...data.data.data })
       setSkills([...data.data.data.skills])
     })
    
     
-  },[])
+  }, [])
+  
+
+
+  
+ const notify = () =>
+   toast("sucess!", {
+     position: "top-right",
+     autoClose: 1000,
+     hideProgressBar: false,
+     closeOnClick: true,
+     pauseOnHover: true,
+     draggable: true,
+     progress: undefined,
+     theme: "light",
+   });
 
 
   let details = {
     name: "",
     headline: "",
-    currentposition: "",
+    currentPosition: "",
     industry:""
   }
+
 
    const [open, setOpen] = React.useState(false);
    const [profile,setProfile] = useState(details)
    const handleOpen = () => setOpen(true);
    const handleClose = () => setOpen(false);
    const [skills,setSkills] = useState([])
-  const [kill, setKill] = useState("")
+   const [kill, setKill] = useState("")
+  const [openTwo, setOpenTwo] = useState(false);
   
-  const detailChange = (e) => {
+   const detailChange = (e) => {
      setProfile({ ...profile, [e.target.name]: e.target.value });
    };
   
@@ -90,20 +130,93 @@ const LeftCard = () => {
   }
 
   const submit = () => {
-    let userId = JSON.parse( localStorage.getItem("user"))?._id
-    userRequest({
-      method: "POST",
-      url: "/user/profilecard",
-      data: {
-        _id:userId,
-        details: profile,
-        skills:skills
-      },
-    }).then((data) => {
-      console.log(data.data.user, "hhhhhhhhhhhhhhhhhhhhhhh");
-      setUser(data.data.user)
-     
-    })
+    let userId = JSON.parse(localStorage.getItem("user"))?._id
+    const { _id, name } = JSON.parse(localStorage?.getItem("user"));
+    const data = new FormData();
+    data.append("file", resume);
+    console.log(data, "checkinggggg");
+    JSON.stringify(profile)
+    axios
+      .post("http://localhost:5000/user/profilecard", data, {
+        params: {
+          _id: userId,
+          details: [profile],
+          skills: skills,
+        },
+        headers: {
+          token: `Bearer ${TOKEN}`,
+          "Access-Control-Allow-Origin": "http://localhost:5000",
+          "Content-Type": "json/form-data",
+        },
+      })
+      .then((data) => {
+        console.log(data.data.user[0],"after update");
+        if (data.data.status) {
+          setUser(data.data.user[0]); 
+          setOpen(false);
+          notify()
+        }
+      });
+  }
+
+  //  data: {
+  //       _id:userId,
+  //       details: profile,
+  //       skills: skills,
+  //       resume
+  //     },
+
+
+
+  const handleFileChange = (e) => {
+      setExpanded(true);
+      setImage(e.target.files[0]);
+  };
+
+  const handlePdfChange = (e) => {
+      
+      setResume(e.target.files[0]);
+  };
+
+
+  const TOKEN = JSON.parse(localStorage?.getItem("user"))?.token;
+
+  
+  const handleProfile = (e) => {
+        const { _id, name } = JSON.parse(localStorage?.getItem("user"));
+        const data = new FormData();
+        data.append("file", image);
+
+        if (!_id || !name) {
+          // setPostError("please fillout the description");
+          // setTimeout(() => {
+          //   setPostError("");
+          // }, 3000);
+        } else {
+          axios
+            .post("http://localhost:5000/user/profilepicture", data, {
+              params: {
+                name: name,
+                userId: _id,
+                type:"image",
+                date: new Date().toDateString(),
+                timeStamp: new Date(),
+               
+              },
+              headers: {
+                token: `Bearer ${TOKEN}`,
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type": "multipart/form-data",
+              },
+            })
+            .then((data) => {
+              if (data.status === 200) {
+                setUser(data.data.user);
+                setOpenTwo(false);
+                
+              }
+            });
+        }
   }
 
 
@@ -113,18 +226,31 @@ const LeftCard = () => {
       <div style={{ backgroundColor: "white" }} className="cardOne">
         <div className="content_wrapper">
           <div className="profile_pic">
-            <img
-              className="avatarOne"
-              src="https://t4.ftcdn.net/jpg/03/83/51/07/360_F_383510773_TMTTEn3zQ6ylTW82Sy7Jjs0Fvq34uLVE.jpg"
-              alt="profile"
-            />
+            {user?.profile ? (
+              <img
+                onClick={() => handleOpenTwo()}
+                className="avatarOne"
+                src={`http://localhost:5000/static/images/${
+                  user?.profile[user?.profile.length - 1]
+                }`}
+                alt="profile"
+              />
+            ) : (
+              <img
+                onClick={() => handleOpenTwo()}
+                className="avatarOne"
+                src="https://static.thenounproject.com/png/3911675-200.png"
+                alt="profile"
+              />
+            )}
+
             <Typography
               fontSize={13}
               component="h6"
               variant="h6"
               sx={{ fontSize: 17 }}
             >
-              {user.name}
+              {user?.name}
             </Typography>
             <Typography
               fontSize={13}
@@ -132,7 +258,7 @@ const LeftCard = () => {
               variant="h6"
               className="designationOne"
             >
-              {user.headline}
+              {user?.headline}
             </Typography>
           </div>
           <div className="impressionsOne">
@@ -152,8 +278,15 @@ const LeftCard = () => {
               skills
             </Typography>
 
-            <div className="flex_skills" style={{maxHeight:"75px",overflow:"scroll" , scrollbarWidth:"none"}}>
-              {user.skills?.map((data) => (
+            <div
+              className="flex_skills"
+              style={{
+                maxHeight: "75px",
+                overflow: "scroll",
+                scrollbarWidth: "none",
+              }}
+            >
+              {user?.skills?.map((data) => (
                 <Typography
                   fontSize={13}
                   component="h6"
@@ -163,10 +296,6 @@ const LeftCard = () => {
                   {data}
                 </Typography>
               ))}
-
-            
-              
-             
             </div>
 
             <Typography
@@ -207,7 +336,7 @@ const LeftCard = () => {
                 variant="outlined"
                 sx={{ width: "100%" }}
                 name="name"
-                value={profile.name}
+                value={profile?.name}
               />
             </div>
             <div style={{ marginTop: "10px" }}>
@@ -221,7 +350,7 @@ const LeftCard = () => {
                 variant="outlined"
                 sx={{ width: "100%" }}
                 name="headline"
-                value={profile.headline}
+                value={profile?.headline}
               />
             </div>
             <div style={{ marginTop: "10px" }}>
@@ -235,7 +364,7 @@ const LeftCard = () => {
                 variant="outlined"
                 name="currentposition"
                 sx={{ width: "100%" }}
-                value={profile.currentposition}
+                value={profile?.currentPosition}
               />
             </div>
             <div style={{ marginTop: "10px" }}>
@@ -249,9 +378,35 @@ const LeftCard = () => {
                 variant="outlined"
                 sx={{ width: "100%" }}
                 name="industry"
-                value={profile.industry}
+                value={profile?.industry}
               />
             </div>
+            <div style={{ marginTop: "10px" }}>
+              <label>
+                <Typography>Resume</Typography>
+              </label>
+              <Button variant="contained" component="label">
+                Upload
+                <input
+                  name="resume"
+                  onChange={(e) => handlePdfChange(e)}
+                  hidden  
+                  type="file"
+                  
+                />
+              </Button>
+
+              {/* <TextField
+                onChange={(e) => detailChange(e)}
+                id="outlined-basic"
+                label="Outlined"
+                variant="outlined"
+                sx={{ width: "100%" }}
+                name="industry"
+                value={profile.industry}
+              /> */}
+            </div>
+
             <div style={{ marginTop: "10px" }}>
               <label>
                 <Typography>Skills</Typography>
@@ -317,6 +472,80 @@ const LeftCard = () => {
                 onClick={(e) => submit(e)}
               >
                 Save
+              </Button>
+            </div>
+          </Box>
+        </Box>
+      </Modal>
+
+      <Modal
+        open={openTwo}
+        onClose={handleCloseTwo}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={styles}>
+          <Typography component="h4" variant="h6">
+            Edit profile
+          </Typography>
+          <Box sx={{ paddingTop: "10px" }}>
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+              <div
+                style={{
+                  width: "100%",
+                  height: "300px",
+                  border: 0,
+                  outline: 0,
+                }}
+              >
+                {image ? (
+                  <img
+                    style={{
+                      width: "100%",
+                      height: "300px",
+                      border: 0,
+                      outline: 0,
+                      borderRadius: 2,
+                    }}
+                    src={URL.createObjectURL(image)}
+                  />
+                ) : (
+                  ""
+                )}
+              </div>
+            </Collapse>
+
+            <div style={{ marginTop: "10px" }}>
+              <IconButton
+                color="primary"
+                aria-label="upload picture"
+                component="label"
+              >
+                <input
+                  onChange={(e) => handleFileChange(e)}
+                  hidden
+                  accept="image/*"
+                  type="file"
+                />
+                <PhotoCamera />
+                <Typography sx={{ color: "gray" }}>choose</Typography>
+              </IconButton>
+            </div>
+
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "end",
+                marginTop: "10px",
+              }}
+            >
+              <Button
+                onClick={() => handleProfile()}
+                sx={{ width: "100px", height: "50px" }}
+                variant="contained"
+              >
+                upload
               </Button>
             </div>
           </Box>

@@ -33,10 +33,7 @@ const ExpandMore = styled((props) => {
 export default function RecipeReviewCard({ post, setLiked }) {
   let duplicate_comment = [...post.comments];
   duplicate_comment.reverse();
-  
 
-  console.log(duplicate_comment,"jjjjjjjjjjjjjjjjjj");
-   
 
   const user = JSON.parse(localStorage.getItem("user"))?._id
   const name = JSON.parse(localStorage.getItem("user"))?.name
@@ -84,20 +81,44 @@ export default function RecipeReviewCard({ post, setLiked }) {
         bgcolor: "#ffffff",
       }}
     >
-      <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title={post.name}
-        subheader={post.date}
-      />
+      {post?.userId?.profile ? (
+        <CardHeader
+          avatar={
+            <Avatar
+              src={`http://localhost:5000/static/images/${
+                post.userId.profile[post.userId.profile.length - 1]
+              }`}
+              sx={{ bgcolor: red[500] }}
+              aria-label="recipe"
+            />
+          }
+          action={
+            <IconButton aria-label="settings">
+              <MoreVertIcon />
+            </IconButton>
+          }
+          title={post.name}
+          subheader={post.date}
+        />
+      ) : (
+        <CardHeader
+          avatar={
+            <Avatar
+              src="https://www.boxymo.ie/news/img/ferrari.jpg"
+              sx={{ bgcolor: red[500] }}
+              aria-label="recipe"
+            />
+          }
+          action={
+            <IconButton aria-label="settings">
+              <MoreVertIcon />
+            </IconButton>
+          }
+          title={post.name}
+          subheader={post.date}
+        />
+      )}
+
       <CardContent>
         <Typography variant="body2" color="text.secondary">
           {post.description}
@@ -130,7 +151,13 @@ export default function RecipeReviewCard({ post, setLiked }) {
         setLiked={setLiked}
         post={post}
       />
-      <Collapse className="comment_collapse" in={expandedComment} sx={{maxHeight:"370px" ,overflow:"scroll"}} timeout="auto" unmountOnExit>
+      <Collapse
+        className="comment_collapse"
+        in={expandedComment}
+        sx={{ maxHeight: "370px", overflow: "scroll" }}
+        timeout="auto"
+        unmountOnExit
+      >
         <div style={{ padding: 14 }} className="App">
           <Box
             sx={{
@@ -158,10 +185,19 @@ export default function RecipeReviewCard({ post, setLiked }) {
             <Box style={{ padding: "10px 10px" }}>
               <Grid container wrap="nowrap" spacing={2}>
                 <Grid item>
-                  <Avatar
-                    alt="Remy Sharp"
-                    src="https://i.pinimg.com/originals/49/e3/a4/49e3a4562c511f9efb29b1d72f435d8a.jpg"
-                  />
+                  {comment.userId.profile ? (
+                    <Avatar
+                      alt="Remy Sharp"
+                      src={`http://localhost:5000/static/images/${
+                        comment.userId.profile[comment.userId.profile.length - 1]
+                      }`}
+                    />
+                  ) : (
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="https://static.thenounproject.com/png/3911675-200.png"
+                    />
+                  )}
                 </Grid>
                 <Grid justifyContent="left" item xs zeroMinWidth>
                   <h4 style={{ margin: 0, textAlign: "left" }}>

@@ -11,6 +11,11 @@ const {
   profileCard,
   getUser,
   basicInfo,
+  experience,
+  certifications,
+  education,
+ deleteDetail,
+ profile
 } = require("../Controllers/User/userControllers");
 const { verifyToken } = require('./Middlewares/JwtVerification');
 var router = express.Router();
@@ -30,6 +35,11 @@ router.post('/comment',verifyToken, Comment);
 router.post("/profilecard", verifyToken, profileCard);
 router.post("/getuser", verifyToken, getUser);
 router.post("/basicinfo", verifyToken, basicInfo);
+router.post("/experience", verifyToken,experience );
+router.post("/certifications", verifyToken,certifications);
+router.post("/education", verifyToken,education);
+router.post("/deletedetail", verifyToken, deleteDetail);
+router.post("/profilepicture", verifyToken, profile);
 
 
 module.exports = router;

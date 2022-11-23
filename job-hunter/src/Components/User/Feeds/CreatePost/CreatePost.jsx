@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import SendIcon from "@mui/icons-material/Send";
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './CreatePost.css'
 import { userRequest,userReq } from '../../../../Constants/Constants';
 import axios from 'axios'
@@ -102,18 +102,46 @@ const CreatePost = ({ setRefresh }) => {
   
   };
 
+
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    let data = JSON.parse(localStorage.getItem("user"))?._id;
+    if (data) {
+      userRequest({
+        method: "POST",
+        url: "/user/getuser",
+        data: {
+          _id: data,
+        },
+      }).then((data) => {
+        setUser(data.data.data);
+      });
+    }
+  }, []);
+
   return (
     <>
       <ToastContainer />
       <Box className="Create_Post_Wrapper">
         <div className="content_wrapper2">
           <Box display={{ xs: "none", sm: "none", md: "none", lg: "flex" }}>
-            <img
-              display
-              className="avatar2"
-              src="https://as1.ftcdn.net/v2/jpg/04/37/05/00/1000_F_437050078_pvwb7AcQQZuAvMlQNpTEN6O3iLc1Dxmt.jpg"
-              alt="profile"
-            />
+            {user.profile ? (
+              <img
+                display
+                className="avatar2"
+                src={`http://localhost:5000/static/images/${
+                  user?.profile[user.profile.length - 1]
+                }`}
+                alt="profile"
+              />
+            ) : (
+              <img
+                display
+                className="avatar2"
+                src="https://as1.ftcdn.net/v2/jpg/04/37/05/00/1000_F_437050078_pvwb7AcQQZuAvMlQNpTEN6O3iLc1Dxmt.jpg"
+                alt="profile"
+              />
+            )}
           </Box>
 
           <input
@@ -139,10 +167,12 @@ const CreatePost = ({ setRefresh }) => {
             <input
               onChange={(e) => handleDesc(e)}
               value={description}
-              placeholder={postError ===""? 'whats on your mind...':postError}
+              placeholder={
+                postError === "" ? "whats on your mind..." : postError
+              }
               className="post_description"
             />
-            
+
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <div
                 style={{
