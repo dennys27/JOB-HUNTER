@@ -1,13 +1,31 @@
 import { Box, Container, Grid } from '@mui/material';
-import React from 'react'
-import CreatePost from '../Feeds/CreatePost/CreatePost';
-import RecipeReviewCard from '../Feeds/Post/Post';
+import React, { useEffect } from 'react'
 import JobMenu from './JobMenu/JobMenu';
-import RightCard from '../Feeds/RightCard/RightCard';
 import Navbar from "../Navbar/Navbar";
 import Jobtopbar from './Jobtopbar/Jobtopbar';
 import Job from './Job/Job';
+import { userRequest } from '../../../Constants/Constants';
+import { useState } from 'react';
+
+
 const Jobs = () => {
+
+  const [jobs, setJobs] = useState({})
+  
+  useEffect(() => {
+
+    userRequest({
+      method: "GET",
+      url: "/user/jobs",
+    }).then((data) => {
+      setJobs(data)
+      console.log(data)
+    })
+   
+ },[])
+
+
+
   return (
     <>
       <Navbar />

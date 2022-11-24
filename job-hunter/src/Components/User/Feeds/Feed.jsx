@@ -31,6 +31,11 @@ const [liked, setLiked] = useState("");
 
   useEffect(() => {
     getFeed();
+
+  const socket = io("http://localhost:5000");
+   socket.on("like", (msg) => {
+      console.log(msg,"tryinggggggg")
+    })
   }, [refresh,liked]);
  
 let getFeed = async () => {
@@ -39,9 +44,7 @@ let getFeed = async () => {
     url: "/user/feed",
   })
   setPosts(response.data.data)
-  console.log(response.data.data);
-
- 
+  
   };
   
 
