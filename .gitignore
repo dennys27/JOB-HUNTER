@@ -8,7 +8,7 @@
 /public/images
 # testing
 /coverage
-
+.gitignore
 # production
 /build
 

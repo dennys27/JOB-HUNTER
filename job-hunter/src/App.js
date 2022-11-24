@@ -10,6 +10,7 @@ import AdminHome from './Components/Admin/AdminHome/AdminHome';
 import AdminRoutes, { AdminRoutesTwo } from './AdminRoutes';
 import Jobs from './Components/User/Jobs/Jobs';
 import Profile from './Components/User/Profile/Profile';
+import Jobpost from './Components/User/Jobpost/Jobpost';
 
 
 
@@ -23,6 +24,7 @@ function App() {
           <Route element={<Feed />} path="/Home" />
           <Route element={<Jobs />} path="/Jobs" />
           <Route element={<Profile />} path="/profile" />
+          <Route element={<Jobpost />} path="/jobpost" />
         </Route>
 
         <Route element={<UserRoutesTwo />}>
