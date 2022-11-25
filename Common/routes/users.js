@@ -17,7 +17,8 @@ const {
  deleteDetail,
  profile,
  getJobs,
- postJobs
+ postJobs,
+ apply
 } = require("../Controllers/User/userControllers");
 const { verifyToken } = require('./Middlewares/JwtVerification');
 var router = express.Router();
@@ -45,10 +46,8 @@ router.post("/profilepicture", verifyToken, profile);
 
 //------job-service-------//
 router.get("/jobs", verifyToken, getJobs);
-router.post("/job", verifyToken, postJobs);
-// router.get("/jobs", verifyToken, getJobs);
-// router.get("/jobs", verifyToken, getJobs);
-
+router.post("/jobpost", verifyToken, postJobs);
+router.post("/apply", verifyToken, apply);
 
 //------------------//
 

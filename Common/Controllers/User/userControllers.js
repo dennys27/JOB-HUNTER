@@ -8,10 +8,13 @@ const asyncHandler = require("express-async-handler");
 const { User } = require("../../Models/UserSchema");
 const { Post } = require("../../Models/Post");
 const axios = require("axios");
+const httpProxy = require("express-http-proxy");
+
 
 //job-service-url-//
 const uri = "http://localhost:5001"
 
+// const jobpostServiceProxy = httpProxy("http://localhost:5001/"); 
 //@description: Register new user
 // @route : POST /api/users
 // @access : public
@@ -807,12 +810,13 @@ const profile = asyncHandler(async (req, res) => {
 // --------jobservice-------//
 
 const getJobs = asyncHandler(async (req, res) => {
- console.log("im hereeeeeeeeeeee");
+ console.log("im working you know..................");
   
   axios
     .get(`${uri}/jobs/jobs`)
     .then(function (response) {
-      console.log(response.data.message);
+      console.log(response.data);
+      res.status(200).json(response.data) 
     })
     .catch(function (error) {
       // handle error
@@ -824,26 +828,86 @@ const getJobs = asyncHandler(async (req, res) => {
 
  
 })
+
+
 
 const postJobs = asyncHandler(async (req, res) => {
- console.log("im post jobs");
-  
-  axios
-    .post(`${uri}/jobs/job`,req.body)
-    .then(function (response) {
-      console.log(response.data.message);
-    })
-    .catch(function (error) {
-      // handle error
-      console.log(error);
-    })
-    .finally(function () {
-      // always executed
-    });
+ 
+    try {
+      const storage = multer.diskStorage({
+        destination: path.join(__dirname, "../../public/images"),
+        filename: (req, file, cb) => {
+          cb(null, Date.now() + "-" + ".png");
+        },
+      });
 
+      const upload = multer({ storage: storage }).single("file");
+
+      upload(req, res, async (err) => {
+        if (!req.file) {
+          console.log("no image");
+          res.json({ noImage: "select image" });
+          
+        } 
+
+          try {
+            axios
+              .post(
+                `${uri}/jobs/job`,
+                { key: req.query, image: req.file.filename },
+                
+              )
+              .then(function (response) {
+                console.log(response, "yes........", Math.random());
+              })
+              .catch(function (error) {
+                // handle error
+                console.log(error);
+              });
+          } catch (err) {
+            console.log(err);
+          }
+
+      });
+
+
+    } catch (error) {
+      res.status(500).json({ err, status: false, message: "operation failed" });
+      console.log(error);
+    }
  
 })
 
+
+const apply = asyncHandler(async (req, res) => {
+
+  console.log(req.body);
+  await User.findById({ _id: req.body.user._id }).then((data) => {
+    console.log(data);
+
+     try {
+       axios
+         .post(`${uri}/jobs/apply`, {
+           user: data,
+           jobId: req.body.jobId,
+         })
+         .then(function (response) {
+           console.log(response, "yes........", Math.random());
+         })
+         .catch(function (error) {
+           // handle error
+           console.log(error);
+         });
+     } catch (err) {
+       console.log(err);
+    }
+    
+
+  })
+
+    
+  
+})
 
 
  
@@ -868,4 +932,5 @@ module.exports = {
   profile,
   getJobs,
   postJobs,
+  apply
 };

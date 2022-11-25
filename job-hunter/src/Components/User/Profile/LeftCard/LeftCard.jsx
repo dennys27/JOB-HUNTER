@@ -9,7 +9,7 @@ import "./LeftCard.css"
 import { useState } from 'react';
 import { TiDelete } from "react-icons/ti";
 import { userRequest } from '../../../../Constants/Constants';
-import axios from 'axios'
+import axios from 'axios' 
 
 
 const style = {
@@ -137,7 +137,7 @@ const LeftCard = () => {
     console.log(data, "checkinggggg");
     JSON.stringify(profile)
     axios
-      .post("http://localhost:5000/user/profilecard", data, {
+      .get("http://localhost:5000/user/profilecard", {
         params: {
           _id: userId,
           details: [profile],
@@ -158,13 +158,6 @@ const LeftCard = () => {
         }
       });
   }
-
-  //  data: {
-  //       _id:userId,
-  //       details: profile,
-  //       skills: skills,
-  //       resume
-  //     },
 
 
 

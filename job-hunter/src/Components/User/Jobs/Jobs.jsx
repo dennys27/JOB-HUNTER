@@ -10,16 +10,18 @@ import { useState } from 'react';
 
 const Jobs = () => {
 
-  const [jobs, setJobs] = useState({})
+  const [jobs, setJobs] = useState([])
   
   useEffect(() => {
 
     userRequest({
+
       method: "GET",
       url: "/user/jobs",
+
     }).then((data) => {
-      setJobs(data)
-      console.log(data)
+       setJobs(data.data)
+      console.log(data.data,"DATA IS HERE")
     })
    
  },[])
@@ -68,9 +70,9 @@ const Jobs = () => {
                     spacing={{ xs: 2, sm: 2, md: 3 }}
                     columns={{ xs: 4, sm: 8, md: 12 }}
                   >
-                    {Array.from(Array(6)).map((_, index) => (
+                    {jobs.map((job,index) => (
                       <Grid item xs={2} sm={4} md={4} key={index}>
-                        <Job />
+                        <Job job= {job} />
                       </Grid>
                     ))}
                   </Grid>

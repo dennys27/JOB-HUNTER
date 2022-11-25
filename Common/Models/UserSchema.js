@@ -24,7 +24,7 @@ const userSchema = mongoose.Schema({
   availability: { type: String },
   about: { type: String },
   profile: { type: Array },
-  resume:{ type: String },
+  resume: { type: String },
 });
 
 userSchema.methods.generateAuthToken = (payload)=>{

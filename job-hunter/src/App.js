@@ -11,6 +11,7 @@ import AdminRoutes, { AdminRoutesTwo } from './AdminRoutes';
 import Jobs from './Components/User/Jobs/Jobs';
 import Profile from './Components/User/Profile/Profile';
 import Jobpost from './Components/User/Jobpost/Jobpost';
+import JobView from './Components/User/Jobs/Jobview/JobView';
 
 
 
@@ -25,6 +26,7 @@ function App() {
           <Route element={<Jobs />} path="/Jobs" />
           <Route element={<Profile />} path="/profile" />
           <Route element={<Jobpost />} path="/jobpost" />
+          <Route element={<JobView />} path="/jobview" />
         </Route>
 
         <Route element={<UserRoutesTwo />}>

@@ -101,6 +101,13 @@ const Navbar = () => {
   const handleOptionClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  const handlePostjob = (event) => {
+    if (user.verification === true) {
+      navigate("/Jobpost")
+    }else{
+      console.log("lets get you verified")
+    }
+  };
 
 
   const handleClose = () => {
@@ -264,6 +271,7 @@ const Navbar = () => {
                 </Box>
 
                 <Box
+                  onClick={() => handlePostjob()}
                   display={"flex"}
                   flexDirection={"column"}
                   justifyContent={"center"}
@@ -299,8 +307,8 @@ const Navbar = () => {
                       }}
                       alt="Remy Sharp"
                       src={`http://localhost:5000/static/images/${
-                  user?.profile[user.profile.length - 1]
-                }`}
+                        user?.profile[user.profile.length - 1]
+                      }`}
                     />
                   ) : (
                     <Avatar

@@ -1,9 +1,18 @@
 import { Box, Typography } from '@mui/material'
 import "./Job.css"
-
 import React from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-const Job = () => {
+
+const Job = ({ job }) => {
+  
+  const navigate= useNavigate()
+  
+  const viewJob = (job) => {
+    console.log("yyupdssd")
+    navigate("/jobview", { state: { job: job } })
+  }
+
   return (
     <>
       <div
@@ -18,13 +27,15 @@ const Job = () => {
       >
         <div style={{ display: "flex", alignItems: "center" }}>
           <img
-            src="https://cdn.pixabay.com/photo/2017/03/24/07/28/facebook-2170419__340.png"
+            src={`http://localhost:5000/static/images/${
+              job.companylogo
+            }`}
             alt=""
-            style={{ width: "50px", height: "50px",borderRadius:"5px" }}
+            style={{ width: "50px", height: "50px", borderRadius: "5px" }}
           />
           <div style={{ padding: "5px", color: "#01A9C1" }}>
-            <h4>UI/UX Designer</h4>
-            <Typography style={{ color: "gray" }}>Facebook</Typography>
+            <h4>{job.designation}</h4>
+            <Typography onClick ={(e)=>viewJob(job)} style={{ color: "gray" }}>{job.companyname}</Typography>
           </div>
         </div>
         <div style={{ paddingTop: "10px", textAlign: "left" }}>
@@ -32,8 +43,9 @@ const Job = () => {
             className="job_desc"
             style={{ overflow: "scroll", maxHeight: "95px" }}
           >
-            UI/UX Designer responsibilities include gathering user requirements,
-            designing graphic elements and building navigation components.
+            {
+              job.jobdescription
+            }
           </Typography>
           <div style={{ display: "flex", marginTop: 20 }}>
             <div
