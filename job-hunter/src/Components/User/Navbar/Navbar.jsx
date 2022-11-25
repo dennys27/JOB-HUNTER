@@ -7,8 +7,14 @@ import SearchIcon from "@mui/icons-material/Search";
 import { styled, alpha } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { useNavigate,Link } from "react-router-dom";
-import { Avatar, Button, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
+import { Avatar, Button, Collapse, Container, Menu, MenuItem, TextField, Toolbar, Typography } from "@mui/material";
 import { logout } from "../../../features/Auth/AuthSlice";
+import Modal from "@mui/material/Modal";
+import auth from './firebase';
+import { authentication } from './firebase';
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+
+
 
 
 import {
@@ -20,6 +26,7 @@ import {
 } from "react-icons/ai";
 import { useEffect } from 'react';
 import { userRequest } from '../../../Constants/Constants';
+
 
 
 
@@ -68,11 +75,89 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 500,
+  height:200,
+  bgcolor: "background.paper",
+  border: "none",
+  outline:"none",
+  boxShadow: 24,
+  p: 4,
+  borderRadius:"5px"
+};
+
+
 
 
 const Navbar = () => {
 
-  const [user,setUser]=useState({})
+  const [user, setUser] = useState({})
+  const [phone, setPhone] = useState("")
+  const [expanded, setExpanded] = useState(true)
+  const [expandedTwo, setExpandedTwo] = useState(false)
+  const [otp, setOtp] = useState("")
+  const handlePhone = (e) => { 
+    setPhone(e.target.value)
+  }
+  const handleOtp = (e) => {
+    setOtp(e.target.value)
+  }
+ 
+
+
+  const generateRecaptcha = () => {
+    
+    if (!window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(
+        "sign-in-button",
+        {
+          size: "invisible",
+          callback: (response) => { },
+        },
+        authentication
+      );
+    }
+    
+  }
+
+  const handleVerify = () => {
+    generateRecaptcha()
+    let appVerifier = window.recaptchaVerifier
+    signInWithPhoneNumber(authentication, `+91${phone}`, appVerifier)
+      .then((confirmationResult) => {
+        setExpanded(!expanded)
+        setExpandedTwo(!expandedTwo)
+        window.confirmationResult = confirmationResult;
+       
+      })
+      .catch((error) => {
+        // Error; SMS not sent
+        // ...
+        console.log(error)
+      });
+  }
+
+   const verifyOtp = (e) => {
+     setOtp(e.target.value);
+     if (otp.length === 6) {
+       let confirmationResult = window.confirmationResult;
+       confirmationResult
+         .confirm(otp)
+         .then((result) => {
+           // User signed in successfully.
+           const user = result.user;
+           console.log("successssss");
+         })
+         .catch((error) => {
+           // User couldn't sign in (bad verification code?)
+           // ...
+         });
+     }
+   };
  
   useEffect(() => {
     let data = JSON.parse(localStorage.getItem("user"))?._id
@@ -105,7 +190,7 @@ const Navbar = () => {
     if (user.verification === true) {
       navigate("/Jobpost")
     }else{
-      console.log("lets get you verified")
+    handleOpenm()
     }
   };
 
@@ -126,6 +211,12 @@ const Navbar = () => {
 
   let url = window.location.href.endsWith("/");
 
+
+
+   const [openm, setOpenm] = React.useState(false);
+   const handleOpenm = () => setOpenm(true);
+   const handleClosem = () => setOpenm(false);
+
   return (
     <>
       <AppBar
@@ -140,6 +231,7 @@ const Navbar = () => {
             sx={{ display: "flex", justifyContent: "space-around" }}
             disableGutters
           >
+            <Box id="sign-in-button"></Box>
             <Box sx={{ display: "flex", flexDirection: "flex-start" }}>
               <Typography
                 variant="h6"
@@ -513,6 +605,68 @@ const Navbar = () => {
           </Toolbar>
         </Box>
       </AppBar>
+
+      <Modal
+        open={openm}
+        onClose={handleClosem}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Collapse in={expanded}>
+            <Container>
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                Lets get your account verified!
+              </Typography>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                Please enter your mobile number.
+              </Typography>
+              <TextField
+                name="mobile"
+                id="outlined-basic"
+                label="Phone number"
+                variant="outlined"
+                sx={{ width: "100%" }}
+                value={phone}
+                onChange={(e) => handlePhone(e)}
+              />
+
+              <Button
+                onClick={() => handleVerify()}
+                sx={{ width: "70px", height: "40px", marginTop: "10px" }}
+                variant="contained"
+              >
+                verify
+              </Button>
+            </Container>
+          </Collapse>
+
+          <Collapse in={expandedTwo}>
+            <Container>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                Please enter the otp.
+              </Typography>
+              <TextField
+                name="mobile"
+                id="outlined-basic"
+                label="Phone number"
+                variant="outlined"
+                sx={{ width: "100%" }}
+                value={otp}
+                onChange={(e) => handleOtp(e)}
+              />
+
+              <Button
+                onClick={() => handleVerify()}
+                sx={{ width: "70px", height: "40px", marginTop: "10px" }}
+                variant="contained"
+              >
+                verify
+              </Button>
+            </Container>
+          </Collapse>
+        </Box>
+      </Modal>
     </>
   );
 }
