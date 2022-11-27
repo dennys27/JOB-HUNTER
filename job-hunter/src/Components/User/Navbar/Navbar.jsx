@@ -147,10 +147,15 @@ const Navbar = () => {
        let confirmationResult = window.confirmationResult;
        confirmationResult
          .confirm(otp)
-         .then((result) => {
+         .then(async(result) => {
            // User signed in successfully.
            const user = result.user;
-           console.log("successssss");
+           if (user) {
+             setPhone("")
+             setOpenm(false)
+             navigate("/jobpost")
+             
+          }
          })
          .catch((error) => {
            // User couldn't sign in (bad verification code?)
@@ -305,6 +310,7 @@ const Navbar = () => {
                   mr={2}
                   mt={0.5}
                   className="hover"
+                  onClick={() => handleNavigate("chat")}
                 >
                   <AiOutlineMessage size={23} />
                   <Typography

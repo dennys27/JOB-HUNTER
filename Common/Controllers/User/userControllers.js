@@ -1,3 +1,5 @@
+
+
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 require('dotenv').config()
@@ -7,8 +9,12 @@ const path = require("path");
 const asyncHandler = require("express-async-handler");
 const { User } = require("../../Models/UserSchema");
 const { Post } = require("../../Models/Post");
+const { Chat } = require("../../Models/Chat");
+const MessageModel  = require("../../Models/Message");
 const axios = require("axios");
 const httpProxy = require("express-http-proxy");
+
+
 
 
 //job-service-url-//
@@ -454,13 +460,11 @@ const profileCard = asyncHandler(async (req, res) => {
 
 
 const getUser = asyncHandler(async (req, res) => {
-  
+  console.log("ok ok",req.body._id)
   try {
   User.findOne({ _id: req.body._id }).then((data) => {
-
-        res
-          .status(200)
-          .json({ status: true, message: "success", data: data });
+   console.log(data,"is this nullllll");
+        res.json({ status: true, message: "success", data: data });
        
      })
     .catch((error) => {
@@ -806,6 +810,94 @@ const profile = asyncHandler(async (req, res) => {
 });
 
 
+//----------chat------------//
+
+
+const createChat = async(req, res) => {
+  const newChat = new Chat({
+    members:[req.body.senderId,req.body.recieverId]
+  })
+
+  try{
+    const result = await newChat.save()
+    res.status(200).json(result)
+  }catch (err) {
+    res.status(500).json(err)
+  }
+  
+}
+
+
+const userChat = async (req, res) => {
+  console.log("im hitting the user chat");
+  try {
+
+    const chat = await Chat.find({
+      members:{$in:[req.params.userId]}
+    })
+
+    res.status(200).json(chat)  
+    
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error)
+  }
+}
+
+
+const findChat = async (req, res) => {
+  try {
+    const chat = await Chat.findOne({
+      members: { $all: [req.params.firstId, req.params.secondId] },
+    });
+    res.status(200).json(chat);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+};
+
+
+
+
+
+const addMessage = async (req, res) => {
+
+  const { chatId, senderId, text } = req.body;
+
+  const message = new MessageModel({
+    chatId: req.body.message.chatId,
+    senderId: req.body.message.senderId,
+    text: req.body.message.text,
+  });
+  try {
+    const result = await message.save(); 
+
+    console.log(result,"yesssssssssssssss");
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+};
+
+const getMessages = async (req, res) => {
+  const { chatId } = req.params;
+  console.log(chatId,"fffffffffffffffffffffffffffffff")
+  try {
+    const result = await MessageModel.find({chatId:chatId });
+    console.log(result,"hhhhhhhhhh");
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+
+
+//----------chat---------//
+
+
 
 // --------jobservice-------//
 
@@ -924,6 +1016,7 @@ module.exports = {
   Comment,
   profileCard,
   getUser,
+  createChat,
   basicInfo,
   experience,
   certifications,
@@ -932,5 +1025,9 @@ module.exports = {
   profile,
   getJobs,
   postJobs,
-  apply
+  apply,
+  userChat,
+  findChat,
+  addMessage,
+  getMessages
 };

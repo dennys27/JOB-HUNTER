@@ -18,7 +18,12 @@ const {
  profile,
  getJobs,
  postJobs,
- apply
+ apply,
+ createChat,
+ userChat,
+ findChat,
+ addMessage,
+ getMessages
 } = require("../Controllers/User/userControllers");
 const { verifyToken } = require('./Middlewares/JwtVerification');
 var router = express.Router();
@@ -44,12 +49,24 @@ router.post("/education", verifyToken,education);
 router.post("/deletedetail", verifyToken, deleteDetail);
 router.post("/profilepicture", verifyToken, profile);
 
+
+
+
 //------job-service-------//
+
 router.get("/jobs", verifyToken, getJobs);
 router.post("/jobpost", verifyToken, postJobs);
 router.post("/apply", verifyToken, apply);
 
 //------------------//
+
+
+router.post("/chat", createChat);
+router.get("/chat/:userId", userChat);
+router.get("/find/:firstId/:secondId", findChat);
+
+router.post("/addMessage", addMessage);
+router.get("/getMessages/:chatId", getMessages);
 
 
 

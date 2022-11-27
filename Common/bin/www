@@ -8,7 +8,7 @@
 var debug = require('debug')('back-end:server');
 var http = require('http');
 const { app } = require('../app');
-// let socketapi = require("../routes/socket")
+let socketapi = require("../routes/socket")
 
 /**
  * Get port from environment and store in Express.
@@ -22,7 +22,7 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
-// socketapi.io.attach(server)
+socketapi.io.attach(server)
 /**
  * Listen on provided port, on all network interfaces.
  */

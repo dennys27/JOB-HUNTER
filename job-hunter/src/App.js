@@ -12,6 +12,9 @@ import Jobs from './Components/User/Jobs/Jobs';
 import Profile from './Components/User/Profile/Profile';
 import Jobpost from './Components/User/Jobpost/Jobpost';
 import JobView from './Components/User/Jobs/Jobview/JobView';
+import Connections from './Components/User/Connections/Connections';
+import Requests from './Components/User/Requests/Requests';
+import Chat from './Components/User/Chat/Chat';
 
 
 
@@ -27,6 +30,9 @@ function App() {
           <Route element={<Profile />} path="/profile" />
           <Route element={<Jobpost />} path="/jobpost" />
           <Route element={<JobView />} path="/jobview" />
+          <Route element={<Connections />} path="/connections" />
+          <Route element={<Requests />} path="/requests" />
+          <Route element={<Chat/>} path="/chat" />
         </Route>
 
         <Route element={<UserRoutesTwo />}>
