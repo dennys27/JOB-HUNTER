@@ -375,17 +375,19 @@ const rejectRequest = asyncHandler(async (req, res) => {
 
 
 const acceptRequest = asyncHandler(async (req, res) => {
+  console.log(req.body,"im working hereeee.......");
   try {
 
    let wait =  await User.updateOne({ _id: req.body.userId },
       { $pull: { "requests": req.body.senderId } }
     )
+    console.log(wait,"fffffffffffff");
 
     if (wait.modifiedCount === 0) {
       await User.findByIdAndUpdate(
         req.body.UserId,
         {
-          $push: { connections: req.body.senderId },
+          $push: {"network": req.body.senderId },
         },
         {
           new: true,
@@ -398,8 +400,9 @@ const acceptRequest = asyncHandler(async (req, res) => {
    }
  
   } catch (error) {
-    res.status(500).json({ status: false, message: "something went wrong." });
     console.log(error);
+    res.status(500).json({ status: false, message: "something went wrong." });
+    
 } 
 
 });

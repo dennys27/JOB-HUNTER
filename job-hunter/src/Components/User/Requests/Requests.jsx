@@ -72,7 +72,7 @@ const Requests = () => {
   const rejectRequest = (userId,senderId) => {
     userRequest({
       method: "POST",
-      url: "/user/acceptRequest",
+      url: "/user/rejectRequest",
       data: {
         userId: userId,
         senderId:senderId
@@ -242,7 +242,7 @@ const Requests = () => {
                     {recomendations?.map((data, index) =>
                       data?._id !== currentUser &&
                       (!data.requests.includes(currentUser)) &&
-                      (!data.connections.includes(currentUser)) ? (
+                      (!data.network.includes(currentUser)) ? (
                         <Grid
                           sx={{ display: "flex", justifyContent: "center" }}
                           item

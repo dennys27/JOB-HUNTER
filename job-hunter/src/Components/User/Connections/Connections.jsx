@@ -18,7 +18,7 @@ const Connections = () => {
        },
      }).then((data) => {
        console.log(data.data, "suggestions");
-       setNetwork(data.data.connections);
+       setNetwork(data.data.network);
      });
    }, []);
   
@@ -79,9 +79,6 @@ const Connections = () => {
             </Grid>
 
             <Grid item xs={8}>
-
-              {network?.map((data) => {
-
                 <Box>
                   <Container
                     sx={{
@@ -91,51 +88,56 @@ const Connections = () => {
                       borderRadius: "5px",
                     }}
                   >
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        paddingTop: "20px",
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "center",
-                          gap: "15px",
-                        }}
-                      >
-                        <img
-                          style={{
-                            width: "50px",
-                            height: "50px",
-                            borderRadius: "50px",
-                          }}
-                          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGrJtoyNGf47vIoDs4MUbSTGfQBHeGucbfJw&usqp=CAU"
-                        />
-                        <Box>
-                          <Typography>John Doe</Typography>
-                          <Typography>Mern Stack Developer</Typography>
-                        </Box>
-                      </Box>
 
-                      <Button
-                        sx={{
-                          borderRadius: "50px",
-                          height: "40px",
-                          width: "130px",
-                          backgroundColor: "#01A9C1",
-                        }}
-                        variant="contained"
-                      >
-                        Message
-                      </Button>
-                    </Box>
-                    <Divider sx={{ paddingTop: "10px" }} />
-                  </Container>
-                </Box>
+              {network?.map((data) => {
+
+                   <>
+                     <Box
+                       sx={{
+                         display: "flex",
+                         justifyContent: "space-between",
+                         paddingTop: "20px",
+                       }}
+                     >
+                       <Box
+                         sx={{
+                           display: "flex",
+                           justifyContent: "center",
+                           gap: "15px",
+                         }}
+                       >
+                         <img
+                           style={{
+                             width: "50px",
+                             height: "50px",
+                             borderRadius: "50px",
+                           }}
+                           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGrJtoyNGf47vIoDs4MUbSTGfQBHeGucbfJw&usqp=CAU"
+                         />
+                         <Box>
+                           <Typography>{ data.name}</Typography>
+                           <Typography>{ data.headline}</Typography>
+                         </Box>
+                       </Box>
+
+                       <Button
+                         sx={{
+                           borderRadius: "50px",
+                           height: "40px",
+                           width: "130px",
+                           backgroundColor: "#01A9C1",
+                         }}
+                         variant="contained"
+                       >
+                         Message
+                       </Button>
+                     </Box>
+                     <Divider sx={{ paddingTop: "10px" }} />
+                   </>;
                 
               })}
+                    </Container>
+                </Box>
               
             </Grid>
           </Grid>

@@ -18,7 +18,7 @@ const userSchema = mongoose.Schema({
   certifications: { type: Array },
   education: { type: Array },
   requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
-  connections: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
+  network: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
   skills: { type: Array },
   age: { type: String },
   yearsofexperience: { type: String },
