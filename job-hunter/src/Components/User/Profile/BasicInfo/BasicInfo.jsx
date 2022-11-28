@@ -1,4 +1,5 @@
 import { Box, Button, Collapse, Grid, Modal, TextField, Typography } from '@mui/material';
+import { ToastContainer, toast } from "react-toastify";
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { userRequest } from '../../../../Constants/Constants';
@@ -81,10 +82,25 @@ const BasicInfo = () => {
           
         },
       }).then((data) => {
-        console.log(data.data.user, "basic,,,,,<<<<<<<<<<<<>>>>>>>>>>>");
-        // setUser(data.data.user);
+       
+         setUser(data.data.user);
+        handleClose()
+        notify()
       });
-    };
+  };
+  
+
+   const notify = () =>
+     toast("sucess!", {
+       position: "top-right",
+       autoClose: 1000,
+       hideProgressBar: false,
+       closeOnClick: true,
+       pauseOnHover: true,
+       draggable: true,
+       progress: undefined,
+       theme: "light",
+     });
 
 
 
@@ -306,6 +322,7 @@ const BasicInfo = () => {
             </Box>
           </Box>
         </Modal>
+        <ToastContainer/>
       </Box>
     );
 }

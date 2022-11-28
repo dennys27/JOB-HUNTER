@@ -1,4 +1,5 @@
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
+import { ToastContainer, toast } from "react-toastify";
 import { TiDelete } from "react-icons/ti";
 import React, { useState } from 'react'
 import Navbar from "../Navbar/Navbar";
@@ -78,11 +79,21 @@ const Jobpost = () => {
               },
             })
             .then((data) => {
-              
+              notify()
             });
         }
     };
-    
+     const notify = () =>
+       toast("sucess!", {
+         position: "top-right",
+         autoClose: 1000,
+         hideProgressBar: false,
+         closeOnClick: true,
+         pauseOnHover: true,
+         draggable: true,
+         progress: undefined,
+         theme: "light",
+       });
 
        const detailChange = (e) => {
          setJob({ ...job, [e.target.name]: e.target.value });
@@ -91,6 +102,7 @@ const Jobpost = () => {
 
     return (
       <>
+        <ToastContainer/>
         <Navbar />
 
         <Box

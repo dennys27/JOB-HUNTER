@@ -315,7 +315,7 @@ const JobView = () => {
                       width: "700px",
                       backgroundColor: "white",
                       minHeight: "800px",
-                      maxHeight: "1000px",
+                      maxHeight: "auto",
                       borderRadius: "5px",
                     }}
                   >
@@ -409,7 +409,7 @@ const JobView = () => {
                       <Box sx={{ marginTop: "40px" }}>
                         <Typography>Job summary:</Typography>
                         <Typography sx={{ marginTop: "10px" }}>
-                          {job.jobdesummary}
+                          {job.jobsummary}
                         </Typography>
                       </Box>
                       <Box sx={{ marginTop: "40px" }}>

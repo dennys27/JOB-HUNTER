@@ -379,9 +379,9 @@ const Comment = asyncHandler(async (req, res) => {
 
 const profileCard = asyncHandler(async (req, res) => {
     
-     
+     console.log("im here.........")
   let data = req.query
-
+  console.log(data,"yessssssssss");
   
    
       const storage = multer.diskStorage({
@@ -460,10 +460,10 @@ const profileCard = asyncHandler(async (req, res) => {
 
 
 const getUser = asyncHandler(async (req, res) => {
-  console.log("ok ok",req.body._id)
+
   try {
   User.findOne({ _id: req.body._id }).then((data) => {
-   console.log(data,"is this nullllll");
+ 
         res.json({ status: true, message: "success", data: data });
        
      })
@@ -866,7 +866,7 @@ const addMessage = async (req, res) => {
   const { chatId, senderId, text } = req.body;
 
   const message = new MessageModel({
-    chatId: req.body.message.chatId,
+    chatId: req.body.message.chatId, 
     senderId: req.body.message.senderId,
     text: req.body.message.text,
   });

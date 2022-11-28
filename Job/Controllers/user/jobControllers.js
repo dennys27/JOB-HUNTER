@@ -18,14 +18,14 @@ const getJobs = asyncHandler(async (req, res) => {
 
  
 const postJobs = asyncHandler(async (req, res) => { 
-
+console.log(JSON.parse(req.body.key.job).jobsummary)
   
   let details = {
     companyname: JSON.parse(req.body.key.job).companyname,
     designation: JSON.parse(req.body.key.job).designation,
     jobdescription: JSON.parse(req.body.key.job).jobdescription,
     companylogo: req.body.image,
-    jobdesummary: JSON.parse(req.body.key.job).companyname,
+    jobsummary: JSON.parse(req.body.key.job).jobsummary,
     skills: req.body.key.skills,
     location: JSON.parse(req.body.key.job).location,
     aboutcompany: JSON.parse(req.body.key.job).aboutcompany,

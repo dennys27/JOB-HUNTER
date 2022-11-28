@@ -7,39 +7,38 @@ import './ChatBox.css'
 import InputEmoji from "react-input-emoji";
 
 
-const ChatBox = ({ chat, currentUser,setSendMessage}) => {
-
-
+const ChatBox = ({
+  chat,
+  currentUser,
+  setSendMessage,
+  receivedMessage 
+}) => {
   const [userData, setUserData] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-    
+
   const handleChange = (newMessage) => {
-       setNewMessage(newMessage);
+    setNewMessage(newMessage);
   };
-  
 
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        userRequest({
+          method: "GET",
+          url: `/user/getMessages/${chat._id}`,
+        }).then((data) => {
+          setMessages(data.data);
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-
-   useEffect(() => {
-     const fetchMessages = async () => {
-       try {
-         userRequest({
-           method: "GET",
-           url: `/user/getMessages/${chat._id}`,
-         }).then((data) => {
-          
-           setMessages(data.data); 
-         });
-       } catch (error) {
-         console.log(error);
-       }
-     };
-
-     if (chat !== null) {
-       fetchMessages();
-     }
-   }, [chat]);
+    if (chat !== null) {
+      fetchMessages();
+    }
+  }, [chat]);
 
   const userId = chat?.members?.find((id) => id !== currentUser);
   useEffect(() => {
@@ -50,12 +49,13 @@ const ChatBox = ({ chat, currentUser,setSendMessage}) => {
         data: {
           _id: userId,
         },
-      }).then((data) => {
-       
-        setUserData(data.data.data);
-      }).catch((error) => {
-        console.log(error)
       })
+        .then((data) => {
+          setUserData(data.data.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     };
 
     if (chat !== null) {
@@ -65,11 +65,11 @@ const ChatBox = ({ chat, currentUser,setSendMessage}) => {
 
 
 
- 
-
   useEffect(() => {
     scroll.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  
 
   const handleSend = async (e) => {
     e.preventDefault();
@@ -81,34 +81,33 @@ const ChatBox = ({ chat, currentUser,setSendMessage}) => {
 
     const receiverId = chat.members.find((id) => id !== currentUser);
     // send message to socket server
-      setSendMessage({ ...message, receiverId });
+    setSendMessage({ ...message, receiverId });
     // send message to database
     try {
-      
-          userRequest({
-            method: "POST",
-            url: `/user/addMessage`,
-              data: {
-                message
-            }
-          }).then((data) => {
-            console.log(data.data,"dggggggggggggddddddddddddd");
-            setMessages([...messages, data.data]);
-            setNewMessage("");
-          });
-      
+      userRequest({
+        method: "POST",
+        url: `/user/addMessage`,
+        data: {
+          message,
+        },
+      }).then((data) => {
+        console.log(data.data, "dggggggggggggddddddddddddd");
+        setMessages([...messages, data.data]);
+        setNewMessage("");
+      });
     } catch {
       console.log("error");
     }
   };
 
   // Receive Message from parent component
-//   useEffect(() => {
-//     // console.log("Message Arrived: ", receivedMessage);
-//     // if (receivedMessage !== null && receivedMessage.chatId === chat._id) {
-//     //   setMessages([...messages, receivedMessage]);
-//     // }
-//   }, [receivedMessage]);
+    useEffect(() => {
+      console.log("Message Arrived: ", receivedMessage);
+      if (receivedMessage !== null && receivedMessage.chatId === chat._id) {
+        setMessages([...messages, receivedMessage]);
+      }
+    }, [receivedMessage]);
+
 
   const scroll = useRef();
   const imageRef = useRef();
@@ -121,8 +120,8 @@ const ChatBox = ({ chat, currentUser,setSendMessage}) => {
         borderRadius: "5px",
         width: "500px",
         overflow: "scroll",
-        overflowStyle: 'none',
-       scrollbarWidth: 'none'
+        overflowStyle: "none",
+        scrollbarWidth: "none",
       }}
     >
       <Box
@@ -144,14 +143,16 @@ const ChatBox = ({ chat, currentUser,setSendMessage}) => {
         </Container>
       </Box>
 
-      <div style={{height:"350px",overflow:"flex"}} className="chat-body">
+      <div style={{ height: "350px", overflow: "flex" }} className="chat-body">
         {messages?.map((message) => (
           <>
             {console.log(message, "im working.....")}
             <div
               ref={scroll}
               className={
-                message?.senderId === currentUser ? "message own" : "message2 oth"
+                message?.senderId === currentUser
+                  ? "message own"
+                  : "message2 oth"
               }
             >
               <span>{message?.text}</span>
@@ -162,7 +163,7 @@ const ChatBox = ({ chat, currentUser,setSendMessage}) => {
       </div>
 
       <div
-        style={{ top: 0, Width: "100%",position:"sticky"}}
+        style={{ top: 0, Width: "100%", position: "sticky" }}
         className="chat-sender"
       >
         <div onClick={() => imageRef.current.click()}>+</div>

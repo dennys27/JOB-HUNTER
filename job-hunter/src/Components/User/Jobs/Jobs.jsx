@@ -20,8 +20,9 @@ const Jobs = () => {
       url: "/user/jobs",
 
     }).then((data) => {
+     
        setJobs(data.data)
-      console.log(data.data,"DATA IS HERE")
+      
     })
    
  },[])
@@ -70,14 +71,18 @@ const Jobs = () => {
                     spacing={{ xs: 2, sm: 2, md: 3 }}
                     columns={{ xs: 4, sm: 8, md: 12 }}
                   >
-                    {jobs.map((job,index) => (
-                      <Grid item xs={2} sm={4} md={4} key={index}>
-                        <Job job= {job} />
-                      </Grid>
-                    ))}
+                    {
+                      
+                      jobs?.map((job, index) => (
+                        <Grid item xs={2} sm={4} md={4} key={index}>
+                          <Job job={job} />
+                        </Grid>
+                      ))
+                    }
                   </Grid>
                 </Box>
               </Grid>
+              
             </Grid>
           </Box>
         </Container>

@@ -125,44 +125,44 @@ const Navbar = () => {
   }
 
   const handleVerify = () => {
-    generateRecaptcha()
-    let appVerifier = window.recaptchaVerifier
-    signInWithPhoneNumber(authentication, `+91${phone}`, appVerifier)
-      .then((confirmationResult) => {
-        setExpanded(!expanded)
-        setExpandedTwo(!expandedTwo)
-        window.confirmationResult = confirmationResult;
+    // generateRecaptcha()
+    // let appVerifier = window.recaptchaVerifier
+    // signInWithPhoneNumber(authentication, `+91${phone}`, appVerifier)
+    //   .then((confirmationResult) => {
+    //     setExpanded(!expanded)
+    //     setExpandedTwo(!expandedTwo)
+    //     window.confirmationResult = confirmationResult;
        
-      })
-      .catch((error) => {
-        // Error; SMS not sent
-        // ...
-        console.log(error)
-      });
+    //   })
+    //   .catch((error) => {
+    //     // Error; SMS not sent
+    //     // ...
+    //     console.log(error)
+    //   });
   }
 
-   const verifyOtp = (e) => {
-     setOtp(e.target.value);
-     if (otp.length === 6) {
-       let confirmationResult = window.confirmationResult;
-       confirmationResult
-         .confirm(otp)
-         .then(async(result) => {
-           // User signed in successfully.
-           const user = result.user;
-           if (user) {
-             setPhone("")
-             setOpenm(false)
-             navigate("/jobpost")
+  //  const verifyOtp = (e) => {
+  //    setOtp(e.target.value);
+  //    if (otp.length === 6) {
+  //      let confirmationResult = window.confirmationResult;
+  //      confirmationResult
+  //        .confirm(otp)
+  //        .then(async(result) => {
+  //          // User signed in successfully.
+  //          const user = result.user;
+  //          if (user) {
+  //           //  setPhone("")
+  //           //  setOpenm(false)
+  //            navigate("/jobpost")
              
-          }
-         })
-         .catch((error) => {
-           // User couldn't sign in (bad verification code?)
-           // ...
-         });
-     }
-   };
+  //         }
+  //        })
+  //        .catch((error) => {
+  //          // User couldn't sign in (bad verification code?)
+  //          // ...
+  //        });
+  //    }
+  //  };
  
   useEffect(() => {
     let data = JSON.parse(localStorage.getItem("user"))?._id
@@ -191,13 +191,15 @@ const Navbar = () => {
   const handleOptionClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handlePostjob = (event) => {
-    if (user.verification === true) {
-      navigate("/Jobpost")
-    }else{
-    handleOpenm()
-    }
-  };
+     navigate("/jobpost");
+  //   if (user.verification === true) {
+  //     navigate("/Jobpost")
+  //   }else{
+  //   handleOpenm()
+  //   }
+   };
 
 
   const handleClose = () => {
