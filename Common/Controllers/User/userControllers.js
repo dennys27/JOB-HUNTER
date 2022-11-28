@@ -355,20 +355,20 @@ const Like = asyncHandler(async (req, res) => {
 
 
 const rejectRequest = asyncHandler(async (req, res) => {
-  try {
+//   try {
 
-   let wait =  await User.updateOne({ _id: req.body.userId },
-      { $pull: { "requests": req.body.senderId } }
-    )
-     res
-       .status(200)
-      .json({ status: true, message: "like success", data: wait });
+//    let wait =  await User.updateOne({ _id: req.body.userId },
+//       { $pull: { "requests": req.body.senderId } }
+//     )
+//      res
+//        .status(200)
+//       .json({ status: true, message: "like success", data: wait });
     
  
-  } catch (error) {
-    res.status(500).json({ status: false, message: "something went wrong." });
-    console.log(error);
-} 
+//   } catch (error) {
+//     res.status(500).json({ status: false, message: "something went wrong." });
+//     console.log(error);
+// } 
 
 });
 
@@ -378,26 +378,26 @@ const acceptRequest = asyncHandler(async (req, res) => {
   console.log(req.body,"im working hereeee.......");
   try {
 
+     await User.findByIdAndUpdate(
+       req.body.userId,
+       {
+         $push: { network: req.body.senderId },
+       },
+       {
+         new: true,
+       }
+     ).then((data) => {
+       console.log(data, "rrrrrrrrrrrr");
+       res
+         .status(200)
+         .json({ status: true, message: "like success", data: data });
+     });
+
    let wait =  await User.updateOne({ _id: req.body.userId },
       { $pull: { "requests": req.body.senderId } }
     )
     console.log(wait,"fffffffffffff");
 
-    if (wait.modifiedCount === 0) {
-      await User.findByIdAndUpdate(
-        req.body.UserId,
-        {
-          $push: {"network": req.body.senderId },
-        },
-        {
-          new: true,
-        }
-      ).then((data) => {
-        res.status(200).json({ status: true, message: "like success", data: data });
-      });
-    } else {
-       res.status(200).json({ status: true, message: "unlike success", });
-   }
  
   } catch (error) {
     console.log(error);
@@ -411,13 +411,14 @@ const acceptRequest = asyncHandler(async (req, res) => {
 
 
 const request = asyncHandler(async (req, res) => {
+
+  console.log(req.body,"yesss");
   try {
 
-   let wait =  await User.updateOne({ _id: req.body.userId },
-      { $pull: { "requests": req.body.senderId } }
-    )
+  //  await User.updateOne({ _id: req.body.userId },
+  //     { $pull: { "requests": req.body.senderId } }
+  //   )
 
-    if (wait.modifiedCount === 0) {
       await User.findByIdAndUpdate(
         req.body.userId,
         {
@@ -427,14 +428,12 @@ const request = asyncHandler(async (req, res) => {
           new: true,
         }
       ).then((data) => {
-        console.log(data,"ooooooooooooiiiiiiiiii");
+        console.log(data,"ooiiiiiii");
         res
           .status(200)
           .json({ status: true, message: "request success", request: data });
       });
-    } else {
-       res.status(200).json({ status: true, message: "undo success", });
-   }
+   
  
   } catch (error) {
     res.status(500).json({ status: false, message: "something went wrong." });
@@ -559,7 +558,7 @@ const profileCard = asyncHandler(async (req, res) => {
 const getUser = asyncHandler(async (req, res) => {
 
   try {
-  User.findOne({ _id: req.body._id }).then((data) => {
+  User.findOne({ _id: req.body._id }).populate("requests").populate("network").then((data) => {
  
         res.json({ status: true, message: "success", data: data });
        

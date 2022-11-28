@@ -51,7 +51,7 @@ const Requests = () => {
       }
     }).then((data) => {
       setRefresh(Math.random())
-      console.log(data,"resultttt");
+      console.log(data,"flutter..........");
     })
   }
 
@@ -240,9 +240,7 @@ const Requests = () => {
                     columns={{ xs: 4, sm: 8, md: 12 }}
                   >
                     {recomendations?.map((data, index) =>
-                      data?._id !== currentUser &&
-                      (!data.requests.includes(currentUser)) &&
-                      (!data.network.includes(currentUser)) ? (
+                      data?._id !== currentUser ? (
                         <Grid
                           sx={{ display: "flex", justifyContent: "center" }}
                           item
@@ -264,7 +262,7 @@ const Requests = () => {
                               overflow: "hide",
                             }}
                           >
-                            {" "}
+                          
                             {data?.profile[data.profile.length - 1] ? (
                               <img
                                 style={{
