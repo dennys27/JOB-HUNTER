@@ -82,7 +82,8 @@ const Jobpost = () => {
               notify()
             });
         }
-    };
+  };
+  
      const notify = () =>
        toast("sucess!", {
          position: "top-right",

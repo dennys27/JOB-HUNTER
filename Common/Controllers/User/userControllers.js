@@ -13,6 +13,7 @@ const { Chat } = require("../../Models/Chat");
 const MessageModel  = require("../../Models/Message");
 const axios = require("axios");
 const httpProxy = require("express-http-proxy");
+var mongoose = require("mongoose");
 
 
 
@@ -84,13 +85,19 @@ const loginUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email }); 
 
   const token = await jwt.sign({ userId: user._id }, process.env.JWTPRIVATEKEY, { expiresIn: "7d", });
- 
+  console.log(user, "yooooooooooooooooyoyoyoyoyo");
+  //user.token = token
   if (user && (await bcrypt.compare(password, user.password))) {
     
+    //res.send(user);
     res.send({
       name: user.name,
       email: user.email,  
       _id: user._id,
+      connections: user.connections,
+      verification: user.verification,
+      requests: user.requests,
+      connections:user.connections,
       token
     });
     
@@ -347,6 +354,93 @@ const Like = asyncHandler(async (req, res) => {
 });
 
 
+const rejectRequest = asyncHandler(async (req, res) => {
+  try {
+
+   let wait =  await User.updateOne({ _id: req.body.userId },
+      { $pull: { "requests": req.body.senderId } }
+    )
+     res
+       .status(200)
+      .json({ status: true, message: "like success", data: wait });
+    
+ 
+  } catch (error) {
+    res.status(500).json({ status: false, message: "something went wrong." });
+    console.log(error);
+} 
+
+});
+
+
+
+const acceptRequest = asyncHandler(async (req, res) => {
+  try {
+
+   let wait =  await User.updateOne({ _id: req.body.userId },
+      { $pull: { "requests": req.body.senderId } }
+    )
+
+    if (wait.modifiedCount === 0) {
+      await User.findByIdAndUpdate(
+        req.body.UserId,
+        {
+          $push: { connections: req.body.senderId },
+        },
+        {
+          new: true,
+        }
+      ).then((data) => {
+        res.status(200).json({ status: true, message: "like success", data: data });
+      });
+    } else {
+       res.status(200).json({ status: true, message: "unlike success", });
+   }
+ 
+  } catch (error) {
+    res.status(500).json({ status: false, message: "something went wrong." });
+    console.log(error);
+} 
+
+});
+
+
+
+
+const request = asyncHandler(async (req, res) => {
+  try {
+
+   let wait =  await User.updateOne({ _id: req.body.userId },
+      { $pull: { "requests": req.body.senderId } }
+    )
+
+    if (wait.modifiedCount === 0) {
+      await User.findByIdAndUpdate(
+        req.body.userId,
+        {
+          $push: { requests: req.body.senderId },
+        },
+        {
+          new: true,
+        }
+      ).then((data) => {
+        console.log(data,"ooooooooooooiiiiiiiiii");
+        res
+          .status(200)
+          .json({ status: true, message: "request success", request: data });
+      });
+    } else {
+       res.status(200).json({ status: true, message: "undo success", });
+   }
+ 
+  } catch (error) {
+    res.status(500).json({ status: false, message: "something went wrong." });
+    console.log(error);
+} 
+
+});
+
+
 
 const Comment = asyncHandler(async (req, res) => {
   console.log("im being hit", req.body);
@@ -477,6 +571,57 @@ const getUser = asyncHandler(async (req, res) => {
    
   
 })
+
+const getUsers = asyncHandler(async (req, res) => {
+
+  try {
+  User.find({ }).then((data) => {
+ 
+        res.json({ status: true, message: "success", data: data });
+       
+     })
+    .catch((error) => {
+        res.status(200)
+          .json({ status: false, message: "operation failed", error: error });
+     })
+  } catch (err) {
+    console.log(err);
+  }
+   
+  
+})
+
+
+const getUserRequests = asyncHandler(async (req, res) => {
+  console.log(req.body);
+  User.findOne({ _id: req.body._id }).populate("requests").then((data) => {
+   res.status(200).json(data)
+  })
+})
+
+  // User.aggregate([
+  //   { $match: { _id: mongoose.mongo.ObjectId("63747dda72603cc46e5d27c7") } },
+  //   // { $unwind: "$requests" },
+  //   // {
+  //   //   $project: { req:"$requests"},
+  //   // },
+  //    {
+  //     $lookup: {
+  //       from: "user",
+  //       localField: "req",
+  //       foreignField: "_id",
+  //       as: "requ",
+  //     },
+  //   },
+  // ]).then((data) => {
+  //   console.log(data, "ggggggg");
+  // });
+
+  //  res.
+
+  // })
+
+
 
 
 
@@ -1006,6 +1151,7 @@ const apply = asyncHandler(async (req, res) => {
 
 
 module.exports = {
+  getUsers,
   registerUser,
   loginUser,
   forgotPassword,
@@ -1029,5 +1175,9 @@ module.exports = {
   userChat,
   findChat,
   addMessage,
-  getMessages
+  getMessages,
+  request,
+  getUserRequests,
+  acceptRequest,
+  rejectRequest,
 };

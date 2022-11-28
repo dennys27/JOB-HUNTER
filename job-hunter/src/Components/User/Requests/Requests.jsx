@@ -1,9 +1,89 @@
-import React from 'react'
+import React, { useState } from "react";
 import { Box, Button, Divider, Grid, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import Navbar from "../Navbar/Navbar";
+import { userRequest } from "../../../Constants/Constants";
+import { useEffect } from "react";
+
+
 
 const Requests = () => {
+
+  const [refresh, setRefresh] = useState("")
+  const [suggestions, setSuggestions] = useState([])
+  const [recomendations, setRecomendations] = useState([])
+  const currentUser = JSON.parse(localStorage.getItem("user"))?._id
+  const User = JSON.parse(localStorage.getItem("user"))
+  
+  useEffect(() => {
+    userRequest({
+      method: "GET",
+      url: "/user/getusers",
+    }).then((data) => {
+      console.log(data.data.data, "yoooooooooo");
+      setRecomendations(data.data.data);
+    });
+  }, [refresh]);
+
+  useEffect(() => {
+    userRequest({
+      method: "POST",
+      url: "/user/getUserRequests",
+      data: {
+        _id:User._id
+      }
+    }).then((data) => {
+      console.log(data.data, "suggestions");
+      setSuggestions(data.data);
+    });
+
+  }, [refresh])
+
+
+  
+  const handleRequest = (userId,senderId) => {
+    userRequest({
+      method: "POST",
+      url: "/user/request",
+      data: {
+        userId: userId,
+        senderId:senderId
+      }
+    }).then((data) => {
+      setRefresh(Math.random())
+      console.log(data,"resultttt");
+    })
+  }
+
+  const acceptRequest = (userId,senderId) => {
+    userRequest({
+      method: "POST",
+      url: "/user/acceptRequest",
+      data: {
+        userId: userId,
+        senderId:senderId
+      }
+    }).then((data) => {
+      setRefresh(Math.random())
+      console.log(data,"resultttt");
+    })
+  }
+
+  const rejectRequest = (userId,senderId) => {
+    userRequest({
+      method: "POST",
+      url: "/user/acceptRequest",
+      data: {
+        userId: userId,
+        senderId:senderId
+      }
+    }).then((data) => {
+      setRefresh(Math.random())
+      console.log(data,"resultttt");
+    })
+  }
+  
+  
   return (
     <>
       <Navbar />
@@ -58,7 +138,93 @@ const Requests = () => {
                     borderRadius: "5px",
                     marginBottom: "30px",
                   }}
-                ></Box>
+                >
+                  {/* requests */}
+                  <Box>
+                    <Container
+                      sx={{
+                        maxHeight: "500px",
+                        minHeight: "90px",
+                        backgroundColor: "white",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      {suggestions?.requests?.map((data) =>
+                        data?._id !== currentUser ? (
+                          <>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                paddingTop: "20px",
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  gap: "15px",
+                                }}
+                              >
+                                <img
+                                  style={{
+                                    width: "50px",
+                                    height: "50px",
+                                    borderRadius: "50px",
+                                  }}
+                                  src={`http://localhost:5000/static/images/${
+                                    data?.profile[data.profile.length - 1]
+                                  }`}
+                                />
+                                <Box>
+                                  <Typography>{data.name}</Typography>
+                                  <Typography>{data.headline}</Typography>
+                                </Box>
+                              </Box>
+
+                              <Button
+                                sx={{
+                                  borderRadius: "50px",
+                                  height: "40px",
+                                  width: "130px",
+                                  backgroundColor: "white",
+                                  color: "black",
+                                  border: "2px solid #01A9C1",
+                                  marginLeft: "150px",
+                                }}
+                                variant="contained"
+                                onClick={() =>
+                                  rejectRequest(currentUser, data._id)
+                                }
+                              >
+                                Reject
+                              </Button>
+                              <Button
+                                sx={{
+                                  borderRadius: "50px",
+                                  height: "40px",
+                                  width: "130px",
+                                  backgroundColor: "#01A9C1",
+                                }}
+                                variant="contained"
+                                onClick={() =>
+                                  acceptRequest(currentUser, data._id)
+                                }
+                              >
+                                Accept
+                              </Button>
+                            </Box>
+                            <Divider sx={{ paddingTop: "10px" }} />
+                          </>
+                        ) : (
+                          ""
+                        )
+                      )}
+                    </Container>
+                  </Box>
+                </Box>
+
+                {/* requests */}
 
                 <Container
                   sx={{
@@ -73,54 +239,86 @@ const Requests = () => {
                     spacing={{ xs: 2, md: 2 }}
                     columns={{ xs: 4, sm: 8, md: 12 }}
                   >
-                    {Array.from(Array(6)).map((_, index) => (
-                      <Grid
-                        sx={{ display: "flex", justifyContent: "center" }}
-                        item
-                        xs={2}
-                        sm={4}
-                        md={3}
-                        key={index}
-                      >
-                        <Box
-                          sx={{
-                            width: "160px",
-                            height: "180px",
-                            backgroundColor: "white",
-                            borderRadius: "5px",
-                            display: "block",
-                            textAlign: "center",
-                            padding: "20px",
-                             border: "1px solid #D9D9D9",
-                            overflow:"hide"
-                            
-                          }}
+                    {recomendations?.map((data, index) =>
+                      data?._id !== currentUser &&
+                      (!data.requests.includes(currentUser)) &&
+                      (!data.connections.includes(currentUser)) ? (
+                        <Grid
+                          sx={{ display: "flex", justifyContent: "center" }}
+                          item
+                          xs={2}
+                          sm={4}
+                          md={3}
+                          key={index}
                         >
-                          <img
-                            style={{
-                              width: "70px",
-                              height: "70px",
-                              borderRadius: "50px",
-                            }}
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGrJtoyNGf47vIoDs4MUbSTGfQBHeGucbfJw&usqp=CAU"
-                          />
-                          <Typography>John Doe</Typography>
-                          <Typography sx={{fontSize:"14px",display:"flex"}}>Mern stack developer</Typography>
-                          <Button
+                          <Box
                             sx={{
-                              borderRadius: "50px",
-                              height: "30px",
-                              width: "100px",
-                              backgroundColor: "#01A9C1",
-                              marginTop:"15px"
+                              width: "160px",
+                              height: "180px",
+                              backgroundColor: "white",
+                              borderRadius: "5px",
+                              display: "block",
+                              textAlign: "center",
+                              padding: "20px",
+                              border: "1px solid #D9D9D9",
+                              overflow: "hide",
                             }}
-                            variant="contained"
                           >
-                            Connect
-                          </Button>
-                        </Box>
-                      </Grid>
-                    ))}
+                            {" "}
+                            {data?.profile[data.profile.length - 1] ? (
+                              <img
+                                style={{
+                                  width: "70px",
+                                  height: "70px",
+                                  borderRadius: "50px",
+                                }}
+                                src={`http://localhost:5000/static/images/${
+                                  data?.profile[data.profile.length - 1]
+                                }`}
+                              />
+                            ) : (
+                              <img
+                                style={{
+                                  width: "70px",
+                                  height: "70px",
+                                  borderRadius: "50px",
+                                }}
+                                src={`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHn2z7r_YL3GXWi6BJzX5LwtfphQGkUpWWBA&usqp=CAU`}
+                              />
+                            )}
+                            <Typography>{data.name}</Typography>
+                            <Typography
+                              sx={{
+                                fontSize: "14px",
+                                display: "flex",
+                                minHeight: "40px",
+                                maxHeight: "40px",
+                                textAlign: "center",
+                              }}
+                            >
+                              {data.headline}
+                            </Typography>
+                            <Button
+                              sx={{
+                                borderRadius: "50px",
+                                height: "30px",
+                                width: "100px",
+                                backgroundColor: "#01A9C1",
+                                marginTop: "15px",
+                              }}
+                              variant="contained"
+                              onClick={() =>
+                                handleRequest(data._id, currentUser)
+                              }
+                            >
+                              Connect
+                            </Button>
+                          </Box>
+                        </Grid>
+                      ) : (
+                        ""
+                      )
+                    )}
                   </Grid>
                 </Container>
               </Box>
@@ -130,6 +328,6 @@ const Requests = () => {
       </div>
     </>
   );
-}
+};
 
-export default Requests
+export default Requests;

@@ -1,10 +1,30 @@
 import { Box, Button, Divider, Grid, Typography } from '@mui/material';
 import { Container } from '@mui/system';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { userRequest } from '../../../Constants/Constants';
 import Navbar from '../Navbar/Navbar';
 
 
 const Connections = () => {
+
+  const[network,setNetwork] = useState([])
+  const User = JSON.parse(localStorage.getItem("user"));
+   useEffect(() => {
+     userRequest({
+       method: "POST",
+       url: "/user/getuser",
+       data: {
+         _id: User._id,
+       },
+     }).then((data) => {
+       console.log(data.data, "suggestions");
+       setNetwork(data.data.connections);
+     });
+   }, []);
+  
+  const handleMessage = () => {
+  
+}
   return (
     <>
       <Navbar />
@@ -59,58 +79,64 @@ const Connections = () => {
             </Grid>
 
             <Grid item xs={8}>
-              <Box>
-                <Container
-                  sx={{
-                    maxHeight: "700px",
-                    minHeight: "700px",
-                    backgroundColor: "white",
-                    borderRadius: "5px",
-                  }}
-                >
-                  <Box
+
+              {network?.map((data) => {
+
+                <Box>
+                  <Container
                     sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      paddingTop: "20px",
+                      maxHeight: "700px",
+                      minHeight: "700px",
+                      backgroundColor: "white",
+                      borderRadius: "5px",
                     }}
                   >
                     <Box
                       sx={{
                         display: "flex",
-                        justifyContent: "center",
-                        gap: "15px",
+                        justifyContent: "space-between",
+                        paddingTop: "20px",
                       }}
                     >
-                      <img
-                        style={{
-                          width: "50px",
-                          height: "50px",
-                          borderRadius: "50px",
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          gap: "15px",
                         }}
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGrJtoyNGf47vIoDs4MUbSTGfQBHeGucbfJw&usqp=CAU"
-                      />
-                      <Box>
-                        <Typography>John Doe</Typography>
-                        <Typography>Mern Stack Developer</Typography>
+                      >
+                        <img
+                          style={{
+                            width: "50px",
+                            height: "50px",
+                            borderRadius: "50px",
+                          }}
+                          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGrJtoyNGf47vIoDs4MUbSTGfQBHeGucbfJw&usqp=CAU"
+                        />
+                        <Box>
+                          <Typography>John Doe</Typography>
+                          <Typography>Mern Stack Developer</Typography>
+                        </Box>
                       </Box>
-                    </Box>
 
-                    <Button
-                      sx={{
-                        borderRadius: "50px",
-                        height: "40px",
-                        width: "130px",
-                        backgroundColor: "#01A9C1",
-                      }}
-                      variant="contained"
-                    >
-                      Message
-                    </Button>
-                  </Box>
-                  <Divider sx={{ paddingTop: "10px" }} />
-                </Container>
-              </Box>
+                      <Button
+                        sx={{
+                          borderRadius: "50px",
+                          height: "40px",
+                          width: "130px",
+                          backgroundColor: "#01A9C1",
+                        }}
+                        variant="contained"
+                      >
+                        Message
+                      </Button>
+                    </Box>
+                    <Divider sx={{ paddingTop: "10px" }} />
+                  </Container>
+                </Box>
+                
+              })}
+              
             </Grid>
           </Grid>
         </Container>

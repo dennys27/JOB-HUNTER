@@ -440,7 +440,17 @@ const Navbar = () => {
                   <MenuItem onClick={() => handleNavigate("profile")}>
                     Profile
                   </MenuItem>
-                  <MenuItem onClick={handleClose}>My account</MenuItem>
+
+                  <MenuItem onClick={handleClose}>
+                    <Box onClick={() => handleNavigate("connections")}>
+                      My Network
+                    </Box>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Box onClick={() => handleNavigate("requests")}>
+                      Requests
+                    </Box>
+                  </MenuItem>
                   <MenuItem onClick={handleClose}>
                     <Box
                       onClick={() => {

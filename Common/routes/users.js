@@ -23,7 +23,12 @@ const {
  userChat,
  findChat,
  addMessage,
- getMessages
+ getMessages,
+ getUsers,
+ request,
+ getUserRequests,
+ acceptRequest,
+ rejectRequest
 } = require("../Controllers/User/userControllers");
 const { verifyToken } = require('./Middlewares/JwtVerification');
 var router = express.Router();
@@ -42,12 +47,18 @@ router.post('/like',verifyToken, Like);
 router.post('/comment',verifyToken, Comment);
 router.get("/profilecard", verifyToken, profileCard);
 router.post("/getuser", verifyToken, getUser);
+router.get("/getusers", verifyToken, getUsers);
 router.post("/basicinfo", verifyToken, basicInfo);
 router.post("/experience", verifyToken,experience );
 router.post("/certifications", verifyToken,certifications);
 router.post("/education", verifyToken,education);
 router.post("/deletedetail", verifyToken, deleteDetail);
 router.post("/profilepicture", verifyToken, profile);
+router.post("/request", verifyToken, request);
+router.post("/connections", verifyToken, profile);
+router.post("/getUserRequests", verifyToken, getUserRequests);
+router.post("/acceptRequest", verifyToken, acceptRequest);
+router.post("/rejectRequest", verifyToken, rejectRequest);
 
 
 
