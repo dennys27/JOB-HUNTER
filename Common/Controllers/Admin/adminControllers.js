@@ -2,10 +2,13 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
 const { Admin } = require("../../Models/AdminSchema");
+const { Verification } = require("../../Models/Verification");
+const { User } = require("../../Models/UserSchema");
+
+
+
 
 const adminLogin = asyncHandler(async (req, res) => {
-
-  const { email, password } = req.body;
   const user = await Admin.findOne({ email });
 
   const token = await jwt.sign(
@@ -13,7 +16,6 @@ const adminLogin = asyncHandler(async (req, res) => {
     process.env.JWTPRIVATEKEY,
     { expiresIn: "7d" }
   );
-
 
   if (user && (await bcrypt.compare(password, user.password))) {
     res.send({
@@ -32,7 +34,33 @@ const adminLogin = asyncHandler(async (req, res) => {
 });
 
 
+const verifications = asyncHandler(async (req, res) => {
+  const accounts = await Verification.find({}).populate("user");
+
+  if (accounts) {
+    res.status(200).json(accounts);
+  } else {
+    res.status(400).json({ status: false, message: "no accounts found" });
+    throw new Error("invalid  details");
+  }
+});
+
+const adminGetUsers = asyncHandler(async (req, res) => {
+  const accounts = await User.find({});
+
+  if (accounts) {
+    res.status(200).json(accounts);
+  } else {
+    res.status(400).json({ status: false, message: "no accounts found" });
+    throw new Error("invalid  details");
+  }
+});
+
+
+
 
 module.exports = {
   adminLogin,
+  verifications,
+  adminGetUsers,
 };
