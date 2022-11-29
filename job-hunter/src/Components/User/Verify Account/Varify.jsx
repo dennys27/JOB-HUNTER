@@ -34,14 +34,7 @@ const Varify = () => {
 
 
     const handleVerify = () => {
-          
-         userRequest({
-           method: "POST",
-           url: "/user/profileverification",
-           data: {
-             userId: currentUser._id,
-           },
-         });
+    
         generateRecaptcha();
         let appVerifier = window.recaptchaVerifier;
         signInWithPhoneNumber(authentication, `+91${number}`, appVerifier)
@@ -69,16 +62,15 @@ const Varify = () => {
                const user = result.user;
                if (user) {
                    setNumber("")
-                    // userRequest({
-                    //   method: "POST",
-                    //   url: "/user/profileverification",
-                    //   data: {
-                    //     userId: currentUser._id,
-                    //   },
-                    // });
-                  
-                 
-                 navigate("/jobpost");
+                   userRequest({
+                     method: "POST",
+                     url: "/user/profileverification",
+                     data: {
+                       userId: currentUser._id,
+                     },
+                   });
+
+                 navigate("/Home");
                }
              })
              .catch((error) => {

@@ -26,16 +26,17 @@ const AdminSideBar = () => {
         position="fixed"
         sx={{
           backgroundColor: "#F4F5F5",
-          width: 230,
+          width: 250,
           height: "100%",
           color: "black",
+          backgroundColor: "white",
         }}
       >
         <List>
           <ListItem disablePadding>
             <ListItemButton component="a" href="#">
               <ListItemIcon>
-                <HistoryEduIcon sx={{ color: "white" }} />
+                <HistoryEduIcon sx={{ color: "black" }} />
               </ListItemIcon>
               <ListItemText onClick={() => {}} primary="Applicant List" />
             </ListItemButton>
@@ -44,7 +45,7 @@ const AdminSideBar = () => {
           <ListItem disablePadding>
             <ListItemButton component="a" href="#">
               <ListItemIcon>
-                <AppsIcon sx={{ color: "white" }} />
+                <AppsIcon sx={{ color: "black" }} />
               </ListItemIcon>
               <ListItemText onClick={() => {}} primary="Users" />
             </ListItemButton>
@@ -52,15 +53,18 @@ const AdminSideBar = () => {
           <ListItem disablePadding>
             <ListItemButton component="a" href="#">
               <ListItemIcon>
-                <ReceiptLongIcon sx={{ color: "white" }} />
+                <ReceiptLongIcon sx={{ color: "black" }} />
               </ListItemIcon>
-              <ListItemText onClick={() => {}} primary="Verification Requests" />
+              <ListItemText
+                onClick={() => {}}
+                primary="Verification Requests"
+              />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
             <ListItemButton component="a" href="#">
               <ListItemIcon>
-                <Diversity2Icon sx={{ color: "white" }} />
+                <Diversity2Icon sx={{ color: "black" }} />
               </ListItemIcon>
               <ListItemText primary="Reported posts" />
             </ListItemButton>
@@ -69,7 +73,7 @@ const AdminSideBar = () => {
           <ListItem disablePadding>
             <ListItemButton component="a" href="#">
               <ListItemIcon>
-                <SettingsSuggestIcon sx={{ color: "white" }} />
+                <SettingsSuggestIcon sx={{ color: "black" }} />
               </ListItemIcon>
               <ListItemText primary="Reported users" />
             </ListItemButton>
