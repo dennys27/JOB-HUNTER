@@ -10,9 +10,9 @@ import { useNavigate,Link } from "react-router-dom";
 import { Avatar, Button, Collapse, Container, Menu, MenuItem, TextField, Toolbar, Typography } from "@mui/material";
 import { logout } from "../../../features/Auth/AuthSlice";
 import Modal from "@mui/material/Modal";
-import auth from './firebase';
-import { authentication } from './firebase';
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+// import auth from '../Verify Account/firebase';
+// import { authentication } from './firebase';
+// import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 
 
 
@@ -109,60 +109,8 @@ const Navbar = () => {
  
 
 
-  const generateRecaptcha = () => {
-    
-    if (!window.recaptchaVerifier) {
-      window.recaptchaVerifier = new RecaptchaVerifier(
-        "sign-in-button",
-        {
-          size: "invisible",
-          callback: (response) => { },
-        },
-        authentication
-      );
-    }
-    
-  }
 
-  const handleVerify = () => {
-    // generateRecaptcha()
-    // let appVerifier = window.recaptchaVerifier
-    // signInWithPhoneNumber(authentication, `+91${phone}`, appVerifier)
-    //   .then((confirmationResult) => {
-    //     setExpanded(!expanded)
-    //     setExpandedTwo(!expandedTwo)
-    //     window.confirmationResult = confirmationResult;
-       
-    //   })
-    //   .catch((error) => {
-    //     // Error; SMS not sent
-    //     // ...
-    //     console.log(error)
-    //   });
-  }
-
-  //  const verifyOtp = (e) => {
-  //    setOtp(e.target.value);
-  //    if (otp.length === 6) {
-  //      let confirmationResult = window.confirmationResult;
-  //      confirmationResult
-  //        .confirm(otp)
-  //        .then(async(result) => {
-  //          // User signed in successfully.
-  //          const user = result.user;
-  //          if (user) {
-  //           //  setPhone("")
-  //           //  setOpenm(false)
-  //            navigate("/jobpost")
-             
-  //         }
-  //        })
-  //        .catch((error) => {
-  //          // User couldn't sign in (bad verification code?)
-  //          // ...
-  //        });
-  //    }
-  //  };
+ 
  
   useEffect(() => {
     let data = JSON.parse(localStorage.getItem("user"))?._id
@@ -193,12 +141,14 @@ const Navbar = () => {
   };
 
   const handlePostjob = (event) => {
-     navigate("/jobpost");
-  //   if (user.verification === true) {
-  //     navigate("/Jobpost")
-  //   }else{
-  //   handleOpenm()
-  //   }
+     //navigate("/jobpost");
+    if (user.verification === "true") {
+      navigate("/Jobpost")
+    }else if (user.verification === "pending") {
+      alert("your verification is under process")
+    } else {
+       navigate("/verify");
+    }
    };
 
 
@@ -244,7 +194,7 @@ const Navbar = () => {
                 variant="h6"
                 noWrap
                 component="a"
-                href="/"
+                
                 sx={{
                   mr: 5,
                   mb: 1.5,
@@ -257,6 +207,7 @@ const Navbar = () => {
                   justifyContent: "center",
                   alignItems: "center",
                 }}
+                ocClick={()=>navigate('/Home')}
               >
                 JOBHUNTER
               </Typography>
@@ -444,6 +395,11 @@ const Navbar = () => {
                   <MenuItem onClick={handleClose}>
                     <Box onClick={() => handleNavigate("connections")}>
                       My Network
+                    </Box>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Box onClick={() => handleNavigate("jobstatus")}>
+                      My job posts
                     </Box>
                   </MenuItem>
                   <MenuItem onClick={handleClose}>
@@ -650,7 +606,7 @@ const Navbar = () => {
               />
 
               <Button
-                onClick={() => handleVerify()}
+                // onClick={() => handleVerify()}
                 sx={{ width: "70px", height: "40px", marginTop: "10px" }}
                 variant="contained"
               >
@@ -675,7 +631,7 @@ const Navbar = () => {
               />
 
               <Button
-                onClick={() => handleVerify()}
+                // onClick={() => handleVerify()}
                 sx={{ width: "70px", height: "40px", marginTop: "10px" }}
                 variant="contained"
               >

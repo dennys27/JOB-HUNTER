@@ -1,0 +1,23 @@
+.exp{
+  border-bottom:solid #ffffff 3px ;
+ 
+}
+.exp:hover{
+  border-bottom:solid #01A9C1 3px ;
+ 
+}
+.experience{
+ -ms-overflow-style: none; 
+  scrollbar-width: none; 
+
+}
+
+.Eexperience{
+   border-bottom:solid #01A9C1 3px ;
+}
+.Ccertifications{
+   border-bottom:solid #01A9C1 3px ;
+}
+.Deducation{
+   border-bottom:solid #01A9C1 3px ;
+}

@@ -44,8 +44,8 @@ const ProfileCard = () => {
               />
             )}
 
-            <Typography sx={{ fontSize: 17 }}>JOHN DOE</Typography>
-            <p className="designation">MERNSTACK DEVELOPER</p>
+            <Typography sx={{ fontSize: 17 }}>{ user.name}</Typography>
+            <p className="designation">{ user.headline}</p>
           </div>
           <div className="impressions">
             <span>

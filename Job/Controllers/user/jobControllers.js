@@ -16,6 +16,14 @@ const getJobs = asyncHandler(async (req, res) => {
     })
 });
 
+const getMyJobs = asyncHandler(async (req, res) => {
+  await Job.find({userid:req.body.userId}).then((data) => {
+     res.status(200).send(data)
+  }).catch((err) => {
+    res.status(500).send(err);
+  })
+});
+
  
 const postJobs = asyncHandler(async (req, res) => { 
 console.log(JSON.parse(req.body.key.job).jobsummary)
@@ -51,26 +59,32 @@ console.log(JSON.parse(req.body.key.job).jobsummary)
 
 
 const applyJob = asyncHandler(async (req, res) => {
+  let isExist = await Job.find({
+    applicants: { $elemMatch: {_id: req.body.user._id } },
+  });
+  if (isExist) {
+    res.status(200).json({ isExist ,exist:true});
+  } else {
+     try {
+       const user = await Job.findByIdAndUpdate(req.body.jobId, {
+         $push: { applicants: req.body.user },
+       });
 
-  console.log(req.body,"hhhhhhhhhhhhhh");
-
-  try {
-    const user = await Job.findByIdAndUpdate(
-      req.body.jobId,
-      {
-        $push:{applicants:req.body.user}
-      }
-    );
-    console.log(user, "yayyyyyyyyyyyyy");
-    res.status(200).json(user);
-  } catch (err) {
-    console.log(err, "error happened in the job controller service.");
+       res.status(200).json(user);
+     } catch (err) {
+       res.status(500).json(err);
+       console.log(err, "error happened in the job controller service.");
+     }
   }
+
+ 
+
 });
 
 
 module.exports = {
   getJobs,
   postJobs,
-  applyJob
+  applyJob,
+  getMyJobs,
 };

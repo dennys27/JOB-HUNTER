@@ -53,7 +53,7 @@ const LeftCard = () => {
 
   const [user, setUser] = useState({})
   const [image, setImage] = useState();
-  const [resume, setResume] = useState("");
+  const [resume, setResume] = useState();
   const handleOpenTwo = () => setOpenTwo(true);
   const handleCloseTwo = () => setOpenTwo(false);
   const [expanded, setExpanded] = useState(false);
@@ -137,7 +137,7 @@ const LeftCard = () => {
     console.log(data, "checkinggggg");
     JSON.stringify(profile)
     axios
-      .get("http://localhost:5000/user/profilecard", {
+      .post("http://localhost:5000/user/profilecard", data, {
         params: {
           _id: userId,
           details: [profile],
@@ -146,15 +146,15 @@ const LeftCard = () => {
         headers: {
           token: `Bearer ${TOKEN}`,
           "Access-Control-Allow-Origin": "http://localhost:5000",
-          "Content-Type": "json/form-data",
+          "Content-Type": "multipart/form-data",
         },
       })
       .then((data) => {
-        console.log(data.data.user[0],"after update");
+        console.log(data.data.user[0], "after update");
         if (data.data.status) {
-          setUser(data.data.user[0]); 
-          setOpen(false);
-          notify()
+          //setUser(data.data.user[0]);
+          // setOpen(false);
+          //notify();
         }
       });
   }

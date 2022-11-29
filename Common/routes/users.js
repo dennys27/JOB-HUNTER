@@ -28,7 +28,9 @@ const {
  request,
  getUserRequests,
  acceptRequest,
- rejectRequest
+ rejectRequest,
+ getmyjob,
+ profileVerification
 } = require("../Controllers/User/userControllers");
 const { verifyToken } = require('./Middlewares/JwtVerification');
 var router = express.Router();
@@ -45,7 +47,7 @@ router.get("/feed", verifyToken, feeds);
 router.post('/posts',verifyToken, post);
 router.post('/like',verifyToken, Like);
 router.post('/comment',verifyToken, Comment);
-router.get("/profilecard", verifyToken, profileCard);
+router.post("/profilecard", verifyToken, profileCard);
 router.post("/getuser", verifyToken, getUser);
 router.get("/getusers", verifyToken, getUsers);
 router.post("/basicinfo", verifyToken, basicInfo);
@@ -59,6 +61,7 @@ router.post("/connections", verifyToken, profile);
 router.post("/getUserRequests", verifyToken, getUserRequests);
 router.post("/acceptRequest", verifyToken, acceptRequest);
 router.post("/rejectRequest", verifyToken, rejectRequest);
+router.post("/profileVerification", verifyToken, profileVerification);
 
 
 
@@ -68,6 +71,7 @@ router.post("/rejectRequest", verifyToken, rejectRequest);
 router.get("/jobs", verifyToken, getJobs);
 router.post("/jobpost", verifyToken, postJobs); 
 router.post("/apply", verifyToken, apply);
+router.post("/getmyjobs", verifyToken, getmyjob);
 
 //------------------//
 

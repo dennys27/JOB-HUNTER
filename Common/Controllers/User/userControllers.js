@@ -14,6 +14,8 @@ const MessageModel  = require("../../Models/Message");
 const axios = require("axios");
 const httpProxy = require("express-http-proxy");
 var mongoose = require("mongoose");
+const { Verification } = require("../../Models/Verification");
+
 
 
 
@@ -355,20 +357,20 @@ const Like = asyncHandler(async (req, res) => {
 
 
 const rejectRequest = asyncHandler(async (req, res) => {
-//   try {
+  try {
 
-//    let wait =  await User.updateOne({ _id: req.body.userId },
-//       { $pull: { "requests": req.body.senderId } }
-//     )
-//      res
-//        .status(200)
-//       .json({ status: true, message: "like success", data: wait });
+   let wait =  await User.updateOne({ _id: req.body.userId },
+      { $pull: { "requests": req.body.senderId } }
+    )
+     res
+       .status(200)
+      .json({ status: true, message: "like success", data: wait });
     
  
-//   } catch (error) {
-//     res.status(500).json({ status: false, message: "something went wrong." });
-//     console.log(error);
-// } 
+  } catch (error) {
+    res.status(500).json({ status: false, message: "something went wrong." });
+    console.log(error);
+} 
 
 });
 
@@ -386,8 +388,17 @@ const acceptRequest = asyncHandler(async (req, res) => {
        {
          new: true,
        }
-     ).then((data) => {
-       console.log(data, "rrrrrrrrrrrr");
+     ).then(async(data) => {
+      
+         await User.findByIdAndUpdate(
+           req.body.senderId,
+           {
+             $push: { network: req.body.userId },
+           },
+           {
+             new: true,
+           })
+       
        res
          .status(200)
          .json({ status: true, message: "like success", data: data });
@@ -474,16 +485,16 @@ const Comment = asyncHandler(async (req, res) => {
 
 
 const profileCard = asyncHandler(async (req, res) => {
-    
-     console.log("im here.........")
+    console.log(req.file,"filess")
+  
   let data = req.query
-  console.log(data,"yessssssssss");
+ 
   
    
       const storage = multer.diskStorage({
         destination: path.join(__dirname, "../../public/resumes"),
         filename: (req, file, cb) => {
-          cb(null, Date.now() + "-"+".pdf");
+          cb(null, Date.now() + "-resume-"+".pdf");
         },
       });
 
@@ -491,6 +502,8 @@ const profileCard = asyncHandler(async (req, res) => {
 
       upload(req, res, async (err) => {
         if (!req.file) {
+
+           console.log( "no file...");
           await User.updateOne(
             { _id: data._id },
 
@@ -516,20 +529,16 @@ const profileCard = asyncHandler(async (req, res) => {
           });
           
         } else {
-
           await User.updateOne(
-            data._id,
+            { _id: data._id },
             {
-               
               name: JSON.parse(data.details[0]).name,
               headline: JSON.parse(data.details[0]).headline,
               currentposition: JSON.parse(data.details[0]).currentposition,
               industry: JSON.parse(data.details[0]).industry,
               skills: data.skills,
-              resume:req.file.filename
-          
-            },
-            
+              resume: req.file.filename,
+            }
           ).then(async () => {
             await User.find({
               _id: data._id,
@@ -601,29 +610,26 @@ const getUserRequests = asyncHandler(async (req, res) => {
   })
 })
 
-  // User.aggregate([
-  //   { $match: { _id: mongoose.mongo.ObjectId("63747dda72603cc46e5d27c7") } },
-  //   // { $unwind: "$requests" },
-  //   // {
-  //   //   $project: { req:"$requests"},
-  //   // },
-  //    {
-  //     $lookup: {
-  //       from: "user",
-  //       localField: "req",
-  //       foreignField: "_id",
-  //       as: "requ",
-  //     },
-  //   },
-  // ]).then((data) => {
-  //   console.log(data, "ggggggg");
-  // });
 
-  //  res.
+const profileVerification = asyncHandler(async (req, res) => {
+  let verification = {
+    user:req.body.userId
+  }
 
-  // })
+  try {
+   await Verification(verification).save().then(async(data) => {
+     console.log(data, "trying.");
+      await User.updateOne({ _id: data.user },
+      { verification: "pending"}
+    )
+    });
+  } catch (error) {
+    console.log(error);
+  }
+ 
+});
 
-
+ 
 
 
 
@@ -960,8 +966,18 @@ const profile = asyncHandler(async (req, res) => {
 //----------chat------------//
 
 
-const createChat = async(req, res) => {
-  const newChat = new Chat({
+const createChat = async (req, res) => {
+  Chat.find({
+    members: {
+      $all: [req.body.senderId, req.body.recieverId],
+    },
+  }).then(async(data) => {
+    if (data.length > 0) {
+      res.status(200).json(data); 
+
+    } else {
+
+    const newChat = new Chat({
     members:[req.body.senderId,req.body.recieverId]
   })
 
@@ -971,6 +987,11 @@ const createChat = async(req, res) => {
   }catch (err) {
     res.status(500).json(err)
   }
+      
+    }
+
+  })
+
   
 }
 
@@ -1121,8 +1142,9 @@ const postJobs = asyncHandler(async (req, res) => {
 
 const apply = asyncHandler(async (req, res) => {
 
+ 
+
   await User.findById({ _id: req.body.user._id }).then((data) => {
-    console.log(data);
 
      try {
        axios
@@ -1131,18 +1153,53 @@ const apply = asyncHandler(async (req, res) => {
            jobId: req.body.jobId,
          })
          .then(function (response) {
-           console.log(response, "yes........", Math.random());
+           res.status(200).json(response.data)
+          
          })
          .catch(function (error) {
            // handle error
            console.log(error);
+             res.status(500).json(error);
          });
+       
      } catch (err) {
        console.log(err);
     }
     
 
   })
+
+    
+  
+})
+
+
+const getmyjob = asyncHandler(async (req, res) => {
+
+ 
+
+
+     try {
+       axios
+         .post(`${uri}/jobs/getmyjobs`, {
+           userId: req.body.userId,
+         })
+         .then(function (response) {
+           res.status(200).json(response.data)
+          
+         })
+         .catch(function (error) {
+           // handle error
+           console.log(error);
+             res.status(500).json(error);
+         });
+       
+     } catch (err) {
+       console.log(err);
+    }
+    
+
+
 
     
   
@@ -1182,4 +1239,6 @@ module.exports = {
   getUserRequests,
   acceptRequest,
   rejectRequest,
+  getmyjob,
+  profileVerification,
 };

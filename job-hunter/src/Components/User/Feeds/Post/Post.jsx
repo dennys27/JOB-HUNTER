@@ -17,6 +17,7 @@ import { useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
 import { userRequest } from "../../../../Constants/Constants";
 import "./Post.css"
+import { useNavigate } from "react-router-dom";
 
 
 const ExpandMore = styled((props) => {
@@ -31,6 +32,8 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function RecipeReviewCard({ post, setLiked }) {
+
+  let navigate = useNavigate()
   let duplicate_comment = [...post.comments];
   duplicate_comment.reverse();
 
@@ -90,6 +93,13 @@ export default function RecipeReviewCard({ post, setLiked }) {
               }`}
               sx={{ bgcolor: red[500] }}
               aria-label="recipe"
+              onClick={() =>
+                navigate("/viewprofile", {
+                  state: {
+                    id:post.userId._id
+                  },
+                })
+              }
             />
           }
           action={
@@ -189,7 +199,9 @@ export default function RecipeReviewCard({ post, setLiked }) {
                     <Avatar
                       alt="Remy Sharp"
                       src={`http://localhost:5000/static/images/${
-                        comment.userId.profile[comment.userId.profile.length - 1]
+                        comment.userId.profile[
+                          comment.userId.profile.length - 1
+                        ]
                       }`}
                     />
                   ) : (
