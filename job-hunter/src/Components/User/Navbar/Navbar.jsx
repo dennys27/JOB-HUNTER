@@ -344,7 +344,7 @@ const Navbar = () => {
                 </Box>
 
                 <Box>
-                  {user.profile ? (
+                  {user?.profile ? (
                     <Avatar
                       onClick={(event) => handleOptionClick(event)}
                       id="basic-button"
@@ -358,7 +358,7 @@ const Navbar = () => {
                       }}
                       alt="Remy Sharp"
                       src={`http://localhost:5000/static/images/${
-                        user?.profile[user.profile.length - 1]
+                        user?.profile[user?.profile.length - 1]
                       }`}
                     />
                   ) : (

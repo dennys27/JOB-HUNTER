@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Button, Container, Divider, Grid, Modal, TextField, Typography } from "@mui/material";
-import { userRequest } from "../../../../Constants/Constants";
+import { AdminRequest, userRequest } from "../../../../Constants/Constants";
 import { RiDeleteBackLine, RiDeleteBackFill } from "react-icons/ri";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -70,16 +70,16 @@ const ViewExperience = () => {
 
    useEffect(() => {
     
-     userRequest({
-       method: "POST",
-       url: "/user/getuser",
+     AdminRequest({
+       method: "GET",
+       url: "/admingetusers",
        data: {
          _id: state.id,
        },
      }).then((data) => {
        console.log(data.data.data, "gggggggggggggg");
        setUser(data.data.data);
-      //  setBasic({ ...data.data.data });
+       //  setBasic({ ...data.data.data });
      });
    }, []);
 

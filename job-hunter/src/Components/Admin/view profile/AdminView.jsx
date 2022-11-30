@@ -30,7 +30,7 @@ const style = {
 
 
 
-const ViewProfile = () => {
+const AdminView = () => {
   const { state } = useLocation();
   
   const [user, setUser] = useState({});
@@ -71,4 +71,4 @@ const ViewProfile = () => {
   );
 }
 
-export default ViewProfile
+export default AdminView; 

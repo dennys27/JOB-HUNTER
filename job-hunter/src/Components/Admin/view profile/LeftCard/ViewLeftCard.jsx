@@ -52,16 +52,18 @@ const styles = {
 const ViewLeftCard = () => {
   const { state } = useLocation();
   const [user, setUser] = useState({})
+  const [skills, setSkills] = useState({})
+  const [profile, setProfile] = useState({})
 
   useState(() => {
     AdminRequest({
       method: "GET",
-      url: "/getuser",
+      url: "/admingetuser",
       data: {
         _id: state.id,
       },
     }).then((data) => {
-      console.log(data.data.data);
+      console.log(data);
       setUser(data.data.data);
       setProfile({ ...data.data.data });
       setSkills([...data.data.data.skills]);
@@ -69,142 +71,7 @@ const ViewLeftCard = () => {
    
     
   }, [])
-  
 
-
-  
- const notify = () =>
-   toast("sucess!", {
-     position: "top-right",
-     autoClose: 1000,
-     hideProgressBar: false,
-     closeOnClick: true,
-     pauseOnHover: true,
-     draggable: true,
-     progress: undefined,
-     theme: "light",
-   });
-
-
-  let details = {
-    name: "",
-    headline: "",
-    currentPosition: "",
-    industry:""
-  }
-
-
-   const [open, setOpen] = React.useState(false);
-   const [profile,setProfile] = useState(details)
-   const handleOpen = () => setOpen(true);
-   const handleClose = () => setOpen(false);
-   const [skills,setSkills] = useState([])
-   const [kill, setKill] = useState("")
-  const [openTwo, setOpenTwo] = useState(false);
-  
-   const detailChange = (e) => {
-     setProfile({ ...profile, [e.target.name]: e.target.value });
-   };
-  
-  const addKill = (e) => {
-    setKill(e.target.value)
-  }
-
-  const addSkill = (e) => {
-     setSkills([...skills,kill])
-  }
-  
-  const deleteSkill = (index) => {
-    console.log(index,"index...............");
-    if (index > -1) {
-      
-      skills.splice(index, 1);
-    }
-    setSkills([...skills])
-  }
-
-  const submit = () => {
-    let userId = JSON.parse(localStorage.getItem("user"))?._id
-    const { _id, name } = JSON.parse(localStorage?.getItem("user"));
-    const data = new FormData();
-    data.append("file", resume);
-    console.log(data, "checkinggggg");
-    JSON.stringify(profile)
-    axios
-      .get("http://localhost:5000/user/profilecard", {
-        params: {
-          _id: userId,
-          details: [profile],
-          skills: skills,
-        },
-        headers: {
-          token: `Bearer ${TOKEN}`,
-          "Access-Control-Allow-Origin": "http://localhost:5000",
-          "Content-Type": "json/form-data",
-        },
-      })
-      .then((data) => {
-        console.log(data.data.user[0],"after update");
-        if (data.data.status) {
-          setUser(data.data.user[0]); 
-          setOpen(false);
-          notify()
-        }
-      });
-  }
-
-
-
-  const handleFileChange = (e) => {
-      setExpanded(true);
-      setImage(e.target.files[0]);
-  };
-
-  const handlePdfChange = (e) => {
-      
-      setResume(e.target.files[0]);
-  };
-
-
-  const TOKEN = JSON.parse(localStorage?.getItem("user"))?.token;
-
-  
-  const handleProfile = (e) => {
-        const { _id, name } = JSON.parse(localStorage?.getItem("user"));
-        const data = new FormData();
-        data.append("file", image);
-
-        if (!_id || !name) {
-          // setPostError("please fillout the description");
-          // setTimeout(() => {
-          //   setPostError("");
-          // }, 3000);
-        } else {
-          axios
-            .post("http://localhost:5000/user/profilepicture", data, {
-              params: {
-                name: name,
-                userId: _id,
-                type:"image",
-                date: new Date().toDateString(),
-                timeStamp: new Date(),
-               
-              },
-              headers: {
-                token: `Bearer ${TOKEN}`,
-                "Access-Control-Allow-Origin": "*",
-                "Content-Type": "multipart/form-data",
-              },
-            })
-            .then((data) => {
-              if (data.status === 200) {
-                setUser(data.data.user);
-                setOpenTwo(false);
-                
-              }
-            });
-        }
-  }
 
 
 
@@ -215,7 +82,7 @@ const ViewLeftCard = () => {
           <div className="profile_pic">
             {user?.profile ? (
               <img
-                onClick={() => handleOpenTwo()}
+                
                 className="avatarOne"
                 src={`http://localhost:5000/static/images/${
                   user?.profile[user?.profile.length - 1]
@@ -224,7 +91,7 @@ const ViewLeftCard = () => {
               />
             ) : (
               <img
-                onClick={() => handleOpenTwo()}
+              
                 className="avatarOne"
                 src="https://static.thenounproject.com/png/3911675-200.png"
                 alt="profile"

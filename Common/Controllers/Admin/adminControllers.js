@@ -45,6 +45,17 @@ const verifications = asyncHandler(async (req, res) => {
   }
 });
 
+const adminGetUser = asyncHandler(async (req, res) => {
+  const accounts = await User.find({_id:req.body._id});
+
+  if (accounts) {
+    res.status(200).json(accounts);
+  } else {
+    res.status(400).json({ status: false, message: "no accounts found" });
+    throw new Error("invalid  details");
+  }
+});
+
 const adminGetUsers = asyncHandler(async (req, res) => {
   const accounts = await User.find({});
 
@@ -63,4 +74,5 @@ module.exports = {
   adminLogin,
   verifications,
   adminGetUsers,
+  adminGetUser
 };

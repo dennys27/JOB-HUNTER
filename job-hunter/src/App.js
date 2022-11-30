@@ -18,6 +18,7 @@ import Chat from './Components/User/Chat/Chat';
 import ViewProfile from './Components/User/view profile/ViewProfile';
 import Applicants from './Components/User/Jobs/Applicants/Applicants';
 import Varify from './Components/User/Verify Account/Varify';
+import AdminView from './Components/Admin/view profile/AdminView';
 
 
 
@@ -56,6 +57,7 @@ function App() {
         </Route>
         <Route element={<AdminRoutes />}>
           <Route element={<AdminHome />} path="/adminhome" />
+          <Route element={<AdminView />} path="/adminview" />
         </Route>
       </Routes>
     </div>

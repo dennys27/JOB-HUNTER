@@ -2,7 +2,7 @@ import { Box, Button, Collapse, Grid, Modal, TextField, Typography } from '@mui/
 import { ToastContainer, toast } from "react-toastify";
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { userRequest } from '../../../../Constants/Constants';
+import { AdminRequest, userRequest } from '../../../../Constants/Constants';
 import './BasicInfo.css'
 import { useLocation } from 'react-router-dom';
 
@@ -38,17 +38,16 @@ const ViewBasicInfo = () => {
   useEffect(() => {
 
     
-     userRequest({
-       method: "POST",
-       url: "/user/getuser",
+     AdminRequest({
+       method: "GET",
+       url: "/admingetuser",
        data: {
-         _id:state.id,
+         _id: state.id,
        },
      }).then((data) => {
        console.log(data.data.data, "gggggggggggggg");
        setUser(data.data.data);
        setBasic({ ...data.data.data });
-       
      });
     
   },[])
@@ -115,7 +114,7 @@ const ViewBasicInfo = () => {
                       Age
                     </Typography>
                     <Typography fontSize={13} component="h6" variant="h6">
-                    {`${user.age} years`}
+                    {`${user?.age} years`}
                     </Typography>
                   </div>
                   <div style={{ paddingTop: "10px" }}>
@@ -128,7 +127,7 @@ const ViewBasicInfo = () => {
                       Location
                     </Typography>
                     <Typography fontSize={13} component="h6" variant="h6">
-                      {user.location}
+                      {user?.location}
                     </Typography>
                   </div>
                 </div>
@@ -144,7 +143,7 @@ const ViewBasicInfo = () => {
                       Years of experiance
                     </Typography>
                     <Typography fontSize={13} component="h6" variant="h6">
-                      {`${user.yearsofexperience} years`}
+                      {`${user?.yearsofexperience} years`}
                     </Typography>
                   </div>
                   <div style={{ paddingTop: "10px" }}>
@@ -182,7 +181,7 @@ const ViewBasicInfo = () => {
                 }}
               >
                 <Typography>
-                {user.about}
+                {user?.about}
                 </Typography>
               </div>
             </Box>
