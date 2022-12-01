@@ -6,13 +6,12 @@ import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled, alpha } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
-import { useNavigate,Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import swal from "sweetalert";
 import { Avatar, Button, Collapse, Container, Menu, MenuItem, TextField, Toolbar, Typography } from "@mui/material";
 import { logout } from "../../../features/Auth/AuthSlice";
 import Modal from "@mui/material/Modal";
-// import auth from '../Verify Account/firebase';
-// import { authentication } from './firebase';
-// import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { MdOutlineVerified } from "react-icons/md";
 
 
 
@@ -141,11 +140,16 @@ const Navbar = () => {
   };
 
   const handlePostjob = (event) => {
-     //navigate("/jobpost");
+    
     if (user.verification === "true") {
       navigate("/Jobpost")
-    }else if (user.verification === "pending") {
-      alert("your verification is under process")
+    } else if (user.verification === "pending") {
+      
+     swal("Your profile is currently being verified by our admin team.  You will get a notification once it finished")
+      
+    
+
+      //alert("your verification is under process")
     } else {
        navigate("/verify");
     }

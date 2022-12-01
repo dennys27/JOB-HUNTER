@@ -39,15 +39,16 @@ const ViewBasicInfo = () => {
 
     
      AdminRequest({
-       method: "GET",
+       method: "POST",
        url: "/admingetuser",
        data: {
-         _id: state.id,
+         _id:state.id,
        },
      }).then((data) => {
        console.log(data.data.data, "gggggggggggggg");
-       setUser(data.data.data);
+       setUser(data.data);
        setBasic({ ...data.data.data });
+       
      });
     
   },[])
@@ -114,7 +115,7 @@ const ViewBasicInfo = () => {
                       Age
                     </Typography>
                     <Typography fontSize={13} component="h6" variant="h6">
-                    {`${user?.age} years`}
+                      {`${user[0]?.age} years`}
                     </Typography>
                   </div>
                   <div style={{ paddingTop: "10px" }}>
@@ -127,7 +128,7 @@ const ViewBasicInfo = () => {
                       Location
                     </Typography>
                     <Typography fontSize={13} component="h6" variant="h6">
-                      {user?.location}
+                      {user[0]?.location}
                     </Typography>
                   </div>
                 </div>
@@ -143,7 +144,7 @@ const ViewBasicInfo = () => {
                       Years of experiance
                     </Typography>
                     <Typography fontSize={13} component="h6" variant="h6">
-                      {`${user?.yearsofexperience} years`}
+                      {`${user[0]?.yearsofexperience} years`}
                     </Typography>
                   </div>
                   <div style={{ paddingTop: "10px" }}>
@@ -156,7 +157,7 @@ const ViewBasicInfo = () => {
                       Availability
                     </Typography>
                     <Typography fontSize={13} component="h6" variant="h6">
-                      {user.availability}
+                      {user[0]?.availability}
                     </Typography>
                   </div>
                 </div>
@@ -180,16 +181,13 @@ const ViewBasicInfo = () => {
                   overflow: "scroll",
                 }}
               >
-                <Typography>
-                {user?.about}
-                </Typography>
+                <Typography>{user[0]?.about}</Typography>
               </div>
             </Box>
-            
           </Grid>
         </Grid>
 
-        <ToastContainer/>
+        <ToastContainer />
       </Box>
     );
 }

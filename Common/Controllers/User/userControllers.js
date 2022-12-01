@@ -1142,10 +1142,10 @@ const postJobs = asyncHandler(async (req, res) => {
 
 const apply = asyncHandler(async (req, res) => {
 
- 
+ console.log(req.body,"ttttttttttt")
 
   await User.findById({ _id: req.body.user._id }).then((data) => {
-
+   console.log(data,"im tryingg......")
      try {
        axios
          .post(`${uri}/jobs/apply`, {

@@ -30,7 +30,7 @@ const style = {
 
 
 
-const AdminView = () => {
+const AdminViewProfile = () => {
   const { state } = useLocation();
   
   const [user, setUser] = useState({});
@@ -45,7 +45,7 @@ const AdminView = () => {
   return (
     <>
       <div style={{ backgroundColor: "#D9D9D9", paddingBottom: "100px" }}>
-        <AdminNavbar />
+        <AdminNavbar/>
         <Container>
           <Box sx={{ flexGrow: 1 }}>
             <Grid sx={{ paddingTop: "80px" }} container spacing={2}>
@@ -71,4 +71,4 @@ const AdminView = () => {
   );
 }
 
-export default AdminView; 
+export default AdminViewProfile

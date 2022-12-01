@@ -59,13 +59,19 @@ console.log(JSON.parse(req.body.key.job).jobsummary)
 
 
 const applyJob = asyncHandler(async (req, res) => {
-  let isExist = await Job.find({
-    applicants: { $elemMatch: {_id: req.body.user._id } },
-  });
-  if (isExist) {
+  console.log(req.body.jobId,"lets try this out")
+  let isExist = await Job.find(
+    { _id: req.body.jobId,
+      applicants: { $elemMatch: { _id: req.body.user._id } },
+    }
+  );
+
+  console.log(isExist,"does it exists")
+  if (isExist.length!==0) {
     res.status(200).json({ isExist ,exist:true});
   } else {
-     try {
+    try {
+      console.log("okay im hereeeeeeeeeee")
        const user = await Job.findByIdAndUpdate(req.body.jobId, {
          $push: { applicants: req.body.user },
        });

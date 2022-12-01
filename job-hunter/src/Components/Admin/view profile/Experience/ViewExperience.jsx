@@ -71,15 +71,15 @@ const ViewExperience = () => {
    useEffect(() => {
     
      AdminRequest({
-       method: "GET",
-       url: "/admingetusers",
+       method: "POST",
+       url: "/admingetuser",
        data: {
          _id: state.id,
        },
      }).then((data) => {
-       console.log(data.data.data, "gggggggggggggg");
-       setUser(data.data.data);
-       //  setBasic({ ...data.data.data });
+       console.log(data, "gggggggggggggg");
+       setUser(data.data);
+      //  setBasic({ ...data.data.data });
      });
    }, []);
 
@@ -206,7 +206,7 @@ const ViewExperience = () => {
                   overflow: "scroll",
                 }}
               >
-                {user?.experience?.map((data) => (
+                {user[0]?.experience?.map((data) => (
                   <div>
                     <Container
                       sx={{
@@ -278,7 +278,6 @@ const ViewExperience = () => {
                           <Box className="companies">
                             <Typography>View Projects</Typography>
                           </Box>
-                          
                         </Grid>
                       </Grid>
                     </Container>
@@ -301,7 +300,7 @@ const ViewExperience = () => {
                   overflow: "scroll",
                 }}
               >
-                {user?.certifications?.map((data) => (
+                {user[0]?.certifications?.map((data) => (
                   <div>
                     <Container
                       sx={{
@@ -361,7 +360,7 @@ const ViewExperience = () => {
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
-                            gap:1
+                            gap: 1,
                           }}
                           item
                           xs={2}
@@ -371,7 +370,6 @@ const ViewExperience = () => {
                           <Box className="companies">
                             <Typography>View Certificate</Typography>
                           </Box>
-                          
                         </Grid>
                       </Grid>
                     </Container>
@@ -395,7 +393,7 @@ const ViewExperience = () => {
                   overflow: "scroll",
                 }}
               >
-                {user?.education?.map((data) => (
+                {user[0]?.education?.map((data) => (
                   <div>
                     <Container
                       sx={{
@@ -457,7 +455,7 @@ const ViewExperience = () => {
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
-                            gap:1
+                            gap: 1,
                           }}
                           item
                           xs={2}
@@ -467,7 +465,6 @@ const ViewExperience = () => {
                           <Box className="companies">
                             <Typography>{data.decription}</Typography>
                           </Box>
-                          
                         </Grid>
                       </Grid>
                     </Container>

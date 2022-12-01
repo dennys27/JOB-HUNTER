@@ -16,9 +16,11 @@ import Connections from './Components/User/Connections/Connections';
 import Requests from './Components/User/Requests/Requests';
 import Chat from './Components/User/Chat/Chat';
 import ViewProfile from './Components/User/view profile/ViewProfile';
+import AdminViewProfile from './Components/Admin/view profile/ViewProfile';
 import Applicants from './Components/User/Jobs/Applicants/Applicants';
 import Varify from './Components/User/Verify Account/Varify';
-import AdminView from './Components/Admin/view profile/AdminView';
+
+
 
 
 
@@ -57,7 +59,8 @@ function App() {
         </Route>
         <Route element={<AdminRoutes />}>
           <Route element={<AdminHome />} path="/adminhome" />
-          <Route element={<AdminView />} path="/adminview" />
+          <Route element={<AdminViewProfile />} path="/adminview" />
+          
         </Route>
       </Routes>
     </div>

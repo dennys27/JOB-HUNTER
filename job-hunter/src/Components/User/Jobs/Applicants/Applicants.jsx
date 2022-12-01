@@ -328,9 +328,28 @@ const Applicants = () => {
                         {user.headline}
                       </Typography>
                     </Box>
-                    <a href="http://localhost:5000/static/resumes/1669720943217-resume-.pdf" target="_blank">
+                    {user.profile !== "" ? (
+                      <a
+                        href={`http://localhost:5000/static/resumes/${user?.resume}`}
+                        target="_blank"
+                      >
+                        <Button
+                          sx={{
+                            borderRadius: "50px",
+
+                            width: "100px",
+                            backgroundColor: "white",
+                            color: "black",
+                            border: "2px solid #01A9C1",
+                            marginLeft: "20px",
+                          }}
+                          variant="contained"
+                        >
+                          Resume
+                        </Button>
+                      </a>
+                    ) : (
                       <Button
-                        // onClick={() => onApply(job._id)}
                         sx={{
                           borderRadius: "50px",
 
@@ -340,11 +359,13 @@ const Applicants = () => {
                           border: "2px solid #01A9C1",
                           marginLeft: "20px",
                         }}
-                        variant="contained"
+                          variant="contained"
+                          disabled
                       >
-                        Resume
+                          Resume
+                          
                       </Button>
-                    </a>
+                    )}
 
                     <Button
                       // onClick={() => onApply(job._id)}

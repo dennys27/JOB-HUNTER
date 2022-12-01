@@ -22,6 +22,7 @@ const VerificationTable = () => {
 
  const navigate = useNavigate()
  const[accounts,setAccounts]=useState([])
+ const[refresh,setRefresh]=useState("")
     useEffect(() => {
 
         AdminRequest({
@@ -31,7 +32,23 @@ const VerificationTable = () => {
           console.log(data);
           setAccounts(data.data);
         });
-    },[])
+    }, [refresh])
+  
+  const handleVerify = (userId) => {
+
+    AdminRequest({
+      method: "POST",
+      url: "/approve",
+      data: {
+        userId:userId
+      }
+    }).then((data) => {
+      if (data.data.verification === "true") {
+       setRefresh(Math.random()*Math.random())
+     }
+    })
+
+  }
 
 
     return (
@@ -81,13 +98,23 @@ const VerificationTable = () => {
                     {data.user.headline}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    <Button onClick={() => navigate("/adminview", {
-                      state: {
-                        id: data.user._id
+                    <Button
+                      onClick={() =>
+                        navigate("/adminview", {
+                          state: {
+                            id: data.user._id,
+                          },
+                        })
                       }
-                    })}>View profile</Button>
-                    <Button sx={{paddingLeft:"30px"}}>Approve</Button>
-                   
+                    >
+                      View profile
+                    </Button>
+                    <Button
+                      onClick={() => handleVerify(data.user._id)}
+                      sx={{ paddingLeft: "30px" }}
+                    >
+                      Approve
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
