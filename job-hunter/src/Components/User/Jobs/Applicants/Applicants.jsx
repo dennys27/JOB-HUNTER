@@ -336,7 +336,6 @@ const Applicants = () => {
                         <Button
                           sx={{
                             borderRadius: "50px",
-
                             width: "100px",
                             backgroundColor: "white",
                             color: "black",

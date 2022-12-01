@@ -4,9 +4,9 @@ const asyncHandler = require("express-async-handler");
 const { Admin } = require("../../Models/AdminSchema");
 const { Verification } = require("../../Models/Verification");
 const { User } = require("../../Models/UserSchema");
+   
 
-
-
+const uri = "http://localhost:5001";
 
 const adminLogin = asyncHandler(async (req, res) => {
  
@@ -49,6 +49,29 @@ const verifications = asyncHandler(async (req, res) => {
   }
 });
 
+
+//admin get jobs
+
+const getAdminJobs = asyncHandler(async (req, res) => {
+  console.log("im working you know..................");
+
+  axios
+    .get(`${uri}/jobs/jobs`)
+    .then(function (response) {
+      console.log(response.data);
+      res.status(200).json(response.data);
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+    .finally(function () {
+      // always executed
+    });
+});
+
+
+
 const adminGetUser = asyncHandler(async (req, res) => {
   
   const accounts = await User.find({_id:req.body._id});
@@ -60,6 +83,7 @@ const adminGetUser = asyncHandler(async (req, res) => {
     throw new Error("invalid  details");
   }
 });
+
 
 //admin approve
 const adminApprove = asyncHandler(async (req, res) => {
@@ -86,6 +110,7 @@ const adminApprove = asyncHandler(async (req, res) => {
   }
 });
 
+
 const adminGetUsers = asyncHandler(async (req, res) => {
   const accounts = await User.find({});
 
@@ -105,5 +130,6 @@ module.exports = {
   verifications,
   adminGetUsers,
   adminGetUser,
-  adminApprove
+  adminApprove,
+  getAdminJobs,
 };

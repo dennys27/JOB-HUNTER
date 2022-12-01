@@ -326,11 +326,85 @@ const feeds = asyncHandler(async (req, res) => {
 
 
 const Like = asyncHandler(async (req, res) => {
+
+
+  
+  let notification = {
+    userId: "",
+    content: "",
+    postId:"",
+    timeStamp: Date.now()
+  }
+
+
   try {
 
    let wait =  await Post.updateOne({ _id: req.body.postId },
       { $pull: { "likes": req.body.userId } }
     )
+
+    let likeNotifications = await Post.find(
+      {
+       _id:req.body.postId,
+      }
+    );
+
+    let isExist = await User.find({
+      _id: likeNotifications[0].userId,
+      notifications: {
+        $elemMatch: {
+      
+            userId: req.body.userId,
+            content: "liked your post",
+          
+        },
+      }
+    });
+
+
+
+    notification.userId = req.body.userId;
+    notification.content = "liked your post";
+    notification.postId = likeNotifications._id;
+
+    console.log(isExist,"fffffff....!!!!!!")
+    
+    if (isExist.length === 0) {
+          await User.findByIdAndUpdate(
+            likeNotifications[0].userId,
+            {
+              $push: { notifications: notification },
+            },
+            {
+              new: true,
+            }
+          )
+    } else {
+      console.log("sheroooq")
+       await User.findByIdAndUpdate(
+         likeNotifications[0].userId,
+         {
+           $pull: {
+             notifications: {
+               userId: req.body.userId,
+              //  content: "liked your post",
+             },
+           },
+         },
+
+         {
+           new: true,
+         }
+       ).then((data) => {
+         console.log(data);
+       });
+      
+    }
+  
+    
+ 
+ 
+    
 
     if (wait.modifiedCount === 0) {
       await Post.findByIdAndUpdate(
@@ -456,13 +530,42 @@ const request = asyncHandler(async (req, res) => {
 
 
 const Comment = asyncHandler(async (req, res) => {
-  console.log("im being hit", req.body);
+
+    let notification = {
+      userId: "",
+      content: "",
+      postId: "",
+      timeStamp: Date.now(),
+    };
+
+ 
   let commentData = {
     userId: req.body.userId,
     name:req.body.name,
     comment: req.body.comments,
     timeStamp:new Date()
   }
+//FIND POSTED USER
+  
+  
+    let commentNotifications = await Post.find({
+      _id: req.body.postId,
+    });
+  
+  notification.userId = req.body.userId;
+  notification.content = "commented on your post...";
+  notification.postId = req.body.postId;
+//send notification
+  await User.findByIdAndUpdate(
+      commentNotifications[0].userId,
+          {
+             $push: { notifications: notification },
+           },
+       {
+             new: true,
+       }
+  );
+  
 
     await Post.findByIdAndUpdate(
       req.body.postId,
@@ -567,7 +670,7 @@ const profileCard = asyncHandler(async (req, res) => {
 const getUser = asyncHandler(async (req, res) => {
 
   try {
-  User.findOne({ _id: req.body._id }).populate("requests").populate("network").then((data) => {
+  User.findOne({ _id: req.body._id }).populate("requests").populate("network").populate("notifications.userId").then((data) => {
  
         res.json({ status: true, message: "success", data: data });
        
@@ -963,6 +1066,8 @@ const profile = asyncHandler(async (req, res) => {
 });
 
 
+
+
 //----------chat------------//
 
 
@@ -1026,9 +1131,6 @@ const findChat = async (req, res) => {
 };
 
 
-
-
-
 const addMessage = async (req, res) => {
 
   const { chatId, senderId, text } = req.body;
@@ -1049,6 +1151,7 @@ const addMessage = async (req, res) => {
   }
 };
 
+
 const getMessages = async (req, res) => {
   const { chatId } = req.params;
   console.log(chatId,"fffffffffffffffffffffffffffffff")
@@ -1063,7 +1166,10 @@ const getMessages = async (req, res) => {
 
 
 
-//----------chat---------//
+//----------chat -- End ---------//
+
+
+
 
 
 

@@ -12,12 +12,10 @@ import WorkspacesIcon from "@mui/icons-material/Workspaces";
 import StoreIcon from "@mui/icons-material/Store";
 import Diversity2Icon from "@mui/icons-material/Diversity2";
 import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
-import Person2Icon from "@mui/icons-material/Person2";
-import { Home } from "@mui/icons-material";
 import React from "react";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import AppsIcon from "@mui/icons-material/Apps";
-import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
 const AdminSideBar = () => {
   return (
@@ -36,31 +34,32 @@ const AdminSideBar = () => {
           <ListItem disablePadding>
             <ListItemButton component="a" href="#">
               <ListItemIcon>
-                <HistoryEduIcon sx={{ color: "black" }} />
+                <AppsIcon sx={{ color: "black" }} />
               </ListItemIcon>
-              <ListItemText onClick={() => {}} primary="Applicant List" />
+              <ListItemText onClick={() => {}} primary="Users" />
             </ListItemButton>
           </ListItem>
 
           <ListItem disablePadding>
             <ListItemButton component="a" href="#">
               <ListItemIcon>
-                <AppsIcon sx={{ color: "black" }} />
+                <ReceiptLongIcon sx={{ color: "black" }} />
               </ListItemIcon>
-              <ListItemText onClick={() => {}} primary="Users" />
+              <ListItemText onClick={() => {}} primary="Requests" />
             </ListItemButton>
           </ListItem>
+
           <ListItem disablePadding>
             <ListItemButton component="a" href="#">
               <ListItemIcon>
-                <ReceiptLongIcon sx={{ color: "black" }} />
+                <InsertDriveFileIcon sx={{ color: "black" }} />
               </ListItemIcon>
-              <ListItemText
-                onClick={() => {}}
-                primary="Verification Requests"
-              />
+              <ListItemText onClick={() => {}} primary="Jobs" />
             </ListItemButton>
           </ListItem>
+
+  
+
           <ListItem disablePadding>
             <ListItemButton component="a" href="#">
               <ListItemIcon>
@@ -69,6 +68,7 @@ const AdminSideBar = () => {
               <ListItemText primary="Reported posts" />
             </ListItemButton>
           </ListItem>
+
 
           <ListItem disablePadding>
             <ListItemButton component="a" href="#">

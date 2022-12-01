@@ -19,6 +19,7 @@ import ViewProfile from './Components/User/view profile/ViewProfile';
 import AdminViewProfile from './Components/Admin/view profile/ViewProfile';
 import Applicants from './Components/User/Jobs/Applicants/Applicants';
 import Varify from './Components/User/Verify Account/Varify';
+import Notifications from './Components/User/Notifications/Notifications';
 
 
 
@@ -44,6 +45,7 @@ function App() {
           <Route element={<Connections />} path="/connections" />
           <Route element={<Requests />} path="/requests" />
           <Route element={<Chat />} path="/chat" />
+          <Route element={<Notifications />} path="/Notifications" />
         </Route>
 
         <Route element={<UserRoutesTwo />}>

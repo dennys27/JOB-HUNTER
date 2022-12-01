@@ -198,7 +198,6 @@ const Navbar = () => {
                 variant="h6"
                 noWrap
                 component="a"
-                
                 sx={{
                   mr: 5,
                   mb: 1.5,
@@ -211,7 +210,7 @@ const Navbar = () => {
                   justifyContent: "center",
                   alignItems: "center",
                 }}
-                ocClick={()=>navigate('/Home')}
+                onClick={() => handleNavigate("Home")}
               >
                 JOBHUNTER
               </Typography>
@@ -289,6 +288,7 @@ const Navbar = () => {
                   mr={3}
                   mt={0.5}
                   className="hover"
+                  onClick={() => handleNavigate("Notifications")}
                 >
                   <AiOutlineBell size={23} />
                   <Typography

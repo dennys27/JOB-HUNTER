@@ -1,0 +1,10 @@
+
+.job_desc  {
+    overflow-y: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+.job_desc ::-webkit-scrollbar { /* WebKit */
+    width: 0;
+    height: 0;
+}

@@ -19,6 +19,17 @@ const userSchema = mongoose.Schema({
   education: { type: Array },
   requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
   network: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
+  notifications: [
+    {
+      userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+      },
+      content: String,
+      postId: String,
+      timeStamp: Date,
+    },
+  ],
   skills: { type: Array },
   age: { type: String },
   yearsofexperience: { type: String },

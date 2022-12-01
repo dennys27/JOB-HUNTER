@@ -1,6 +1,7 @@
 import { Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState } from 'react'
+import AdminJobs from '../AdminJobView/AdminJobs';
 import AdminNavbar from '../AdminNavbar/AdminNavbar';
 import AdminSideBar from '../AdminSideBar/AdminSideBar'
 import VerificationTable from '../verificationTable/VerificationTable';
@@ -20,7 +21,8 @@ const AdminHome = () => {
           <Box
             sx={{ width: "100%", height: "700px", backgroundColor: "#D9D9D9" }}
           >
-            <VerificationTable />
+            <AdminJobs/>
+            {/* <VerificationTable /> */}
           </Box>
         </Grid>
       </Grid>
