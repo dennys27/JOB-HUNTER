@@ -8,7 +8,7 @@ const AdminJobs = () => {
 
   useEffect(() => {
     AdminRequest({
-      method: "POST",
+      method: "GET",
       url: "/getAdminJobs",
     }).then((data) => {
         console.log(data.data)
@@ -28,26 +28,14 @@ const AdminJobs = () => {
           alignItems={"center"}
         >
           <Grid
-            sx={{ paddingTop: "80px" }}
+            sx={{ paddingTop: "40px",paddingLeft:"70px" }}
             container
             spacing={{ xs: 2, md: 3 }}
             columns={{ xs: 4, sm: 8, md: 12 }}
           >
-            <Grid
-              sx={{
-                display: { xs: "none", sm: "none", md: "flex", lg: "flex" },
-              }}
-              display={"flex"}
-              justifyContent={"center"}
-              item
-              xs={2}
-              sm={4}
-              md={3}
-            >
-              <Box position="fixed">{/* <JobMenu position="sticky" /> */}</Box>
-            </Grid>
+           
 
-            <Grid item xs={2} sm={4} md={8}>
+            <Grid item xs={2} sm={4} md={10}>
               <Box sx={{ marginTop: 2 }}>
                 <Grid
                   container

@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const axios = require("axios");
 const asyncHandler = require("express-async-handler");
 const { Admin } = require("../../Models/AdminSchema");
 const { Verification } = require("../../Models/Verification");
@@ -53,11 +54,12 @@ const verifications = asyncHandler(async (req, res) => {
 //admin get jobs
 
 const getAdminJobs = asyncHandler(async (req, res) => {
-  console.log("im working you know..................");
+
 
   axios
     .get(`${uri}/jobs/jobs`)
     .then(function (response) {
+        console.log("im working you know..................");
       console.log(response.data);
       res.status(200).json(response.data);
     })
@@ -69,6 +71,47 @@ const getAdminJobs = asyncHandler(async (req, res) => {
       // always executed
     });
 });
+
+
+
+
+const postJobs = asyncHandler(async (req, res) => {
+  try {
+    const storage = multer.diskStorage({
+      destination: path.join(__dirname, "../../public/images"),
+      filename: (req, file, cb) => {
+        cb(null, Date.now() + "-" + ".png");
+      },
+    });
+
+    const upload = multer({ storage: storage }).single("file");
+
+    upload(req, res, async (err) => {
+      if (!req.file) {
+        console.log("no image");
+        res.json({ noImage: "select image" });
+      }
+
+      try {
+        axios
+          .post(`${uri}/jobs/job`, { key: req.query, image: req.file.filename })
+          .then(function (response) {
+            console.log(response, "yes........", Math.random());
+          })
+          .catch(function (error) {
+            // handle error
+            console.log(error);
+          });
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ err, status: false, message: "operation failed" });
+    console.log(error);
+  }
+});
+
 
 
 
@@ -132,4 +175,5 @@ module.exports = {
   adminGetUser,
   adminApprove,
   getAdminJobs,
+  postJobs,
 };

@@ -3,26 +3,38 @@ import { Box } from '@mui/system';
 import React, { useState } from 'react'
 import AdminJobs from '../AdminJobView/AdminJobs';
 import AdminNavbar from '../AdminNavbar/AdminNavbar';
+import AdminPostJob from '../AdminPostJob/AdminPostJob';
 import AdminSideBar from '../AdminSideBar/AdminSideBar'
 import VerificationTable from '../verificationTable/VerificationTable';
 
 const AdminHome = () => {
 
-  const[menu,setMenu] = useState("")
+  const [choosen, setChoosen] = useState("jobs")
+  
+
+   const mySwitchFunction = (menu) => {
+     switch (menu) {
+       case "jobs":
+         return [<AdminJobs />];
+       case "postjob":
+         return [<AdminPostJob />];
+       case "verification":
+         return [<VerificationTable />];
+     }
+   };
 
   return (
     <div>
       <AdminNavbar />
       <Grid sx={{ paddingTop: "50px" }} container spacing={2}>
         <Grid item xs={2}>
-          <AdminSideBar />
+          <AdminSideBar setChoosen={setChoosen} />
         </Grid>
         <Grid item xs={10}>
           <Box
             sx={{ width: "100%", height: "700px", backgroundColor: "#D9D9D9" }}
           >
-            <AdminJobs/>
-            {/* <VerificationTable /> */}
+            {mySwitchFunction(choosen)}
           </Box>
         </Grid>
       </Grid>

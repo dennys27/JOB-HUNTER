@@ -6,6 +6,7 @@ const {
   adminGetUser,
   adminApprove,
   getAdminJobs,
+  postJobs,
   
 } = require("../Controllers/Admin/adminControllers");
 var router = express.Router();
@@ -16,6 +17,7 @@ router.get('/verifications', verifications);
 router.post("/admingetuser", adminGetUser);
 router.get("/admingetusers", adminGetUsers);
 router.post("/approve", adminApprove);
-router.post("/getAdminJobs", getAdminJobs);
+router.get("/getAdminJobs", getAdminJobs);
+router.post("/jobpost", postJobs); 
 
 module.exports = router; 

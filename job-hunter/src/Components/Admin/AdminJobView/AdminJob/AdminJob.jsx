@@ -5,11 +5,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 const AdminJob = ({ job }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const viewJob = (job) => {
-    console.log("yyupdssd");
-    navigate("/jobview", { state: { job: job } });
-  };
 
   return (
     <>
@@ -22,6 +19,13 @@ const AdminJob = ({ job }) => {
           padding: "15px",
           fontFamily: "fantasy",
         }}
+        onClick={() =>
+          navigate("/adminjobview", {
+            state: {
+              details:job,
+            },
+          })
+        }
       >
         <div style={{ display: "flex", alignItems: "center" }}>
           <img
@@ -37,7 +41,7 @@ const AdminJob = ({ job }) => {
               <h4>{job.designation}</h4>
             </Box>
 
-            <Typography onClick={(e) => viewJob(job)} style={{ color: "gray" }}>
+            <Typography  style={{ color: "gray" }}>
               {job.companyname}
             </Typography>
           </div>

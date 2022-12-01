@@ -16,8 +16,10 @@ import React from "react";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import AppsIcon from "@mui/icons-material/Apps";
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import NoteAddIcon from "@mui/icons-material/NoteAdd";
 
-const AdminSideBar = () => {
+
+const AdminSideBar = ({setChoosen}) => {
   return (
     <Box flex={1} p={0} sx={{ display: { xs: "none", sm: "block" } }}>
       <Box
@@ -34,9 +36,26 @@ const AdminSideBar = () => {
           <ListItem disablePadding>
             <ListItemButton component="a" href="#">
               <ListItemIcon>
-                <AppsIcon sx={{ color: "black" }} />
+                <InsertDriveFileIcon sx={{ color: "black" }} />
               </ListItemIcon>
-              <ListItemText onClick={() => {}} primary="Users" />
+              <ListItemText
+                onClick={() => {
+                  setChoosen("jobs");
+                }}
+                primary="Jobs"
+              />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding>
+            <ListItemButton component="a" href="#">
+              <ListItemIcon>
+                <NoteAddIcon sx={{ color: "black" }} />
+              </ListItemIcon>
+              <ListItemText
+                onClick={() => setChoosen("postjob")}
+                primary="Post a job"
+              />
             </ListItemButton>
           </ListItem>
 
@@ -45,20 +64,14 @@ const AdminSideBar = () => {
               <ListItemIcon>
                 <ReceiptLongIcon sx={{ color: "black" }} />
               </ListItemIcon>
-              <ListItemText onClick={() => {}} primary="Requests" />
+              <ListItemText
+                onClick={() => {
+                  setChoosen("verification");
+                }}
+                primary="Requests"
+              />
             </ListItemButton>
           </ListItem>
-
-          <ListItem disablePadding>
-            <ListItemButton component="a" href="#">
-              <ListItemIcon>
-                <InsertDriveFileIcon sx={{ color: "black" }} />
-              </ListItemIcon>
-              <ListItemText onClick={() => {}} primary="Jobs" />
-            </ListItemButton>
-          </ListItem>
-
-  
 
           <ListItem disablePadding>
             <ListItemButton component="a" href="#">
@@ -68,7 +81,6 @@ const AdminSideBar = () => {
               <ListItemText primary="Reported posts" />
             </ListItemButton>
           </ListItem>
-
 
           <ListItem disablePadding>
             <ListItemButton component="a" href="#">

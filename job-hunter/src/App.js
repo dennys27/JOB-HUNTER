@@ -20,6 +20,7 @@ import AdminViewProfile from './Components/Admin/view profile/ViewProfile';
 import Applicants from './Components/User/Jobs/Applicants/Applicants';
 import Varify from './Components/User/Verify Account/Varify';
 import Notifications from './Components/User/Notifications/Notifications';
+import AdminJobDetails from './Components/Admin/AdminJobDetails/AdminJobDetails';
 
 
 
@@ -62,6 +63,7 @@ function App() {
         <Route element={<AdminRoutes />}>
           <Route element={<AdminHome />} path="/adminhome" />
           <Route element={<AdminViewProfile />} path="/adminview" />
+          <Route element={<AdminJobDetails />} path="/adminjobview" />
           
         </Route>
       </Routes>
