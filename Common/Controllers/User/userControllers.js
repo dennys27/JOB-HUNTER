@@ -11,9 +11,8 @@ const { Post } = require("../../Models/Post");
 const { Chat } = require("../../Models/Chat");
 const MessageModel  = require("../../Models/Message");
 const axios = require("axios");
-const httpProxy = require("express-http-proxy");
-var mongoose = require("mongoose");
 const { Verification } = require("../../Models/Verification");
+const { Report } = require("../../Models/ReportUserSchema");
 
 
 
@@ -685,6 +684,41 @@ const getUser = asyncHandler(async (req, res) => {
   
 })
 
+
+const reportUser = asyncHandler(async (req, res) => {
+ console.log(req.body)
+  try {
+  const isExist =  await Report.findOne({ _id: req.body.reportedId })
+
+    if (isExist === null) {
+      Report.create({
+        reportedId: req.body.reportedId,
+
+        reasons: [
+          {
+            userId: req.body.currentUser,
+            reason: req.body.reason,
+          }
+        ],
+        
+      })
+        .then((data) => {
+          console.log(data);
+        })
+    }
+    
+    
+  } catch (err) {
+    console.log(err);
+  }
+   
+  
+})
+
+
+
+
+
 const getUsers = asyncHandler(async (req, res) => {
 
   try {
@@ -1067,6 +1101,7 @@ const profile = asyncHandler(async (req, res) => {
 
 
 
+
 //----------chat------------//
 
 
@@ -1247,10 +1282,8 @@ const postJobs = asyncHandler(async (req, res) => {
 
 const apply = asyncHandler(async (req, res) => {
 
- console.log(req.body,"ttttttttttt")
-
   await User.findById({ _id: req.body.user._id }).then((data) => {
-   console.log(data,"im tryingg......")
+
      try {
        axios
          .post(`${uri}/jobs/apply`, {
@@ -1271,11 +1304,8 @@ const apply = asyncHandler(async (req, res) => {
        console.log(err);
     }
     
-
   })
 
-    
-  
 })
 
 
@@ -1346,4 +1376,5 @@ module.exports = {
   rejectRequest,
   getmyjob,
   profileVerification,
+  reportUser,
 };

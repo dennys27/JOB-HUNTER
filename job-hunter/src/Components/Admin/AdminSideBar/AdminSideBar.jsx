@@ -82,7 +82,7 @@ const AdminSideBar = ({setChoosen}) => {
             </ListItemButton>
           </ListItem>
 
-          <ListItem disablePadding>
+          <ListItem onClick={() => setChoosen("reported")} disablePadding>
             <ListItemButton component="a" href="#">
               <ListItemIcon>
                 <SettingsSuggestIcon sx={{ color: "black" }} />

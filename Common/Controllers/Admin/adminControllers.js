@@ -5,7 +5,8 @@ const asyncHandler = require("express-async-handler");
 const { Admin } = require("../../Models/AdminSchema");
 const { Verification } = require("../../Models/Verification");
 const { User } = require("../../Models/UserSchema");
-   
+const multer = require("multer");
+const path = require("path");
 
 const uri = "http://localhost:5001";
 
@@ -76,40 +77,49 @@ const getAdminJobs = asyncHandler(async (req, res) => {
 
 
 const postJobs = asyncHandler(async (req, res) => {
-  try {
-    const storage = multer.diskStorage({
-      destination: path.join(__dirname, "../../public/images"),
-      filename: (req, file, cb) => {
-        cb(null, Date.now() + "-" + ".png");
-      },
-    });
+  
+  console.log(req.file)
 
-    const upload = multer({ storage: storage }).single("file");
+    try {
+      const storage = multer.diskStorage({
+        destination: path.join(__dirname, "../../public/images"),
+        filename: (req, file, cb) => {
+          cb(null, Date.now() + "-" + ".png");
+        },
+      });
 
-    upload(req, res, async (err) => {
-      if (!req.file) {
-        console.log("no image");
-        res.json({ noImage: "select image" });
-      }
+      const upload = multer({ storage: storage }).single("file");
 
-      try {
-        axios
-          .post(`${uri}/jobs/job`, { key: req.query, image: req.file.filename })
-          .then(function (response) {
-            console.log(response, "yes........", Math.random());
-          })
-          .catch(function (error) {
-            // handle error
-            console.log(error);
-          });
-      } catch (err) {
-        console.log(err);
-      }
-    });
-  } catch (error) {
-    res.status(500).json({ err, status: false, message: "operation failed" });
-    console.log(error);
-  }
+      upload(req, res, async (err) => {
+        if (!req.file) {
+          console.log("no image");
+          res.json({ noImage: "select image" });
+        }
+
+        try {
+          axios
+            .post(`${uri}/jobs/job`, {
+              key: req.query,
+              image: req.file.filename,
+            })
+            .then(function (response) {
+              console.log(response, "yes........", Math.random());
+              res
+                .status(200)
+                .json({data:response.data, status: true, message: "operation success" });
+            })
+            .catch(function (error) {
+              // handle error
+              console.log(error);
+            });
+        } catch (err) {
+          console.log(err);
+        }
+      });
+    } catch (error) {
+      res.status(500).json({ err, status: false, message: "operation failed" });
+      console.log(error);
+    }
 });
 
 

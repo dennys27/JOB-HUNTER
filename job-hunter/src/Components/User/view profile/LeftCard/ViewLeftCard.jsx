@@ -1,16 +1,15 @@
-import { Box, Collapse, TextField, Typography, useRadioGroup } from '@mui/material';
+import { Box, Collapse, Divider, Menu, MenuItem, TextField, Typography, useRadioGroup } from '@mui/material';
 import { ToastContainer, toast } from "react-toastify";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import React from 'react'
 import Modal from "@mui/material/Modal";
 import "./LeftCard.css"
 import { useState } from 'react';
-import { TiDelete } from "react-icons/ti";
 import { userRequest } from '../../../../Constants/Constants';
 import axios from 'axios' 
 import { useLocation } from 'react-router-dom';
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 
 const style = {
@@ -18,8 +17,8 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 700,
-  height:500,
+  width: 450,
+  height:270,
   bgcolor: "background.paper",
   boxShadow: 24,
   border: "none",
@@ -29,35 +28,21 @@ const style = {
   overflow: "scroll",
    scrollbarWidth: "none"
 };
-const styles = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  maxWidth: 700,
-  minWidth: 500,
-  maxHeight:500,
-  minHeight:150,
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  border: "none",
-  outline:"none",
-  p: 4,
-  borderRadius: "5px",
-  overflow: "scroll",
-  scrollbarWidth: "none"
-};
+
 
 
 
 const ViewLeftCard = () => {
   const { state } = useLocation();
   const [user, setUser] = useState({})
-  const [image, setImage] = useState();
-  const [resume, setResume] = useState("");
-  const handleOpenTwo = () => setOpenTwo(true);
-  const handleCloseTwo = () => setOpenTwo(false);
-  const [expanded, setExpanded] = useState(false);
+
+
+
+   const [openT, setOpenT] = React.useState(false);
+   const handleOpen = () => setOpenT(true);
+   const handleCloseT = () => setOpenT(false);
+ 
+
 
   useState(() => {
     userRequest({
@@ -100,204 +85,230 @@ const ViewLeftCard = () => {
   }
 
 
-   const [open, setOpen] = React.useState(false);
+  
    const [profile,setProfile] = useState(details)
-   const handleOpen = () => setOpen(true);
-   const handleClose = () => setOpen(false);
+   
    const [skills,setSkills] = useState([])
    const [kill, setKill] = useState("")
-  const [openTwo, setOpenTwo] = useState(false);
+ 
   
-   const detailChange = (e) => {
-     setProfile({ ...profile, [e.target.name]: e.target.value });
-   };
-  
-  const addKill = (e) => {
-    setKill(e.target.value)
-  }
-
-  const addSkill = (e) => {
-     setSkills([...skills,kill])
-  }
-  
-  const deleteSkill = (index) => {
-    console.log(index,"index...............");
-    if (index > -1) {
-      
-      skills.splice(index, 1);
-    }
-    setSkills([...skills])
-  }
-
-  const submit = () => {
-    let userId = JSON.parse(localStorage.getItem("user"))?._id
-    const { _id, name } = JSON.parse(localStorage?.getItem("user"));
-    const data = new FormData();
-    data.append("file", resume);
-    console.log(data, "checkinggggg");
-    JSON.stringify(profile)
-    axios
-      .get("http://localhost:5000/user/profilecard", {
-        params: {
-          _id: userId,
-          details: [profile],
-          skills: skills,
-        },
-        headers: {
-          token: `Bearer ${TOKEN}`,
-          "Access-Control-Allow-Origin": "http://localhost:5000",
-          "Content-Type": "json/form-data",
-        },
-      })
-      .then((data) => {
-        console.log(data.data.user[0],"after update");
-        if (data.data.status) {
-          setUser(data.data.user[0]); 
-          setOpen(false);
-          notify()
-        }
-      });
-  }
 
 
-
-  const handleFileChange = (e) => {
-      setExpanded(true);
-      setImage(e.target.files[0]);
-  };
-
-  const handlePdfChange = (e) => {
-      
-      setResume(e.target.files[0]);
-  };
 
 
   const TOKEN = JSON.parse(localStorage?.getItem("user"))?.token;
+ const currentUser = JSON.parse(localStorage?.getItem("user"))._id;
 
-  
-  const handleProfile = (e) => {
-        const { _id, name } = JSON.parse(localStorage?.getItem("user"));
-        const data = new FormData();
-        data.append("file", image);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-        if (!_id || !name) {
-          // setPostError("please fillout the description");
-          // setTimeout(() => {
-          //   setPostError("");
-          // }, 3000);
-        } else {
-          axios
-            .post("http://localhost:5000/user/profilepicture", data, {
-              params: {
-                name: name,
-                userId: _id,
-                type:"image",
-                date: new Date().toDateString(),
-                timeStamp: new Date(),
-               
-              },
-              headers: {
-                token: `Bearer ${TOKEN}`,
-                "Access-Control-Allow-Origin": "*",
-                "Content-Type": "multipart/form-data",
-              },
-            })
-            .then((data) => {
-              if (data.status === 200) {
-                setUser(data.data.user);
-                setOpenTwo(false);
-                
-              }
-            });
-        }
-  }
+
+  const onReport = (reportedId,reason) => {
+
+
+  userRequest({
+    method: "POST",
+    url: "/user/reportuser",
+    data: {
+      currentUser: currentUser,
+      reportedId: reportedId,
+      reason:reason
+    },
+  }).then((data) => {
+    alert("success")
+  })
+}
+
 
 
 
   return (
-    <div className="card_wrapper">
-      <div style={{ backgroundColor: "white" }} className="cardOne">
-        <div className="content_wrapper">
-          <div className="profile_pic">
-            {user?.profile ? (
-              <img
-                onClick={() => handleOpenTwo()}
-                className="avatarOne"
-                src={`http://localhost:5000/static/images/${
-                  user?.profile[user?.profile.length - 1]
-                }`}
-                alt="profile"
+    <>
+      <div className="card_wrapper">
+        <div style={{ backgroundColor: "white" }} className="cardOne">
+          <div className="content_wrapper">
+            <div>
+              <MoreVertIcon
+                sx={{ float: "right" }}
+                id="basic-button"
+                aria-controls={open ? "basic-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
               />
-            ) : (
-              <img
-                onClick={() => handleOpenTwo()}
-                className="avatarOne"
-                src="https://static.thenounproject.com/png/3911675-200.png"
-                alt="profile"
-              />
-            )}
 
-            <Typography
-              fontSize={13}
-              component="h6"
-              variant="h6"
-              sx={{ fontSize: 17 }}
-            >
-              {user?.name}
-            </Typography>
-            <Typography
-              fontSize={13}
-              component="h6"
-              variant="h6"
-              className="designationOne"
-            >
-              {user?.headline}
-            </Typography>
-          </div>
-          <div className="impressionsOne">
-            <Typography fontSize={13} component="h6" variant="h6">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sem
-              ante, vehicula eu ante non, tristique ullamcorper ex. Mauris
-              dignissim euismod tortor, id elementum augue porta non.
-            </Typography>
-          </div>
-          <div className="skills">
-            <Typography
-              fontSize={13}
-              component="h6"
-              variant="h6"
-              style={{ fontWeight: "600", paddingLeft: "15px" }}
-            >
-              skills
-            </Typography>
-
-            <div
-              className="flex_skills"
-              style={{
-                maxHeight: "75px",
-                overflow: "scroll",
-                scrollbarWidth: "none",
-              }}
-            >
-              {user?.skills?.map((data) => (
-                <Typography
-                  fontSize={13}
-                  component="h6"
-                  variant="h6"
-                  className="skill"
-                >
-                  {data}
-                </Typography>
-              ))}
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  "aria-labelledby": "basic-button",
+                }}
+              >
+                <MenuItem onClick={handleOpen}>Report</MenuItem>
+                <MenuItem onClick={handleClose}>Remove Connection</MenuItem>
+              </Menu>
             </div>
 
-            
+            <div className="profile_pic" onClick={handleClose}>
+              {user?.profile ? (
+                <img
+                  className="avatarOne"
+                  src={`http://localhost:5000/static/images/${
+                    user?.profile[user?.profile.length - 1]
+                  }`}
+                  alt="profile"
+                />
+              ) : (
+                <img
+                  className="avatarOne"
+                  src="https://static.thenounproject.com/png/3911675-200.png"
+                  alt="profile"
+                />
+              )}
+
+              <Typography
+                fontSize={13}
+                component="h6"
+                variant="h6"
+                sx={{ fontSize: 17 }}
+              >
+                {user?.name}
+              </Typography>
+              <Typography
+                fontSize={13}
+                component="h6"
+                variant="h6"
+                className="designationOne"
+              >
+                {user?.headline}
+              </Typography>
+            </div>
+            <div className="impressionsOne">
+              <Typography fontSize={13} component="h6" variant="h6">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
+                sem ante, vehicula eu ante non, tristique ullamcorper ex. Mauris
+                dignissim euismod tortor, id elementum augue porta non.
+              </Typography>
+            </div>
+            <div className="skills">
+              <Typography
+                fontSize={13}
+                component="h6"
+                variant="h6"
+                style={{ fontWeight: "600", paddingLeft: "15px" }}
+              >
+                skills
+              </Typography>
+
+              <div
+                className="flex_skills"
+                style={{
+                  maxHeight: "75px",
+                  overflow: "scroll",
+                  scrollbarWidth: "none",
+                }}
+              >
+                {user?.skills?.map((data) => (
+                  <Typography
+                    fontSize={13}
+                    component="h6"
+                    variant="h6"
+                    className="skill"
+                  >
+                    {data}
+                  </Typography>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
+      <Modal
+        open={openT}
+        onClose={handleCloseT}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Report
+          </Typography>
+          <Divider />
 
-    </div>
+          <Typography
+            id="modal-modal-description"
+            sx={{
+              mt: 2,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+            onClick={() => onReport(user?._id, "Suspecious,spam or fake")}
+          >
+            Suspecious,spam or fake
+            <ArrowForwardIcon sx={{ paddingLeft: 3, color: "#01A9C1" }} />
+          </Typography>
+
+          <Typography
+            id="modal-modal-description"
+            sx={{
+              mt: 2,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+            onClick={() =>
+              onReport(user?._id, " Harrassment or hateful speech.")
+            }
+          >
+            Harrassment or hateful speech.
+            <ArrowForwardIcon sx={{ paddingLeft: 3, color: "#01A9C1" }} />
+          </Typography>
+
+          <Typography
+            id="modal-modal-description"
+            sx={{
+              mt: 2,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+            onClick={() => onReport(user?._id, "Violence or physical harm")}
+          >
+            Violence or physical harm
+            <ArrowForwardIcon sx={{ paddingLeft: 3, color: "#01A9C1" }} />
+          </Typography>
+
+          <Typography
+            id="modal-modal-description"
+            sx={{
+              mt: 2,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+            onClick={() =>
+              onReport(
+                user?._id,
+                "Intellectual property infringement or defamation"
+              )
+            }
+          >
+            Intellectual property infringement or defamation
+            <ArrowForwardIcon sx={{ paddingLeft: 3, color: "#01A9C1" }} />
+          </Typography>
+        </Box>
+      </Modal>
+    </>
   );
 }
 

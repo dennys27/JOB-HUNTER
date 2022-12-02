@@ -5,12 +5,13 @@ import AdminJobs from '../AdminJobView/AdminJobs';
 import AdminNavbar from '../AdminNavbar/AdminNavbar';
 import AdminPostJob from '../AdminPostJob/AdminPostJob';
 import AdminSideBar from '../AdminSideBar/AdminSideBar'
+import ReportedTable from '../Reported users/ReportedTable';
 import VerificationTable from '../verificationTable/VerificationTable';
 
 const AdminHome = () => {
 
   const [choosen, setChoosen] = useState("jobs")
-  
+
 
    const mySwitchFunction = (menu) => {
      switch (menu) {
@@ -20,6 +21,8 @@ const AdminHome = () => {
          return [<AdminPostJob />];
        case "verification":
          return [<VerificationTable />];
+       case "reported":
+         return [<ReportedTable />];
      }
    };
 

@@ -6,6 +6,12 @@ import { TiDelete } from 'react-icons/ti';
 import AdminNavbar from '../AdminNavbar/AdminNavbar';
 
 
+
+
+
+
+
+
 const AdminPostJob = () => {
  
         const [skills, setSkills] = useState([]);
@@ -47,12 +53,13 @@ const AdminPostJob = () => {
         };
 
         const handleJob = (e) => {
-          const { _id, name } = JSON.parse(localStorage?.getItem("user"));
+          const { _id } = JSON.parse(localStorage?.getItem("admin"));
+          console.log(_id)
           const data = new FormData();
           data.append("file", image);
           console.log(data);
 
-          if (!_id || !name) {
+          if (!_id) {
             // setPostError("please fillout the description");
             // setTimeout(() => {
             //   setPostError("");
@@ -72,9 +79,11 @@ const AdminPostJob = () => {
                   token: `Bearer ${TOKEN}`,
                   "Access-Control-Allow-Origin": "*",
                   "Content-Type": "multipart/form-data",
+
                 },
               })
               .then((data) => {
+                console.log(data)
                 notify();
               });
           }
@@ -115,7 +124,7 @@ const AdminPostJob = () => {
       >
         <Container
           sx={{
-            width: "600px",
+            width: "700px",
             height: "auto",
             backgroundColor: "white",
             marginTop: "20px",
