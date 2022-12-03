@@ -49,6 +49,16 @@ const PostActions = ({ post, setLiked, handleExpandComment }) => {
     });
   };
 
+
+  //for live notifications
+  const handleNotification = (type) => {
+    socket.emit("sendNotification", {
+      senderName: user,
+      receiverName: post.username,
+      type,
+    });
+  };
+
   return (
     <CardActions
       sx={{

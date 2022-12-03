@@ -56,6 +56,7 @@ io.on("connection", (socket) => {
         type,
       });
     });
+  
 
     socket.on("sendText", ({ senderName, receiverName, text }) => {
       const receiver = getUser(receiverName);
@@ -64,6 +65,10 @@ io.on("connection", (socket) => {
         text,
       });
     });
+  
+  const getUser = (userId) => {
+    return activeUsers.find((user) => user.userId === userId);
+  };
   
   
   
