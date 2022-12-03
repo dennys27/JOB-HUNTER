@@ -1,12 +1,12 @@
 import { CardActions, IconButton, Typography } from '@mui/material';
-import React from 'react'
+import React, { useRef } from "react";
 import { AiOutlineLike } from 'react-icons/ai';
 import { BiComment } from 'react-icons/bi';
 import { RiShareForwardLine } from 'react-icons/ri';
 import { styled } from "@mui/material/styles";
 import { userRequest } from '../../../../../Constants/Constants';
 import { useState } from 'react';
-
+import { io } from "socket.io-client";
 
 
 
@@ -23,6 +23,9 @@ const ExpandMore = styled((props) => {
 
 
 const PostActions = ({ post, setLiked, handleExpandComment }) => {
+ 
+   const socket = useRef();
+
   const [expanded, setExpanded] = useState(false);
   const [like, setLike] = useState(false);
  
@@ -36,6 +39,7 @@ const PostActions = ({ post, setLiked, handleExpandComment }) => {
 
   const postLikeHandler = (post) => {
     const userId = JSON.parse(localStorage.getItem("user"))?._id;
+    // handleNotification(post.userId)
     setLike(() => !like);
     userRequest({
       method: "POST",
@@ -51,11 +55,12 @@ const PostActions = ({ post, setLiked, handleExpandComment }) => {
 
 
   //for live notifications
-  const handleNotification = (type) => {
-    socket.emit("sendNotification", {
+
+  const handleNotification = (reciever) => {
+   socket.current.emit("sendNotification", {
       senderName: user,
-      receiverName: post.username,
-      type,
+      receiverName: reciever,
+      content: "liked",
     });
   };
 

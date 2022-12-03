@@ -105,6 +105,17 @@ const Navbar = () => {
   const handleOtp = (e) => {
     setOtp(e.target.value)
   }
+
+
+    const [notifications, setNotifications] = useState([]);
+    
+
+    // useEffect(() => {
+    //   io.on("getNotification", (data) => {
+    //     setNotifications((prev) => [...prev, data]);
+    //     alert("heyy im here....")
+    //   });
+    // }, []);
  
 
 
@@ -147,9 +158,6 @@ const Navbar = () => {
       
      swal("Your profile is currently being verified by our admin team.  You will get a notification once it finished")
       
-    
-
-      //alert("your verification is under process")
     } else {
        navigate("/verify");
     }
