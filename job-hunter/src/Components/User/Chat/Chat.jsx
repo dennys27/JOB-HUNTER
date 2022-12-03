@@ -26,7 +26,7 @@ const Chat = () => {
       setOnlineUsers(users);
       //console.log(onlineUsers)
     });
-  }, []);
+  }, [receivedMessage]);
 
   let userId = JSON.parse(localStorage.getItem("user"))._id;
   useEffect(() => {
@@ -44,7 +44,7 @@ const Chat = () => {
     };
 
     getChats();
-  }, [userId]);
+  }, [userId, receivedMessage, sendMessage]);
 
   // Get the message from socket server
   useEffect(() => {
@@ -61,6 +61,15 @@ const Chat = () => {
       socket.current.emit("send-message", sendMessage);
     }
   }, [sendMessage]);
+
+
+
+
+  const checkOnlineStatus = (chat) => {
+    const chatMember = chat.members.find((member) => member !== user._id);
+    const online = onlineUsers.find((user) => user.userId === chatMember);
+    return online?true:false
+}
 
   return (
     <>
@@ -102,7 +111,7 @@ const Chat = () => {
 
                   {chat?.map((Chat) => (
                     <Box onClick={() => setCurrentChat(Chat)}>
-                      <Conversation data={Chat} currentUserId={userId} />
+                      <Conversation data={Chat} currentUserId={userId} online={checkOnlineStatus(Chat)} />
                     </Box>
                   ))}
                 </Box>

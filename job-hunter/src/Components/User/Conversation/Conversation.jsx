@@ -5,10 +5,11 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { userRequest } from '../../../Constants/Constants';
 
-const Conversation = ({ data, currentUserId }) => {
+const Conversation = ({ data,currentUserId,online}) => {
     
   const [userData, setUserData] = useState(null);
   const userId = data.members.find((id) => id !== currentUserId);
+  
     useEffect(() => {
       
         const getUserData = async () => {
@@ -57,11 +58,17 @@ const Conversation = ({ data, currentUserId }) => {
                 height: "50px",
                 borderRadius: "50px",
               }}
-              src= {`http://localhost:5000/static/images/${userData?.profile[userData.profile.length - 1] }`}
+              src={`http://localhost:5000/static/images/${
+                userData?.profile[userData.profile.length - 1]
+              }`}
             />
             <Box>
-              <Typography>{ userData?.name}</Typography>
-              <Typography> online </Typography>
+              <Typography>{userData?.name}</Typography>
+              {online ? (
+                <Typography sx={{ color: "green" }}> online </Typography>
+              ) : (
+                <Typography sx={{ color: "gray" }}> offline </Typography>
+              )}
             </Box>
           </Box>
         </Box>

@@ -4,20 +4,21 @@ import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
 import Collapse from "@mui/material/Collapse";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Box, Divider, Grid, Paper, TextField } from "@mui/material";
+import { Box, Divider, Grid, Menu, MenuItem, Modal, Paper, TextField } from "@mui/material";
 import PostActions from "./PostActions/PostActions";
 import { useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
 import { userRequest } from "../../../../Constants/Constants";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import "./Post.css"
 import { useNavigate } from "react-router-dom";
+
 
 
 const ExpandMore = styled((props) => {
@@ -25,13 +26,36 @@ const ExpandMore = styled((props) => {
   return <IconButton {...other} />;
 })(({ theme, expand }) => ({
   transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
- 
   transition: theme.transitions.create("transform", {
     duration: theme.transitions.duration.shortest,
   }),
 }));
 
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 450,
+  height: 270,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  border: "none",
+  outline: "none",
+  p: 4,
+  borderRadius: "5px",
+  overflow: "scroll",
+  scrollbarWidth: "none",
+};
+
 export default function RecipeReviewCard({ post, setLiked }) {
+  const [comments, setComments] = useState("");
+  const [expandedComment, setComment] = useState(false);
+  const [expanded, setExpanded] = React.useState(false);
+  const [openT, setOpenT] = React.useState(false);
+  const handleCloseT = () => setOpenT(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   let navigate = useNavigate()
   let duplicate_comment = [...post.comments];
@@ -40,13 +64,12 @@ export default function RecipeReviewCard({ post, setLiked }) {
 
   const user = JSON.parse(localStorage.getItem("user"))?._id
   const name = JSON.parse(localStorage.getItem("user"))?.name
-  const [expanded, setExpanded] = React.useState(false);
+ 
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  const [comments, setComments] = useState("");
-  const [expandedComment, setComment] = useState(false);
+
 
   const handleExpandComment = () => {
     setComment(!expandedComment);
@@ -74,6 +97,41 @@ export default function RecipeReviewCard({ post, setLiked }) {
 
   }
 
+
+
+
+
+
+
+    const handleOpen = () => setOpenT(true);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+      setAnchorEl(null);
+  };
+  
+
+  const onReport = (autherId,reason,reportedPostId) => {
+      console.log(reportedPostId,"idddddddddddddddddddd")
+     userRequest({
+       method: "POST",
+       url: "/user/reportpost",
+       data: {
+         currentUser: user,
+         autherId:autherId,
+         reportedPostId: reportedPostId,
+         reason: reason,
+       },
+     }).then((data) => {
+       setOpenT(false);
+       alert("success"); 
+     });
+
+    };
+
+
   return (
     <Card
       sx={{
@@ -96,7 +154,7 @@ export default function RecipeReviewCard({ post, setLiked }) {
               onClick={() =>
                 navigate("/viewprofile", {
                   state: {
-                    id:post.userId._id
+                    id: post.userId._id,
                   },
                 })
               }
@@ -104,7 +162,29 @@ export default function RecipeReviewCard({ post, setLiked }) {
           }
           action={
             <IconButton aria-label="settings">
-              <MoreVertIcon />
+              <div>
+                <MoreVertIcon
+                  sx={{ float: "right" }}
+                  id="basic-button"
+                  aria-controls={open ? "basic-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? "true" : undefined}
+                  onClick={handleClick}
+                />
+
+                <Menu
+                  id="basic-menu"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    "aria-labelledby": "basic-button",
+                  }}
+                >
+                  <MenuItem onClick={handleOpen}>Report</MenuItem>
+                  <MenuItem onClick={handleClose}>Remove Connection</MenuItem>
+                </Menu>
+              </div>
             </IconButton>
           }
           title={post.name}
@@ -121,7 +201,29 @@ export default function RecipeReviewCard({ post, setLiked }) {
           }
           action={
             <IconButton aria-label="settings">
-              <MoreVertIcon />
+              <div>
+                <MoreVertIcon
+                  sx={{ float: "right" }}
+                  id="basic-button"
+                  aria-controls={open ? "basic-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? "true" : undefined}
+                  onClick={handleClick}
+                />
+
+                <Menu
+                  id="basic-menu"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    "aria-labelledby": "basic-button",
+                  }}
+                >
+                  <MenuItem onClick={handleOpen}>Report</MenuItem>
+                  <MenuItem onClick={handleClose}>Remove Connection</MenuItem>
+                </Menu>
+              </div>
             </IconButton>
           }
           title={post.name}
@@ -226,6 +328,91 @@ export default function RecipeReviewCard({ post, setLiked }) {
           ))}
         </div>
       </Collapse>
+      <Modal
+        open={openT}
+        onClose={handleCloseT}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Report
+          </Typography>
+          <Divider />
+
+          <Typography
+            id="modal-modal-description"
+            sx={{
+              mt: 2,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+            onClick={() =>
+              onReport(post?.userId, "Suspecious,spam or fake", post?._id)
+            }
+          >
+            Suspecious,spam or fake
+            <ArrowForwardIcon sx={{ paddingLeft: 3, color: "#01A9C1" }} />
+          </Typography>
+
+          <Typography
+            id="modal-modal-description"
+            sx={{
+              mt: 2,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+            onClick={() =>
+              onReport(
+                post?._id,
+                " Harrassment or hateful speech.",
+                post?.userId._id
+              )
+            }
+          >
+            Harrassment or hateful speech.
+            <ArrowForwardIcon sx={{ paddingLeft: 3, color: "#01A9C1" }} />
+          </Typography>
+
+          <Typography
+            id="modal-modal-description"
+            sx={{
+              mt: 2,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+            onClick={() =>
+              onReport( "Violence or physical harm", post?.userId._id)
+            }
+          >
+            Violence or physical harm
+            <ArrowForwardIcon sx={{ paddingLeft: 3, color: "#01A9C1" }} />
+          </Typography>
+
+          <Typography
+            id="modal-modal-description"
+            sx={{
+              mt: 2,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+            onClick={() =>
+              onReport(
+                post?._id,
+                "Intellectual property infringement or defamation",
+                post?.userId._id
+              )
+            }
+          >
+            Intellectual property infringement or defamation
+            <ArrowForwardIcon sx={{ paddingLeft: 3, color: "#01A9C1" }} />
+          </Typography>
+        </Box>
+      </Modal>
     </Card>
   );
 }

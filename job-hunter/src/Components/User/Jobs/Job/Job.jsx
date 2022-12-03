@@ -1,7 +1,11 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Menu, MenuItem, Typography } from '@mui/material'
 import "./Job.css"
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+
+
+
+
 
 
 const Job = ({ job }) => {
@@ -13,6 +17,7 @@ const Job = ({ job }) => {
     navigate("/jobview", { state: { job: job } })
   }
 
+  
   return (
     <>
       <div
@@ -25,6 +30,7 @@ const Job = ({ job }) => {
           fontFamily: "fantasy",
         }}
       >
+       
         <div style={{ display: "flex", alignItems: "center" }}>
           <img
             src={`http://localhost:5000/static/images/${job.companylogo}`}

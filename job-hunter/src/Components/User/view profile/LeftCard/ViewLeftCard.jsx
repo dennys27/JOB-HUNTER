@@ -5,8 +5,7 @@ import React from 'react'
 import Modal from "@mui/material/Modal";
 import "./LeftCard.css"
 import { useState } from 'react';
-import { userRequest } from '../../../../Constants/Constants';
-import axios from 'axios' 
+import { userRequest } from '../../../../Constants/Constants'; 
 import { useLocation } from 'react-router-dom';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -121,6 +120,7 @@ const ViewLeftCard = () => {
       reason:reason
     },
   }).then((data) => {
+    setOpenT(false);
     alert("success")
   })
 }
@@ -133,29 +133,7 @@ const ViewLeftCard = () => {
       <div className="card_wrapper">
         <div style={{ backgroundColor: "white" }} className="cardOne">
           <div className="content_wrapper">
-            <div>
-              <MoreVertIcon
-                sx={{ float: "right" }}
-                id="basic-button"
-                aria-controls={open ? "basic-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                onClick={handleClick}
-              />
-
-              <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                  "aria-labelledby": "basic-button",
-                }}
-              >
-                <MenuItem onClick={handleOpen}>Report</MenuItem>
-                <MenuItem onClick={handleClose}>Remove Connection</MenuItem>
-              </Menu>
-            </div>
+           
 
             <div className="profile_pic" onClick={handleClose}>
               {user?.profile ? (

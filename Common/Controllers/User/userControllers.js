@@ -13,6 +13,7 @@ const MessageModel  = require("../../Models/Message");
 const axios = require("axios");
 const { Verification } = require("../../Models/Verification");
 const { Report } = require("../../Models/ReportUserSchema");
+const { ReportPost } = require("../../Models/ReportPostSchema");
 
 
 
@@ -79,6 +80,8 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 
+
+
 const loginUser = asyncHandler(async (req, res) => {
 
   const { email, password } = req.body;
@@ -108,18 +111,20 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
+
+
  
 const forgotPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
   email.toString();
-  await User.updateOne({ email },{otp: Math.floor(1000 + Math.random() * 9000),});
+  await User.updateOne({ email }, { otp: Math.floor(1000 + Math.random() * 9000), });
   User.findOne({ email }).exec(async (error, data) => {
     if (error) {
       console.log(error);
     } else {
       try {
 
-        if(data?._id){
+        if (data?._id) {
           let transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
@@ -149,7 +154,9 @@ const forgotPassword = asyncHandler(async (req, res) => {
     }
   });
  
-})
+});
+
+
 
 
 const emailVerification = asyncHandler(async (req, res) => {
@@ -173,6 +180,8 @@ const emailVerification = asyncHandler(async (req, res) => {
   })
 
 });
+
+
 
 
 const post = async (req, res) => {
@@ -301,6 +310,8 @@ const post = async (req, res) => {
 };
 
 
+
+
 const feeds = asyncHandler(async (req, res) => {
   
   Post.find({})
@@ -321,6 +332,8 @@ const feeds = asyncHandler(async (req, res) => {
       }
     });
 });
+
+
 
 
 const Like = asyncHandler(async (req, res) => {
@@ -428,6 +441,8 @@ const Like = asyncHandler(async (req, res) => {
 });
 
 
+
+
 const rejectRequest = asyncHandler(async (req, res) => {
   try {
 
@@ -445,6 +460,7 @@ const rejectRequest = asyncHandler(async (req, res) => {
 } 
 
 });
+
 
 
 
@@ -685,10 +701,18 @@ const getUser = asyncHandler(async (req, res) => {
 })
 
 
+
+
+//REPORT USER
+
 const reportUser = asyncHandler(async (req, res) => {
- console.log(req.body)
+
+  let reason = {
+    userId: req.body.currentUser,
+    reason: req.body.reason
+  }
   try {
-  const isExist =  await Report.findOne({ _id: req.body.reportedId })
+    const isExist = await Report.findOne({ reportedId: req.body.reportedId });
 
     if (isExist === null) {
       Report.create({
@@ -703,18 +727,95 @@ const reportUser = asyncHandler(async (req, res) => {
         
       })
         .then((data) => {
-          console.log(data);
+          res.status(200).json(data)
         })
+    } else {
+      Report.find({
+        reportedId: req.body.reportedId,
+        reasons: { $elemMatch: { userId: req.body.currentUser } },
+      }).then(async (data) => {
+        if (data.length === 0) {
+
+          await Report.findByIdAndUpdate(
+            req.body.reportedId,
+            {
+              $push: { reasons: reason },
+            },
+            {
+              new: true,
+            }
+          ).then((data) => {
+            res.status(200).json(data);
+          })
+
+        } else {
+
+          res.status(200).json({ status: true, message: "already reported" });
+          
+        }
+      })
     }
-    
-    
+   
   } catch (err) {
     console.log(err);
   }
    
   
-})
+});
 
+
+
+
+
+//REPORT POST
+
+const reportPost = asyncHandler(async (req, res) => {
+  let reason = {
+    userId: req.body.currentUser,
+    reason: req.body.reason,
+  };
+  try {
+    const isExist = await ReportPost.findOne({ reportedPostId: req.body.reportedPostId });
+    console.log(req.body);
+    if (isExist === null) {
+      ReportPost.create({
+        reportedPostId: req.body.reportedPostId,
+       autherId:req.body.autherId,
+        reasons: [
+          {
+            userId: req.body.currentUser,
+            reason: req.body.reason,
+          },
+        ],
+      }).then((data) => {
+        res.status(200).json(data);
+      });
+    } else {
+      ReportPost.find({
+        reportedPostId: req.body.reportedId,
+        reasons: { $elemMatch: { userId: req.body.currentUser } },
+      }).then(async (data) => {
+        if (data.length === 0) {
+          await ReportPost.findByIdAndUpdate(
+            req.body.reportedPostId,
+            {
+              $push: { reasons: reason }, 
+            },
+            {
+              new: true,
+            }
+          ).then((data) => {
+            res.status(200).json(data);
+          });
+        } else {
+          res.status(200).json({ status: true, message: "already reported" });
+        }
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 
 
@@ -1377,4 +1478,5 @@ module.exports = {
   getmyjob,
   profileVerification,
   reportUser,
+  reportPost,
 };

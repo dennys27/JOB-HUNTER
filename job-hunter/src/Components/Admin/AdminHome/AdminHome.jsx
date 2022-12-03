@@ -6,6 +6,7 @@ import AdminNavbar from '../AdminNavbar/AdminNavbar';
 import AdminPostJob from '../AdminPostJob/AdminPostJob';
 import AdminSideBar from '../AdminSideBar/AdminSideBar'
 import ReportedTable from '../Reported users/ReportedTable';
+import ReportedPosts from '../ReportedPosts/ReportedPosts';
 import VerificationTable from '../verificationTable/VerificationTable';
 
 const AdminHome = () => {
@@ -23,6 +24,8 @@ const AdminHome = () => {
          return [<VerificationTable />];
        case "reported":
          return [<ReportedTable />];
+       case "reportedposts":
+         return [<ReportedPosts />];
      }
    };
 

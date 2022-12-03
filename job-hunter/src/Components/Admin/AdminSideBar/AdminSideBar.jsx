@@ -73,7 +73,7 @@ const AdminSideBar = ({setChoosen}) => {
             </ListItemButton>
           </ListItem>
 
-          <ListItem disablePadding>
+          <ListItem onClick={()=>setChoosen("reportedposts")} disablePadding>
             <ListItemButton component="a" href="#">
               <ListItemIcon>
                 <Diversity2Icon sx={{ color: "black" }} />

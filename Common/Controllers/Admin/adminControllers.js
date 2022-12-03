@@ -7,6 +7,9 @@ const { Verification } = require("../../Models/Verification");
 const { User } = require("../../Models/UserSchema");
 const multer = require("multer");
 const path = require("path");
+const { Report } = require("../../Models/ReportUserSchema");
+const { ReportPost } = require("../../Models/ReportPostSchema");
+const { Post } = require("../../Models/Post");
 
 const uri = "http://localhost:5001";
 
@@ -176,6 +179,64 @@ const adminGetUsers = asyncHandler(async (req, res) => {
 });
 
 
+const adminGetReportedUsers = asyncHandler(async (req, res) => {
+  const accounts = await Report.find({}).populate("reportedId").populate("reasons.userId")
+console.log(accounts)
+  if (accounts) {
+    res.status(200).json(accounts);
+  } else {
+    res.status(400).json({ status: false, message: "no accounts found" });
+    throw new Error("invalid  details");
+  }
+});
+
+
+const adminDeleteProfile  = asyncHandler(async (req, res) => {
+  const accounts = await User.deleteOne({ _id: req.body.reportedId }).then(async(data) => {
+    await Report.deleteOne({ reportedId: req.body.reportedId }).then((data) => {
+      res.status(200).json(data);
+    })
+  })
+console.log(accounts)
+  if (accounts) {
+    res.status(200).json(accounts);
+  } else {
+    res.status(400).json({ status: false, message: "no accounts found" });
+    throw new Error("invalid  details");
+  }
+});
+
+
+
+
+const adminGetReportedPosts = asyncHandler(async (req, res) => {
+  const accounts = await ReportPost.find({}).populate("reportedPostId").populate("autherId");
+
+  console.log(accounts);
+  if (accounts) {
+    res.status(200).json(accounts);
+  } else {
+    res.status(400).json({ status: false, message: "no accounts found" });
+    throw new Error("invalid  details");
+  }
+});
+
+
+
+const adminDeletePost = asyncHandler(async (req, res) => {
+
+  await Post.deleteOne({ _id: req.body.postId }).then(async () => {
+   await ReportPost.deleteOne({ reportedId: req.body.postId }).then((data) => {
+     res.status(200).json(data);
+   })
+    }
+ ).catch((error) => {
+    res.status(500).json(error)
+  })
+ 
+});
+
+
 
 
 module.exports = {
@@ -186,4 +247,8 @@ module.exports = {
   adminApprove,
   getAdminJobs,
   postJobs,
+  adminGetReportedUsers,
+  adminDeleteProfile,
+  adminGetReportedPosts,
+  adminDeletePost,
 };
