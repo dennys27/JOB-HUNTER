@@ -128,16 +128,27 @@ const navigate = useNavigate()
                             gap: "15px",
                           }}
                         >
-                          <img
-                            style={{
-                              width: "50px",
-                              height: "50px",
-                              borderRadius: "50px",
-                            }}
-                            src={`http://localhost:5000/static/images/${
-                              data?.profile[data.profile.length - 1]
-                            }`}
-                          />
+                          {data?.profile.length >=0? 
+                            <img
+                              style={{
+                                width: "50px",
+                                height: "50px",
+                                borderRadius: "50px",
+                              }}
+                              src={`http://localhost:5000/static/images/${
+                                data?.profile[data.profile.length - 1]
+                              }`}
+                            />
+                           : 
+                            <img
+                              style={{
+                                width: "50px",
+                                height: "50px",
+                                borderRadius: "50px",
+                              }}
+                              src="https://static.thenounproject.com/png/3911675-200.png"
+                            />
+                          }
                           <Box>
                             <Typography>{data.name}</Typography>
                             <Typography>{data.headline}</Typography>
@@ -152,7 +163,7 @@ const navigate = useNavigate()
                             backgroundColor: "#01A9C1",
                           }}
                           variant="contained"
-                          onClick={()=>handleChat(User._id,data._id)}
+                          onClick={() => handleChat(User._id, data._id)}
                         >
                           Message
                         </Button>

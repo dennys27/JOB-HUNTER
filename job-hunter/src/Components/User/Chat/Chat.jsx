@@ -49,7 +49,7 @@ const Chat = () => {
   // Get the message from socket server
   useEffect(() => {
     socket.current.on("recieve-message", (data) => {
-      console.log(data);
+      console.log(data,"getting the message");
       setReceivedMessage(data);
     });
   }, []);
@@ -122,12 +122,16 @@ const Chat = () => {
 
             <Grid sx={{ display: "flex" }} item xs={8}> 
               <Box sx={{ position: "fixed" }}>
-                <ChatBox
+                {currentChat ?
+                  <ChatBox
                   chat={currentChat}
                   currentUser={userId}
                   setSendMessage={setSendMessage}
                   receivedMessage={receivedMessage}
-                />
+                />:<Typography sx={{textAlign:"center",marginLeft:"180px",marginTop:"150px"}}> Tap on conversation !!</Typography>
+
+                }
+                
               </Box>
             </Grid>
           </Grid>

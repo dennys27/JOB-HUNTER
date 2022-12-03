@@ -52,16 +52,28 @@ const Conversation = ({ data,currentUserId,online}) => {
               gap: "15px",
             }}
           >
-            <img
-              style={{
-                width: "50px",
-                height: "50px",
-                borderRadius: "50px",
-              }}
-              src={`http://localhost:5000/static/images/${
-                userData?.profile[userData.profile.length - 1]
-              }`}
-            />
+            {userData?.profile ? (
+              <img
+                style={{
+                  width: "50px",
+                  height: "50px",
+                  borderRadius: "50px",
+                }}
+                src={`http://localhost:5000/static/images/${
+                  userData?.profile[userData.profile.length - 1]
+                }`}
+              />
+            ) : (
+              <img
+                style={{
+                  width: "50px",
+                  height: "50px",
+                  borderRadius: "50px",
+                }}
+                src="https://static.thenounproject.com/png/3911675-200.png"
+              />
+            )}
+
             <Box>
               <Typography>{userData?.name}</Typography>
               {online ? (

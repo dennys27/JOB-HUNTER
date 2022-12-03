@@ -31,7 +31,7 @@ const Notifications = () => {
           <Grid
             sx={{
               display: "flex",
-              justifyContent: "center",
+              justifyContent: "end",
             }}
             item
             xs={4}
@@ -53,7 +53,7 @@ const Notifications = () => {
           <Grid item xs={8}>
             <Box
               sx={{
-                width: "700px",
+                width: "600px",
                 height: "500px",
                 borderRadius: "5px",
                 backgroundColor: "white",
