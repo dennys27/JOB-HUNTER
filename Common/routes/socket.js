@@ -34,7 +34,9 @@ io.on("connection", (socket) => {
         console.log("user disconected",activeUsers)  
     })
   
+   
   
+  //live notifications
     socket.on("send-message", (data) => {
       const { receiverId } = data;
       const user = activeUsers.find((user) => user.userId === receiverId);
@@ -44,6 +46,27 @@ io.on("connection", (socket) => {
         io.to(user.socketId).emit("recieve-message", data);
       }
     });
+  
+  
+  
+    socket.on("sendNotification", ({ senderName, receiverName, type }) => {
+      const receiver = getUser(receiverName);
+      io.to(receiver.socketId).emit("getNotification", {
+        senderName,
+        type,
+      });
+    });
+
+    socket.on("sendText", ({ senderName, receiverName, text }) => {
+      const receiver = getUser(receiverName);
+      io.to(receiver.socketId).emit("getText", {
+        senderName,
+        text,
+      });
+    });
+  
+  
+  
 })
 
 module.exports = socketapi; 
