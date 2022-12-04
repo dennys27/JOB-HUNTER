@@ -103,12 +103,14 @@ const ViewLeftCard = () => {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const handleClose = (currentUser,removedUser) => {
+    removeConnection(currentUser, removedUser)
+    notify()
     setAnchorEl(null);
   };
 
 
-  const onReport = (reportedId,reason) => {
+ const onReport = (reportedId,reason) => {
 
 
   userRequest({
@@ -126,6 +128,24 @@ const ViewLeftCard = () => {
 }
 
 
+  
+  const removeConnection = (currentUser, removedUser) => {
+    
+      userRequest({
+        method: "POST",
+        url: "/user/removeconnection",
+        data: {
+          currentUser: currentUser,
+          removedUser: removedUser,
+        },
+      }).then((data) => {
+        setOpenT(false);
+        alert("success");
+      })
+    
+  }
+
+
 
 
   return (
@@ -133,7 +153,29 @@ const ViewLeftCard = () => {
       <div className="card_wrapper">
         <div style={{ backgroundColor: "white" }} className="cardOne">
           <div className="content_wrapper">
-           
+            <div>
+              <MoreVertIcon
+                sx={{ float: "right" }}
+                id="basic-button"
+                aria-controls={open ? "basic-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+              />
+
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  "aria-labelledby": "basic-button",
+                }}
+              >
+                <MenuItem onClick={handleOpen}>Report</MenuItem>
+                <MenuItem onClick={()=>handleClose(currentUser,user._id)}>Remove Connection</MenuItem>
+              </Menu>
+            </div>
 
             <div className="profile_pic" onClick={handleClose}>
               {user?.profile ? (

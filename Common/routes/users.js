@@ -32,7 +32,8 @@ const {
  getmyjob,
  profileVerification,
  reportUser,
- reportPost
+ reportPost,
+ removeConnection
 } = require("../Controllers/User/userControllers");
 const { verifyToken } = require('./Middlewares/JwtVerification');
 var router = express.Router();
@@ -66,6 +67,7 @@ router.post("/rejectRequest", verifyToken, rejectRequest);
 router.post("/profileVerification", verifyToken, profileVerification);
 router.post("/reportuser",verifyToken,reportUser);
 router.post("/reportpost", verifyToken, reportPost);
+router.post("/removeconnection", verifyToken, removeConnection);
 
 
 

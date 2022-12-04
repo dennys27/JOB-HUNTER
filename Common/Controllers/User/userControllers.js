@@ -97,10 +97,9 @@ const loginUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,  
       _id: user._id,
-      connections: user.connections,
       verification: user.verification,
       requests: user.requests,
-      connections:user.connections,
+      network:user.network,
       token
     });
     
@@ -840,6 +839,34 @@ const getUsers = asyncHandler(async (req, res) => {
 })
 
 
+
+const removeConnection = asyncHandler(async (req, res) => {
+
+  try {
+  User.find({ _id:req.body.currentUser }, { $pull: { network: req.body.removedUser } })
+    .then((data) => {
+       User.find(
+         { _id: req.body.removedUser },
+         { $pull: { network: req.body.currentUser } }
+       );
+      res.json({ status: true, message: "success", data: data });
+    })
+    .catch((error) => {
+      res
+        .status(200)
+        .json({ status: false, message: "operation failed", error: error });
+    });
+  } catch (err) {
+    console.log(err);
+  }
+   
+  
+})
+
+
+
+
+
 const getUserRequests = asyncHandler(async (req, res) => {
   console.log(req.body);
   User.findOne({ _id: req.body._id }).populate("requests").then((data) => {
@@ -995,6 +1022,8 @@ const certifications = asyncHandler(async (req, res) => {
 
 
 
+
+
 const education = asyncHandler(async (req, res) => {
  
   let edData = {
@@ -1037,6 +1066,8 @@ const education = asyncHandler(async (req, res) => {
     console.log(err);
   }
 });
+
+
 
 
 
@@ -1147,6 +1178,8 @@ const deleteDetail = asyncHandler(async (req, res) => {
  
 
 });
+
+
 
 
 const profile = asyncHandler(async (req, res) => {
@@ -1479,4 +1512,5 @@ module.exports = {
   profileVerification,
   reportUser,
   reportPost,
+  removeConnection,
 };

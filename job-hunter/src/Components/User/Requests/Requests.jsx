@@ -33,7 +33,6 @@ const Requests = () => {
         _id:User._id
       }
     }).then((data) => {
-      console.log(data.data, "suggestions");
       setSuggestions(data.data);
     });
 
@@ -240,7 +239,7 @@ const Requests = () => {
                     columns={{ xs: 4, sm: 8, md: 12 }}
                   >
                     {recomendations?.map((data, index) =>
-                      data?._id !== currentUser && (currentUser?.network?.includes(data?._id)!==true) && (currentUser?.requests?.includes(data?._id)!==true) ? (
+                      data?._id !== currentUser && (User?.network?.includes(data?._id)!==true) && (User?.requests?.includes(data?._id)!==true) ? (
                         <Grid
                           sx={{ display: "flex", justifyContent: "center" }}
                           item
