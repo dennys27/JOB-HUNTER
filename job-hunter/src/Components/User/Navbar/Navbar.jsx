@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from "@mui/material/Box";
 import "./Navbar.css"
@@ -8,13 +8,11 @@ import { styled, alpha } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import swal from "sweetalert";
-import { Avatar, Button, Collapse, Container, Menu, MenuItem, TextField, Toolbar, Typography } from "@mui/material";
+import { Avatar, Badge, Button, Collapse, Container, Menu, MenuItem, TextField, Toolbar, Typography } from "@mui/material";
 import { logout } from "../../../features/Auth/AuthSlice";
 import Modal from "@mui/material/Modal";
 import { MdOutlineVerified } from "react-icons/md";
 import { io } from "socket.io-client";
-
-
 
 import {
   AiOutlineHome,
@@ -92,30 +90,36 @@ const style = {
 
 
 
-const Navbar = () => {
+const Navbar = ({socket}) => {
 
   const [user, setUser] = useState({})
   const [phone, setPhone] = useState("")
   const [expanded, setExpanded] = useState(true)
   const [expandedTwo, setExpandedTwo] = useState(false)
-  const [otp, setOtp] = useState("")
+  const [otp, setOtp] = useState("");
+
+
   const handlePhone = (e) => { 
     setPhone(e.target.value)
   }
+
+
   const handleOtp = (e) => {
     setOtp(e.target.value)
   }
 
 
-    const [notifications, setNotifications] = useState([]);
+   const [notifications, setNotifications] = useState([]);
     
 
-    // useEffect(() => {
-    //   io.on("getNotification", (data) => {
-    //     setNotifications((prev) => [...prev, data]);
-    //     alert("heyy im here....")
-    //   });
-    // }, []);
+  useEffect(() => {
+  
+    socket?.current?.on("getNotification", (data) => {
+      console.log("its hereeeee...", data);
+      setNotifications((prev) => [...prev, data]);
+       
+     });
+  }, [socket]);
  
 
 
@@ -298,7 +302,9 @@ const Navbar = () => {
                   className="hover"
                   onClick={() => handleNavigate("Notifications")}
                 >
-                  <AiOutlineBell size={23} />
+                  <Badge badgeContent={notifications.length} color="primary">
+                    <AiOutlineBell size={23} />
+                  </Badge>
                   <Typography
                     sx={{
                       display: "block",
@@ -344,6 +350,7 @@ const Navbar = () => {
                   className="hover"
                 >
                   <AiOutlineForm size={23} />
+
                   <Typography
                     sx={{
                       display: "block",

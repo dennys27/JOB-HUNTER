@@ -584,7 +584,7 @@ const Experience = () => {
                           sm={4}
                           md={4}
                         >
-                          <Box className="companies">
+                          <Box className="companies" sx={{maxWidth:"100px",minWidth:"100px",minHeight:"70px",maxHeight:"80px",overflow:"scroll",scrollbarWidth:"none"}}>
                             <Typography>{data.decription}</Typography>
                           </Box>
                           <RiDeleteBackFill

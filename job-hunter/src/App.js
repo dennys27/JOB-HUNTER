@@ -21,7 +21,8 @@ import Applicants from './Components/User/Jobs/Applicants/Applicants';
 import Varify from './Components/User/Verify Account/Varify';
 import Notifications from './Components/User/Notifications/Notifications';
 import AdminJobDetails from './Components/Admin/AdminJobDetails/AdminJobDetails';
-
+import { io } from "socket.io-client";
+import { useEffect, useRef, useState } from 'react';
 
 
 
@@ -30,6 +31,11 @@ import AdminJobDetails from './Components/Admin/AdminJobDetails/AdminJobDetails'
 
 
 function App() {
+  
+
+
+
+  
   return (
     <div className="wrapper">
       {/* <Navbar /> */}
@@ -38,11 +44,11 @@ function App() {
           <Route element={<Feed />} path="/Home" />
           <Route element={<Jobs />} path="/Jobs" />
           <Route element={<Profile />} path="/profile" />
-          <Route element={<ViewProfile/>} path="/viewprofile" />
+          <Route element={<ViewProfile />} path="/viewprofile" />
           <Route element={<Applicants />} path="/jobstatus" />
           <Route element={<Jobpost />} path="/jobpost" />
           <Route element={<JobView />} path="/jobview" />
-          <Route element={<Varify/>} path="/verify" />
+          <Route element={<Varify />} path="/verify" />
           <Route element={<Connections />} path="/connections" />
           <Route element={<Requests />} path="/requests" />
           <Route element={<Chat />} path="/chat" />
@@ -64,7 +70,6 @@ function App() {
           <Route element={<AdminHome />} path="/adminhome" />
           <Route element={<AdminViewProfile />} path="/adminview" />
           <Route element={<AdminJobDetails />} path="/adminjobview" />
-          
         </Route>
       </Routes>
     </div>

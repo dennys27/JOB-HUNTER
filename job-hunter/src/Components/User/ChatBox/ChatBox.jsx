@@ -16,10 +16,12 @@ const ChatBox = ({
   const [userData, setUserData] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [refresh,setRefresh] = useState("")
 
   const handleChange = (newMessage) => {
     setNewMessage(newMessage);
   };
+
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -38,7 +40,8 @@ const ChatBox = ({
     if (chat !== null) {
       fetchMessages();
     }
-  }, [chat]);
+  }, [chat, refresh]);
+
 
   const userId = chat?.members?.find((id) => id !== currentUser);
   useEffect(() => {
@@ -94,6 +97,7 @@ const ChatBox = ({
         console.log(data.data, "dggggggggggggddddddddddddd");
         setMessages([...messages, data.data]);
         setNewMessage("");
+        setRefresh(Math.random());
       });
     } catch {
       console.log("error");
@@ -105,12 +109,15 @@ const ChatBox = ({
       console.log("Message Arrived: ", receivedMessage);
       if (receivedMessage !== null && receivedMessage.chatId === chat._id) {
         setMessages([...messages, receivedMessage]);
+        
       }
     }, [receivedMessage]);
 
 
   const scroll = useRef();
   const imageRef = useRef();
+
+
   return (
     <Box
       sx={{

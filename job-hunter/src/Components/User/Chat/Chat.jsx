@@ -44,7 +44,7 @@ const Chat = () => {
     };
 
     getChats();
-  }, [userId, receivedMessage, sendMessage]);
+  }, [userId,]);
 
   // Get the message from socket server
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { experimentalStyled as styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -24,18 +24,19 @@ const Item = styled(Paper)(({ theme }) => ({
 
 
 const Feed = () => {
+  let currentUser = JSON.parse(localStorage.getItem("user"));
+  let socket = useRef();
+
+  const [user, setUser] = useState([]);
   
 const [posts,setPosts] = useState([])
 const [refresh, setRefresh] = useState("");
 const [liked, setLiked] = useState("");
 
+  
+
   useEffect(() => {
     getFeed();
-
-  // const socket = io("http://localhost:5000");
-  //  socket.on("like", (msg) => {
-  //     console.log(msg,"tryinggggggg")
-  //   })
   }, [refresh,liked]);
  
 let getFeed = async () => {
@@ -44,8 +45,19 @@ let getFeed = async () => {
     url: "/user/feed",
   })
   setPosts(response.data.data)
-  
   };
+
+
+
+
+
+      useEffect(() => {
+        socket.current = io("http://localhost:5000");
+        socket.current.emit("new-user-add", currentUser?._id);
+        socket.current.on("get-users", (users) => {
+          setUser(users);
+        });
+      }, []);
   
 
    
@@ -53,7 +65,7 @@ let getFeed = async () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar socket={socket} />
       <Box sx={{ backgroundColor: "#D9D9D9", bottom: 0 }}>
         <Container>
           <Box
@@ -96,7 +108,7 @@ let getFeed = async () => {
 
                   {posts
                     ? posts.map((post) => (
-                        <RecipeReviewCard setLiked={setLiked} post={post} />
+                        <RecipeReviewCard socket={socket} setLiked={setLiked} post={post} />
                       ))
                     : ""}
                 </div>

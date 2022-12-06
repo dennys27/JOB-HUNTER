@@ -160,6 +160,7 @@ const AdminNavbar = () => {
                   mr={3}
                   mt={0.5}
                   className="hover"
+                  sx={{ visibility: "hidden" }}
                 >
                   <AiOutlineHome size={23} />
                   <Typography
@@ -173,7 +174,6 @@ const AdminNavbar = () => {
                   </Typography>
                 </Box>
 
-
                 <Box
                   display={"flex"}
                   flexDirection={"column"}
@@ -182,27 +182,7 @@ const AdminNavbar = () => {
                   mr={3}
                   mt={0.5}
                   className="hover"
-                >
-                  <AiOutlineBell size={23} />
-                  <Typography
-                    sx={{
-                      display: "block",
-                      top: 0,
-                      fontSize: 14,
-                    }}
-                  >
-                    Notifications
-                  </Typography>
-                </Box>
-
-                <Box
-                  display={"flex"}
-                  flexDirection={"column"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                  mr={3}
-                  mt={0.5}
-                  className="hover"
+                  sx={{ visibility: "hidden" }}
                 >
                   <AiOutlineSnippets size={23} />
                   <Typography
@@ -224,6 +204,7 @@ const AdminNavbar = () => {
                   mr={3}
                   mt={0.5}
                   className="hover"
+                  sx={{ visibility: "hidden" }}
                 >
                   <AiOutlineForm size={23} />
                   <Typography
@@ -234,6 +215,26 @@ const AdminNavbar = () => {
                     }}
                   >
                     Post a job
+                  </Typography>
+                </Box>
+                <Box
+                  display={"flex"}
+                  flexDirection={"column"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                  mr={3}
+                  mt={0.5}
+                  className="hover"
+                >
+                  <AiOutlineBell size={23} />
+                  <Typography
+                    sx={{
+                      display: "block",
+                      top: 0,
+                      fontSize: 14,
+                    }}
+                  >
+                    Notifications
                   </Typography>
                 </Box>
 
@@ -411,7 +412,6 @@ const AdminNavbar = () => {
                       />
                     </Box>
                   </div>
-                 
                 </Box>
               </Box>
             )}

@@ -1,4 +1,3 @@
-
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 require('dotenv').config()
@@ -14,6 +13,8 @@ const axios = require("axios");
 const { Verification } = require("../../Models/Verification");
 const { Report } = require("../../Models/ReportUserSchema");
 const { ReportPost } = require("../../Models/ReportPostSchema");
+
+
 
 
 
@@ -841,14 +842,18 @@ const getUsers = asyncHandler(async (req, res) => {
 
 
 const removeConnection = asyncHandler(async (req, res) => {
-
+ console.log(req.body,"whosssss")
   try {
-  User.find({ _id:req.body.currentUser }, { $pull: { network: req.body.removedUser } })
+  User.updateOne(
+    { _id: req.body.currentUser },
+    { $pull: { "network": req.body.removedUser } }
+  )
     .then((data) => {
-       User.find(
-         { _id: req.body.removedUser },
-         { $pull: { network: req.body.currentUser } }
-       );
+      console.log(data, "ggggg");
+      User.updateOne(
+        { _id: req.body.removedUser },
+        { $pull: { "network": req.body.currentUser } }
+      );
       res.json({ status: true, message: "success", data: data });
     })
     .catch((error) => {

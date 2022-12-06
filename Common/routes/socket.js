@@ -12,16 +12,14 @@ const socketapi = {
 let activeUsers = []
 
 io.on("connection", (socket) => { 
-  console.log("connected.....");
-    //add new user
 
+    //add new user
     socket.on("new-user-add", (newUserId) => {
         if (!activeUsers.some((user) => user.userId === newUserId)) {
             activeUsers.push({
                 userId: newUserId,
                 socketId:socket.id
-            })
-        }
+            })}
 
         io.emit("get-users", activeUsers)
         console.log("connected users",activeUsers);
@@ -49,22 +47,28 @@ io.on("connection", (socket) => {
   
   
   
-    socket.on("sendNotification", ({ senderName, receiverName, type }) => {
-      const receiver = getUser(receiverName);
-      io.to(receiver.socketId).emit("getNotification", {
+  socket.on("sendNotification", ({ senderName, receiverName, type }) => {
+      console.log(senderName, receiverName, type);
+    const receiver = getUser(receiverName);
+    console.log(receiver, "yesssssssssssssssss")
+    if (senderName !== receiverName) {
+      io.to(receiver?.socketId).emit("getNotification", {
         senderName,
         type,
       });
+    }
+
     });
   
 
-    socket.on("sendText", ({ senderName, receiverName, text }) => {
+  socket.on("sendText", ({ senderName, receiverName, text }) => {
       const receiver = getUser(receiverName);
       io.to(receiver.socketId).emit("getText", {
         senderName,
         text,
       });
     });
+  
   
   const getUser = (userId) => {
     return activeUsers.find((user) => user.userId === userId);

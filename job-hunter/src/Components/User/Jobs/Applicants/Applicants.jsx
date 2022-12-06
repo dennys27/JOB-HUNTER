@@ -74,9 +74,7 @@ const Applicants = () => {
   }, [])
   
 
-  const handlepdf = (name) => {
-    
-  }
+
 
 
 
@@ -85,179 +83,197 @@ const Applicants = () => {
         <Navbar />
 
         <div style={{ width: "100%", backgroundColor: "#D9D9D9" }}>
-          <Container
-            sx={{ backgroundColor: "#D9D9D9", paddingBottom: "200px" }}
-          >
-            <Grid sx={{ paddingTop: "80px" }} container spacing={2}>
-              <Grid
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-                item
-                xs={6}
-                md={4}
-              >
-                <Box sx={{ position: "fixed" }}>
-                  <Box
-                    sx={{
-                      width: "270px",
-                      maxHeight: "470px",
-                      minHeight: "350px",
-                      backgroundColor: "white",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    {jobs?.map((job) => (
-                      <Box
-                        onClick={() => setData(job)}
-                        sx={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          padding: "10px",
-                          gap: "20px",
-                        }}
-                      >
-                        <Box>
-                          <img
-                            style={{
-                              width: "50px",
-                              height: "50px",
-                              borderRadius: "50px",
-                            }}
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS91VsALLEqPqezZU3QSnGY1tZPlSNl6cBeLw&usqp=CAU"
-                          />
-                        </Box>
-
-                        <Box sx={{ marginBottom: "10px" }}>
-                          <Box
-                            sx={{
-                              height: "25px",
-                              overflow: "scroll",
-                              scrollbarWidth: "none",
-                            }}
-                          >
-                            <Typography p={0}>{job.designation}</Typography>
+          {jobs?.length !== 0 ? (
+            <Container
+              sx={{ backgroundColor: "#D9D9D9", paddingBottom: "200px" }}
+            >
+              <Grid sx={{ paddingTop: "80px" }} container spacing={2}>
+                <Grid
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                  item
+                  xs={6}
+                  md={4}
+                >
+                  <Box sx={{ position: "fixed" }}>
+                    <Box
+                      sx={{
+                        width: "240px",
+                        maxHeight: "470px",
+                        minHeight: "350px",
+                        backgroundColor: "white",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      {jobs?.map((job) => (
+                        <Box
+                          onClick={() => setData(job)}
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-around",
+                            alignItems: "center",
+                            padding: "10px",
+                            gap: "10px",
+                          }}
+                        >
+                          <Box>
+                            <img
+                              style={{
+                                width: "50px",
+                                height: "50px",
+                                borderRadius: "50px",
+                              }}
+                              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS91VsALLEqPqezZU3QSnGY1tZPlSNl6cBeLw&usqp=CAU"
+                            />
                           </Box>
 
-                          <Typography sx={{ fontSize: "14px" }}>
-                            {job.companyname}
-                          </Typography>
-                          <Typography sx={{ fontSize: "13px", color: "gray" }}>
-                            {job.location}
+                          <Box sx={{ marginBottom: "10px",width:"100px",overflow:"scroll",scrollbarWidth:"none" }}>
+                            <Box
+                              sx={{
+                                height: "25px",
+                                overflow: "scroll",
+                                scrollbarWidth: "none",
+                                width:"100%"
+                              }}>
+                              
+                              <Typography p={0} sx={{width:"100%"}}>{job.designation}</Typography>
+                              
+                            </Box>
+
+                            <Typography sx={{ fontSize: "14px" }}>
+                              {job.companyname}
+                            </Typography>
+
+                            <Typography
+                              sx={{ fontSize: "13px", color: "gray" }}
+                            >
+                              {job.location}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      ))}
+                    </Box>
+                  </Box>
+                </Grid>
+
+                <Grid item xs={6} md={8}>
+                  <Box>
+                    <Box
+                      sx={{
+                        width: "700px",
+                        backgroundColor: "white",
+                        minHeight: "800px",
+                        maxHeight: "auto",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      <Box sx={{ padding: "40px" }}>
+                        <Typography
+                          variant="h5"
+                          component="h6"
+                          sx={{ fontWeight: 500 }}
+                        >
+                          {data?.designation}
+                        </Typography>
+                        <Typography
+                          variant="h6"
+                          component="p"
+                          sx={{
+                            fontSize: "14px",
+                            paddingTop: "10px",
+                            marginBottom: "15px",
+                          }}
+                        >
+                          {data?.companyname},{data?.location}
+                        </Typography>
+
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "10px",
+                            marginBottom: "15px",
+                          }}
+                        >
+                          <WorkIcon />
+                          <Typography>Full time</Typography>
+                        </Box>
+
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "10px",
+                            marginBottom: "15px",
+                          }}
+                        >
+                          <BiTargetLock size={25} />
+                          <Typography>Actively recruiting</Typography>
+                        </Box>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "10px",
+                            marginBottom: "15px",
+                          }}
+                        >
+                          <Typography>No.of applicants :</Typography>
+                          <Typography>{data?.applicants?.length}</Typography>
+                        </Box>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "10px",
+                            marginBottom: "15px",
+                          }}
+                        >
+                          <Typography
+                            onClick={handleOpen}
+                            sx={{ color: "#01A9C1" }}
+                          >
+                            View applicants
                           </Typography>
                         </Box>
-                      </Box>
-                    ))}
-                  </Box>
-                </Box>
-              </Grid>
 
-              <Grid item xs={6} md={8}>
-                <Box>
-                  <Box
-                    sx={{
-                      width: "700px",
-                      backgroundColor: "white",
-                      minHeight: "800px",
-                      maxHeight: "auto",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    <Box sx={{ padding: "40px" }}>
-                      <Typography
-                        variant="h5"
-                        component="h6"
-                        sx={{ fontWeight: 500 }}
-                      >
-                        {data?.designation}
-                      </Typography>
-                      <Typography
-                        variant="h6"
-                        component="p"
-                        sx={{
-                          fontSize: "14px",
-                          paddingTop: "10px",
-                          marginBottom: "15px",
-                        }}
-                      >
-                        {data?.companyname},{data?.location}
-                      </Typography>
+                        <Box sx={{ marginTop: "40px" }}>
+                          <Typography>Job description:</Typography>
+                          <Typography sx={{ marginTop: "10px" }}>
+                            {data?.jobdescription}
+                          </Typography>
+                        </Box>
 
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "10px",
-                          marginBottom: "15px",
-                        }}
-                      >
-                        <WorkIcon />
-                        <Typography>Full time</Typography>
-                      </Box>
-
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "10px",
-                          marginBottom: "15px",
-                        }}
-                      >
-                        <BiTargetLock size={25} />
-                        <Typography>Actively recruiting</Typography>
-                      </Box>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "10px",
-                          marginBottom: "15px",
-                        }}
-                      >
-                        <Typography>No.of applicants :</Typography>
-                        <Typography>{data?.applicants?.length}</Typography>
-                      </Box>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "10px",
-                          marginBottom: "15px",
-                        }}
-                      >
-                        <Typography
-                          onClick={handleOpen}
-                          sx={{ color: "#01A9C1" }}
-                        >
-                          View applicants
-                        </Typography>
-                      </Box>
-
-                      <Box sx={{ marginTop: "40px" }}>
-                        <Typography>Job description:</Typography>
-                        <Typography sx={{ marginTop: "10px" }}>
-                          {data?.jobdescription}
-                        </Typography>
-                      </Box>
-
-                      {/* <Box sx={{ marginTop: "40px" }}>
+                        {/* <Box sx={{ marginTop: "40px" }}>
                         <Typography>Job summary:</Typography>
                         <Typography sx={{ marginTop: "10px" }}>{ data.jobsummary}</Typography>
                       </Box> */}
-                      <Box sx={{ marginTop: "40px" }}>
-                        <Typography>About the company:</Typography>
-                        <Typography sx={{ marginTop: "10px" }}>
-                          {data?.aboutcompany}
-                        </Typography>
+                        <Box sx={{ marginTop: "40px" }}>
+                          <Typography>About the company:</Typography>
+                          <Typography sx={{ marginTop: "10px" }}>
+                            {data?.aboutcompany}
+                          </Typography>
+                        </Box>
                       </Box>
                     </Box>
                   </Box>
-                </Box>
+                </Grid>
               </Grid>
-            </Grid>
-          </Container>
+            </Container>
+          ) : (
+            <Box
+              sx={{ width: "100%", display: "flex", justifyContent: "center",backgroundColor:"white" }}
+            >
+              <img
+                style={{
+                  objectFit: "cover",
+                }}
+                src="https://img.freepik.com/free-vector/no-data-concept-illustration_114360-616.jpg?w=740&t=st=1670230869~exp=1670231469~hmac=3e54c482f0eaad1978d111e3b7e2e9046f0f792dcac43d76f1e2b69cfd8f1560"
+              />
+            </Box>
+          )}
           <ToastContainer />
           <Modal
             open={open}
@@ -358,11 +374,10 @@ const Applicants = () => {
                           border: "2px solid #01A9C1",
                           marginLeft: "20px",
                         }}
-                          variant="contained"
-                          disabled
+                        variant="contained"
+                        disabled
                       >
-                          Resume
-                          
+                        Resume
                       </Button>
                     )}
 

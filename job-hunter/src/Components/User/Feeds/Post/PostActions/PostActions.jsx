@@ -22,23 +22,25 @@ const ExpandMore = styled((props) => {
 }));
 
 
-const PostActions = ({ post, setLiked, handleExpandComment }) => {
+
+const PostActions = ({ post, setLiked, handleExpandComment,socket }) => {
  
-   const socket = useRef();
+
 
   const [expanded, setExpanded] = useState(false);
   const [like, setLike] = useState(false);
- 
+  const [likes, setLikes] = useState(false);
+
   const user = JSON.parse(localStorage.getItem("user"))?._id;
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
     };
     
-   
+   const userId = JSON.parse(localStorage.getItem("user"))?._id;
 
   const postLikeHandler = (post) => {
-    const userId = JSON.parse(localStorage.getItem("user"))?._id;
+    
     // handleNotification(post.userId)
     setLike(() => !like);
     userRequest({
@@ -50,19 +52,24 @@ const PostActions = ({ post, setLiked, handleExpandComment }) => {
       },
     }).then((data) => {
       setLiked(Math.random() * Math.random());
+      handleNotification(1, post.userId._id);
     });
   };
+
 
 
   //for live notifications
 
-  const handleNotification = (reciever) => {
-   socket.current.emit("sendNotification", {
-      senderName: user,
-      receiverName: reciever,
-      content: "liked",
+  const handleNotification = (type,postId) => {
+    type === 1 && setLikes(true);
+    socket.current.emit("sendNotification", {
+      senderName: userId,
+      receiverName: postId,
+      type,
     });
   };
+
+
 
   return (
     <CardActions

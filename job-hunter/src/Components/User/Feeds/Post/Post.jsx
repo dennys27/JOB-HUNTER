@@ -11,7 +11,7 @@ import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
 import { Box, Divider, Grid, Menu, MenuItem, Modal, Paper, TextField } from "@mui/material";
 import PostActions from "./PostActions/PostActions";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import SendIcon from "@mui/icons-material/Send";
 import { userRequest } from "../../../../Constants/Constants";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -49,13 +49,17 @@ const style = {
   scrollbarWidth: "none",
 };
 
-export default function RecipeReviewCard({ post, setLiked }) {
+export default function RecipeReviewCard({ post,setLiked,socket }) {
   const [comments, setComments] = useState("");
   const [expandedComment, setComment] = useState(false);
   const [expanded, setExpanded] = React.useState(false);
   const [openT, setOpenT] = React.useState(false);
   const handleCloseT = () => setOpenT(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+const [liked, setLikes] = useState("");
+
+ 
+
 
   let navigate = useNavigate()
   let duplicate_comment = [...post.comments];
@@ -92,7 +96,9 @@ export default function RecipeReviewCard({ post, setLiked }) {
         comments:comments
       }
     }).then((data) => {
+      setComments("")
       setLiked(Math.random() * Math.random());
+      handleNotification(1,post.userId)
     })
 
   }
@@ -113,8 +119,7 @@ export default function RecipeReviewCard({ post, setLiked }) {
   };
   
 
-  const onReport = (autherId,reason,reportedPostId) => {
-      console.log(reportedPostId,"idddddddddddddddddddd")
+const onReport = (autherId,reason,reportedPostId) => {
      userRequest({
        method: "POST",
        url: "/user/reportpost",
@@ -129,7 +134,23 @@ export default function RecipeReviewCard({ post, setLiked }) {
        alert("success"); 
      });
 
+  };
+
+
+
+    const handleNotification = (type, postId) => {
+      type === 1 && setLikes(true);
+      socket.current.emit("sendNotification", {
+        senderName: user,
+        receiverName: postId,
+        type,
+      });
     };
+  
+
+
+  
+  
 
 
   return (
@@ -262,6 +283,7 @@ export default function RecipeReviewCard({ post, setLiked }) {
         handleExpandComment={handleExpandComment}
         setLiked={setLiked}
         post={post}
+        socket={socket}
       />
       <Collapse
         className="comment_collapse"

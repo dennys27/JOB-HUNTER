@@ -50,12 +50,14 @@ const CreatePost = ({ setRefresh }) => {
       setExpanded(false);
       setType("video")
     } else {
-        console.log("im an image.......");
-       setType("image")
+    
+      setType("image")
       setExpanded(true);
       setVideo(false);
+
     }
     setImage(e.target.files[0]);
+    console.log(e.target.files[0])
   };
 
   const handleDesc = (e) => {
