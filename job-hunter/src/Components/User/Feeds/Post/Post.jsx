@@ -98,14 +98,11 @@ const [liked, setLikes] = useState("");
     }).then((data) => {
       setComments("")
       setLiked(Math.random() * Math.random());
-      handleNotification(1,post.userId)
+      console.log(post.userId._id)
+      handleNotification(1,post.userId._id)
     })
 
   }
-
-
-
-
 
 
 
