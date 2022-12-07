@@ -7,6 +7,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { styled, alpha } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
+import Popper from "@mui/material/Popper";
 import swal from "sweetalert";
 import { Avatar, Badge, Button, Collapse, Container, Menu, MenuItem, TextField, Toolbar, Typography } from "@mui/material";
 import { logout } from "../../../features/Auth/AuthSlice";
@@ -97,6 +98,16 @@ const Navbar = ({socket}) => {
   const [expanded, setExpanded] = useState(true)
   const [expandedTwo, setExpandedTwo] = useState(false)
   const [otp, setOtp] = useState("");
+ 
+  const [anchorE2, setAnchorE2] = React.useState(null);
+
+  const handleClick = (event) => {
+      setAnchorE2(anchorE2 ? null : event.currentTarget);
+  };
+  
+    const open2 = Boolean(anchorE2);
+  const id = open2 ? "simple-popper" : undefined;
+  
 
 
   const handlePhone = (e) => { 
@@ -109,7 +120,7 @@ const Navbar = ({socket}) => {
   }
 
 
-   const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState([]);
     
 
   useEffect(() => {
@@ -176,6 +187,7 @@ const Navbar = ({socket}) => {
     navigate(`/${route}`)
   }
 
+
   const handleLogout = async() => {
     await dispatch(logout());
    navigate("/login")
@@ -183,9 +195,6 @@ const Navbar = ({socket}) => {
   }
 
   let url = window.location.href.endsWith("/");
-
-
-
    const [openm, setOpenm] = React.useState(false);
    const handleOpenm = () => setOpenm(true);
    const handleClosem = () => setOpenm(false);
@@ -227,7 +236,12 @@ const Navbar = ({socket}) => {
                 JOBHUNTER
               </Typography>
 
-              <Search sx={{ display: { xs: "none", sm: "flex" } }}>
+              <Search
+                sx={{ display: { xs: "none", sm: "flex" } }}
+                aria-describedby={id}
+                type="button"
+                onClick={handleClick}
+              >
                 <SearchIconWrapper>
                   <SearchIcon />
                 </SearchIconWrapper>
@@ -236,6 +250,11 @@ const Navbar = ({socket}) => {
                   inputProps={{ "aria-label": "search" }}
                 />
               </Search>
+              <Popper id={id} open={open2} anchorE1={anchorE2}>
+                <Box sx={{ border: 1, p: 1, bgcolor: "background.paper" }}>
+                  The content of the Popper.
+                </Box>
+              </Popper>
             </Box>
             {token && url === false ? (
               <Box
