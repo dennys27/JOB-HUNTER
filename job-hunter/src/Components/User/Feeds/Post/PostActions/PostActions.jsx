@@ -109,7 +109,7 @@ const PostActions = ({ post, setLiked, handleExpandComment,socket }) => {
         aria-label="share"
       >
         <BiComment />
-        <Typography
+        <Typography 
           mt={0}
           pt={0}
           fontSize={"14px"}
