@@ -378,7 +378,7 @@ const Like = asyncHandler(async (req, res) => {
     notification.content = "liked your post";
     notification.postId = likeNotifications._id;
 
-    console.log(isExist,"fffffff....!!!!!!")
+   
     
     if (isExist.length === 0) {
           await User.findByIdAndUpdate(
@@ -391,7 +391,7 @@ const Like = asyncHandler(async (req, res) => {
             }
           )
     } else {
-      console.log("sheroooq")
+    
        await User.findByIdAndUpdate(
          likeNotifications[0].userId,
          {
@@ -412,8 +412,6 @@ const Like = asyncHandler(async (req, res) => {
       
     }
   
-    
- 
  
     
 
