@@ -1,4 +1,4 @@
-import { Box, Collapse, Modal, Typography } from '@mui/material';
+import { Box, Collapse, Modal, TextField, Typography } from '@mui/material';
 import SmartDisplayIcon from "@mui/icons-material/SmartDisplay";
  import { ToastContainer, toast } from "react-toastify";
  import "react-toastify/dist/ReactToastify.css";
@@ -125,8 +125,11 @@ const CreatePost = ({ setRefresh }) => {
     <>
       <ToastContainer />
       <Box className="Create_Post_Wrapper">
-        <div className="content_wrapper2">
-          <Box display={{ xs: "none", sm: "none", md: "none", lg: "flex" }}>
+        <div style={{ width: "100%" }} className="content_wrapper2">
+          <Box
+            sx={{ marginLeft: "20px" }}
+            display={{ xs: "none", sm: "none", md: "none", lg: "inline-block" }}
+          >
             {user.profile ? (
               <img
                 display
@@ -146,11 +149,21 @@ const CreatePost = ({ setRefresh }) => {
             )}
           </Box>
 
-          <input
+          <TextField
+            display={{ xs: "none", sm: "none", md: "none", lg: "flex" }}
             onClick={() => handleOpen()}
-            type="text"
             className="postContent"
-            placeholder="whats on your mind..."
+            defaultValue="whats on your mind..."
+            color='primary'
+            size="small"
+            sx={{
+             
+              marginLeft: "10px",
+              marginRight: "20px",
+              width: "100%",
+              "& fieldset": { border: "none" },
+              
+            }}
           />
         </div>
       </Box>

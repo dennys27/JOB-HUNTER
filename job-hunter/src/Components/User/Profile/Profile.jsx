@@ -39,22 +39,24 @@ const Profile = () => {
 
   return (
     <>
-      <div style={{ backgroundColor: "#D9D9D9", paddingBottom: "100px" }}>
+      <div style={{ backgroundColor: "#D9D9D9", paddingBottom: "100px"}}>
         <Navbar />
         <Container>
           <Box sx={{ flexGrow: 1 }}>
             <Grid sx={{ paddingTop: "80px" }} container spacing={2}>
               <Grid
-                sx={{ display: "flex", justifyContent: "center" }}
+                sx={{ display: "flex", justifyContent: "center"}}
                 item
-                xs={6}
+                xs={12}
+                sm={4}
                 md={4}
               >
                 <Box style={{ position: "fixed" }}>
                   <LeftCard />
                 </Box>
               </Grid>
-              <Grid item xs={6} md={8}>
+              
+              <Grid item xs={12} sm={12} md={8}>
                 <BasicInfo />
                 <Experience />
               </Grid>

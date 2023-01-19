@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const connect = () => {
   mongoose
     .connect(
-      "mongodb+srv://dennys:dennys@cluster0.yj7i19b.mongodb.net/?retryWrites=true&w=majority",
+      PROCESS.env.DB_URL,
       {
         useNewUrlParser: true,
       }

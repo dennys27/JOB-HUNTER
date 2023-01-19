@@ -8,15 +8,17 @@ import Navbar from '../Navbar/Navbar'
 const Hero = () => {
   return (
     <>
-      <Navbar/>
+      <Navbar />
       <div className="Hero">
         <Grid container spacing={2}>
           <Grid
             sx={{ display: "flex", justifyContent: "center" }}
             item
             xs={12}
-            sm={6}
+            sm={12}
+            md={6}
             lg={6}
+            xl={6}
           >
             <div className="quote_wrapper">
               <Typography fontSize={66} fontWeight={700} variant="h2">
@@ -57,12 +59,15 @@ const Hero = () => {
               </Button>
             </div>
           </Grid>
+
           <Grid
             sx={{ display: "flex", justifyContent: "center" }}
             item
             xs={12}
-            sm={6}
+            sm={12}
+            md={6}
             lg={6}
+            xl={6}
           >
             <img src={heroimage} alt="" />
           </Grid>

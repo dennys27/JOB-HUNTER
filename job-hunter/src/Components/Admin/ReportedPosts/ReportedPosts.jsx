@@ -100,7 +100,7 @@ const handleOpen = (data, autherId) => {
           <TableBody>
             {rep?.map((data) => (
               <TableRow
-                key={data?.autherId.name}
+                key={data?.autherId?.name}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell
@@ -128,7 +128,7 @@ const handleOpen = (data, autherId) => {
                     }`}
                   />
                   <Typography sx={{ marginLeft: "15px" }}>
-                    {data?.autherId.name}
+                    {data?.autherId?.name}
                   </Typography>
                 </TableCell>
                 <TableCell component="th" scope="row">
@@ -146,7 +146,7 @@ const handleOpen = (data, autherId) => {
                 <TableCell component="th" scope="row"></TableCell>
                 <TableCell component="th" scope="row">
                   <Button
-                    onClick={() => handleDelete(data?.reportedPostId._id)}
+                    onClick={() => handleDelete(data?.reportedPostId?._id)}
                   >
                     Delete
                   </Button>
@@ -178,7 +178,7 @@ const handleOpen = (data, autherId) => {
                 avatar={
                   <Avatar
                     src={`http://localhost:5000/static/images/${
-                      profile?.profile[profile?.profile.length - 1]
+                      profile?.profile[profile?.profile?.length - 1]
                     }`}
                     sx={{ bgcolor: red[500] }}
                     aria-label="recipe"
@@ -227,7 +227,7 @@ const handleOpen = (data, autherId) => {
               <CardMedia
                 component="img"
                 height="400"
-                image={`http://localhost:5000/static/images/${postData.image}`}
+                image={`http://localhost:5000/static/images/${postData?.image}`}
                 alt="post image"
               />
             ) : (

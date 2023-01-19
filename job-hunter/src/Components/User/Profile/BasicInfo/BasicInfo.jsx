@@ -114,7 +114,7 @@ const BasicInfo = () => {
         }}
       >
         <Grid container>
-          <Grid item xs={4} md={4} lg={6}>
+          <Grid item xs={6} md={4} lg={6}>
             <Box sx={{ padding: 2 }}>
               <Typography
                 sx={{ fontSize: "18px", fontWeight: "700" }}
@@ -183,7 +183,9 @@ const BasicInfo = () => {
               </Box>
             </Box>
           </Grid>
-          <Grid item xs={4} md={3} lg={6}>
+
+
+          <Grid item xs={6} md={8} lg={6}>
             <Box sx={{ padding: 2 }}>
               <Typography
                 sx={{ fontSize: "18px", fontWeight: "700" }}

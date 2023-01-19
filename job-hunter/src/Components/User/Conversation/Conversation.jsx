@@ -75,17 +75,37 @@ const Conversation = ({ data,currentUserId,online}) => {
             )}
 
             <Box>
-              <Typography>{userData?.name}</Typography>
+              <Typography
+                sx={{ display: { xs: "none", md: "flex", lg: "flex" } }}
+              >
+                {userData?.name}
+              </Typography>
               {online ? (
-                <Typography sx={{ color: "green" }}> online </Typography>
+                <Typography
+                  sx={{
+                    color: "green",
+                    display: { xs: "none", md: "flex", lg: "flex" },
+                  }}
+                >
+                  {" "}
+                  online{" "}
+                </Typography>
               ) : (
-                <Typography sx={{ color: "gray" }}> offline </Typography>
+                <Typography
+                  sx={{
+                    color: "gray",
+                    display: { xs: "none", md: "flex", lg: "flex" },
+                  }}
+                >
+                  offline
+                </Typography>
               )}
             </Box>
           </Box>
         </Box>
         <Divider sx={{ marginTop: "15px" }} />
       </Box>
+
     </>
   );
 }

@@ -30,6 +30,11 @@ const style = {
   borderRadius:"5px"
 };
 
+
+
+
+
+
 const Applicants = () => {
 
   const navigate = useNavigate()
@@ -90,7 +95,7 @@ const Applicants = () => {
               <Grid sx={{ paddingTop: "80px" }} container spacing={2}>
                 <Grid
                   sx={{
-                    display: "flex",
+                    display: { xs: "none", sm: "none", md: "flex", lg: "flex" },
                     justifyContent: "center",
                   }}
                   item
@@ -129,17 +134,25 @@ const Applicants = () => {
                             />
                           </Box>
 
-                          <Box sx={{ marginBottom: "10px",width:"100px",overflow:"scroll",scrollbarWidth:"none" }}>
+                          <Box
+                            sx={{
+                              marginBottom: "10px",
+                              width: "100px",
+                              overflow: "scroll",
+                              scrollbarWidth: "none",
+                            }}
+                          >
                             <Box
                               sx={{
                                 height: "25px",
                                 overflow: "scroll",
                                 scrollbarWidth: "none",
-                                width:"100%"
-                              }}>
-                              
-                              <Typography p={0} sx={{width:"100%"}}>{job.designation}</Typography>
-                              
+                                width: "100%",
+                              }}
+                            >
+                              <Typography p={0} sx={{ width: "100%" }}>
+                                {job.designation}
+                              </Typography>
                             </Box>
 
                             <Typography sx={{ fontSize: "14px" }}>
@@ -158,11 +171,11 @@ const Applicants = () => {
                   </Box>
                 </Grid>
 
-                <Grid item xs={6} md={8}>
+                <Grid item xs={12} sm={12} md={8} lg={8}>
                   <Box>
                     <Box
                       sx={{
-                        width: "700px",
+                       
                         backgroundColor: "white",
                         minHeight: "800px",
                         maxHeight: "auto",
@@ -246,10 +259,6 @@ const Applicants = () => {
                           </Typography>
                         </Box>
 
-                        {/* <Box sx={{ marginTop: "40px" }}>
-                        <Typography>Job summary:</Typography>
-                        <Typography sx={{ marginTop: "10px" }}>{ data.jobsummary}</Typography>
-                      </Box> */}
                         <Box sx={{ marginTop: "40px" }}>
                           <Typography>About the company:</Typography>
                           <Typography sx={{ marginTop: "10px" }}>
@@ -264,7 +273,12 @@ const Applicants = () => {
             </Container>
           ) : (
             <Box
-              sx={{ width: "100%", display: "flex", justifyContent: "center",backgroundColor:"white" }}
+              sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                backgroundColor: "white",
+              }}
             >
               <img
                 style={{

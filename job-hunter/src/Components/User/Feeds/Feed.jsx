@@ -66,7 +66,15 @@ let getFeed = async () => {
   return (
     <>
       <Navbar socket={socket} />
-      <Box sx={{ backgroundColor: "#D9D9D9", bottom: 0 }}>
+      <Box
+        sx={{
+          backgroundColor: "#D9D9D9",
+          bottom: 0,
+          display: "flex",
+          justifyContent: "center",
+          alignItems:"center"
+        }}
+      >
         <Container>
           <Box
             sx={{ width: "100%" }}
@@ -95,12 +103,14 @@ let getFeed = async () => {
                   <ProfileCard position="sticky" />
                 </Box>
               </Grid>
-              <Grid item xs={2} sm={4} md={6}>
+              <Grid item xs={12} sm={12} md={6}>
                 <div>
                   <CreatePost setRefresh={setRefresh} />
-                  
-                 
-                  {posts.length===0 || posts === "" || posts === undefined || posts === null ? (
+
+                  {posts.length === 0 ||
+                  posts === "" ||
+                  posts === undefined ||
+                  posts === null ? (
                     <Media loading />
                   ) : (
                     ""
@@ -108,7 +118,11 @@ let getFeed = async () => {
 
                   {posts
                     ? posts.map((post) => (
-                        <RecipeReviewCard socket={socket} setLiked={setLiked} post={post} />
+                        <RecipeReviewCard
+                          socket={socket}
+                          setLiked={setLiked}
+                          post={post}
+                        />
                       ))
                     : ""}
                 </div>

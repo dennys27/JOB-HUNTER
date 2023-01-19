@@ -44,7 +44,7 @@ const Jobs = () => {
             <Grid
               sx={{ paddingTop: "80px" }}
               container
-              spacing={{ xs: 2, md: 3 }}
+              spacing={{ xs: 2,sm:4, md: 3 }}
               columns={{ xs: 4, sm: 8, md: 12 }}
             >
               <Grid
@@ -63,18 +63,26 @@ const Jobs = () => {
                 </Box>
               </Grid>
 
-              <Grid item xs={2} sm={4} md={8}>
+              <Grid item xs={12} sm={6} md={8}>
                 <Jobtopbar />
-                <Box sx={{ marginTop: 2,minHeight:"700px",maxHeight:"800px" }}>
+                <Box
+                  sx={{ marginTop: 2, minHeight: "700px", maxHeight: "800px", display:"flex",justifyContent:"center",width:"100%" }}
+                >
                   <Grid
                     container
-                    spacing={{ xs: 2, sm: 2, md: 3 }}
-                    columns={{ xs: 4, sm: 8, md: 12 }}
-                    
+                    spacing={{ xs: 2, sm: 2, md: 4 }}
+                    //columns={{ xs: 4, sm: 8, md: 12 }}
                   >
-                  
                     {jobs?.map((job, index) => (
-                      <Grid item xs={2} sm={4} md={4} key={index}>
+                      <Grid
+                     
+                        item
+                        xs={12}
+                        sm={6}
+                        md={6}
+                        lg={4}
+                        key={index}
+                      >
                         <Job job={job} />
                       </Grid>
                     ))}

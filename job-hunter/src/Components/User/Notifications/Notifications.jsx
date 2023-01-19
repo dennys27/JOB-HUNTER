@@ -30,9 +30,10 @@ const Notifications = () => {
         <Grid container spacing={2}>
           <Grid
             sx={{
-              display: "flex",
-              justifyContent: "end",
+              display: { xs: "none", sm: "none", md: "flex", lg: "flex" },
             }}
+            display={"flex"}
+            justifyContent={"center"}
             item
             xs={4}
           >
@@ -50,7 +51,13 @@ const Notifications = () => {
               <Typography>Notifications</Typography>
             </Box>
           </Grid>
-          <Grid item xs={8}>
+          <Grid
+            sx={{
+              display: { xs: "flex", sm: "flex", md: "flex", lg: "flex" },
+            }}
+            item
+            xs={8}
+          >
             <Box
               sx={{
                 width: "600px",
@@ -86,7 +93,7 @@ const Notifications = () => {
 
                     <Typography fontSize={16}>{data?.userId?.name}</Typography>
                     <Typography fontSize={12} color={"gray"} variant="h6">
-                     {data?.content}
+                      {data?.content}
                     </Typography>
                   </Box>
                   <Divider sx={{ paddingTop: "15px" }} />

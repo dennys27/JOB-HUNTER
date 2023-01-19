@@ -111,27 +111,41 @@ const Chat = () => {
 
                   {chat?.map((Chat) => (
                     <Box onClick={() => setCurrentChat(Chat)}>
-                      <Conversation data={Chat} currentUserId={userId} online={checkOnlineStatus(Chat)} />
+                      <Conversation
+                        data={Chat}
+                        currentUserId={userId}
+                        online={checkOnlineStatus(Chat)}
+                      />
                     </Box>
                   ))}
+                 
                 </Box>
               </Box>
             </Grid>
 
             {/* chat box */}
 
-            <Grid sx={{ display: "flex" }} item xs={8}> 
+            <Grid sx={{ display: "flex" }} item xs={8}>
               <Box sx={{ position: "fixed" }}>
-                {currentChat ?
+                {currentChat ? (
                   <ChatBox
-                  chat={currentChat}
-                  currentUser={userId}
-                  setSendMessage={setSendMessage}
-                  receivedMessage={receivedMessage}
-                />:<Typography sx={{textAlign:"center",marginLeft:"180px",marginTop:"150px"}}> Tap on conversation !!</Typography>
-
-                }
-                
+                    chat={currentChat}
+                    currentUser={userId}
+                    setSendMessage={setSendMessage}
+                    receivedMessage={receivedMessage}
+                  />
+                ) : (
+                  <Typography
+                    sx={{
+                      textAlign: "center",
+                      marginLeft: "180px",
+                      marginTop: "150px",
+                    }}
+                  >
+                    {" "}
+                    Tap on conversation !!
+                  </Typography>
+                )}
               </Box>
             </Grid>
           </Grid>

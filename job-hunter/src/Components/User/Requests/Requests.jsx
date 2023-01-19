@@ -78,7 +78,7 @@ const Requests = () => {
       }
     }).then((data) => {
       setRefresh(Math.random())
-      console.log(data,"resultttt");
+     
     })
   }
   
@@ -97,7 +97,7 @@ const Requests = () => {
           <Grid container spacing={2}>
             <Grid
               sx={{
-                display: "flex",
+                display: { xs: "none", sm: "none", md: "flex", lg: "flex" },
                 justifyContent: "center",
               }}
               item
@@ -239,12 +239,14 @@ const Requests = () => {
                     columns={{ xs: 4, sm: 8, md: 12 }}
                   >
                     {recomendations?.map((data, index) =>
-                      data?._id !== currentUser && (User?.network?.includes(data?._id)!==true) && (User?.requests?.includes(data?._id)!==true) ? (
+                      data?._id !== currentUser &&
+                      User?.network?.includes(data?._id) !== true &&
+                      User?.requests?.includes(data?._id) !== true ? (
                         <Grid
                           sx={{ display: "flex", justifyContent: "center" }}
                           item
-                          xs={2}
-                          sm={4}
+                          xs={12}
+                          sm={6}
                           md={3}
                           key={index}
                         >
@@ -261,7 +263,6 @@ const Requests = () => {
                               overflow: "hide",
                             }}
                           >
-                          
                             {data?.profile[data.profile.length - 1] ? (
                               <img
                                 style={{

@@ -32,14 +32,12 @@ const navigate = useNavigate()
          _id: User._id,
        }
      }).then((data) => {
-       console.log(data.data.data.network, "connetions,,,,,,,,,,,,,,,,,,,,,");
        setNetwork(data.data.data.network);
      });
    }, []);
   
-//   const handleMessage = () => {
+
   
-// }
   return (
     <>
       <Navbar />
@@ -54,8 +52,8 @@ const navigate = useNavigate()
           <Grid container spacing={2}>
             <Grid
               sx={{
-                display: "flex",
-                justifyContent: "center",
+                display: { xs: "none", sm: "none", md: "flex", lg: "flex" },
+               
               }}
               item
               xs={4}
@@ -110,6 +108,7 @@ const navigate = useNavigate()
                     minHeight: "700px",
                     backgroundColor: "white",
                     borderRadius: "5px",
+                    
                   }}
                 >
                   {network?.map((data) => (
@@ -128,7 +127,7 @@ const navigate = useNavigate()
                             gap: "15px",
                           }}
                         >
-                          {data?.profile.length >=0? 
+                          {data?.profile.length >= 0 ? (
                             <img
                               style={{
                                 width: "50px",
@@ -139,7 +138,7 @@ const navigate = useNavigate()
                                 data?.profile[data.profile.length - 1]
                               }`}
                             />
-                           : 
+                          ) : (
                             <img
                               style={{
                                 width: "50px",
@@ -148,7 +147,7 @@ const navigate = useNavigate()
                               }}
                               src="https://static.thenounproject.com/png/3911675-200.png"
                             />
-                          }
+                          )}
                           <Box>
                             <Typography>{data.name}</Typography>
                             <Typography>{data.headline}</Typography>

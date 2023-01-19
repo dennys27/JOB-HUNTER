@@ -47,12 +47,12 @@ const PostActions = ({ post, setLiked, handleExpandComment,socket }) => {
       method: "POST",
       url: "/user/like",
       data: {
-        postId: post._id,
+        postId: post?._id,
         userId: userId,
       },
     }).then((data) => {
       setLiked(Math.random() * Math.random());
-      handleNotification(1, post.userId._id);
+      handleNotification(1, post?.userId?._id);
     });
   };
 
@@ -100,7 +100,7 @@ const PostActions = ({ post, setLiked, handleExpandComment,socket }) => {
           pt={0}
           fontSize={"14px"}
           variant="h6"
-        >{`${post.likes.length} likes`}</Typography>
+        >{`${post?.likes?.length} likes`}</Typography>
       </IconButton>
 
       <IconButton
@@ -114,7 +114,7 @@ const PostActions = ({ post, setLiked, handleExpandComment,socket }) => {
           pt={0}
           fontSize={"14px"}
           variant="h6"
-        >{`${post.comments.length} comments`}</Typography>
+        >{`${post?.comments?.length} comments`}</Typography>
       </IconButton>
 
       <ExpandMore
@@ -129,7 +129,7 @@ const PostActions = ({ post, setLiked, handleExpandComment,socket }) => {
           pt={0}
           fontSize={"14px"}
           variant="h6"
-        >{`${post.likes.length} shares`}</Typography>
+        >{`${post?.likes?.length} shares`}</Typography>
       </ExpandMore>
     </CardActions>
   );

@@ -3,7 +3,7 @@ const nodemailer = require("nodemailer");
 const multer = require("multer");
 const path = require("path");
 const { Job } = require("../../models/job");
-
+require("dotenv").config();
 
 
 
@@ -26,6 +26,7 @@ const getMyJobs = asyncHandler(async (req, res) => {
 
  
 const postJobs = asyncHandler(async (req, res) => { 
+
 console.log(JSON.parse(req.body.key.job).jobsummary)
   
   let details = {
@@ -46,10 +47,9 @@ console.log(JSON.parse(req.body.key.job).jobsummary)
 
   try {
     const user = await Job.create(details);
-    console.log(user,"yayyyyyyyyyyyyy");
     res.status(200).json(user)
   } catch (err) {
-    console.log(err,"error happened in the job controller service.");
+    console.log(err,"error happened in the job controller ");
   }
 
    
@@ -59,27 +59,27 @@ console.log(JSON.parse(req.body.key.job).jobsummary)
 
 
 const applyJob = asyncHandler(async (req, res) => {
-  console.log(req.body.jobId,"lets try this out")
+ 
   let isExist = await Job.find(
     { _id: req.body.jobId,
       applicants: { $elemMatch: { _id: req.body.user._id } },
     }
   );
 
-  console.log(isExist,"does it exists")
   if (isExist.length!==0) {
     res.status(200).json({ isExist ,exist:true});
   } else {
     try {
-      console.log("okay im hereeeeeeeeeee")
-       const user = await Job.findByIdAndUpdate(req.body.jobId, {
-         $push: { applicants: req.body.user },
+     
+         const user = await Job.findByIdAndUpdate(req.body.jobId, {
+           $push: { applicants: req.body.user },
+           
        });
 
        res.status(200).json(user);
      } catch (err) {
        res.status(500).json(err);
-       console.log(err, "error happened in the job controller service.");
+       console.log(err, "error happened in the job controller");
      }
   }
 

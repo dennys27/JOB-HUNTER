@@ -9,6 +9,7 @@
 }
 
 .content_wrapper2{
+    
     display: flex;
     padding: 10px;
     
@@ -21,7 +22,7 @@
 }
 
 .postContent{
-    width: 450px;
+    
     height: 40px;
     outline: none;
     border: none;

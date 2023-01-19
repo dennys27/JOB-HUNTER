@@ -2,9 +2,15 @@ import { Box, Typography } from '@mui/material'
 import React from 'react'
 
 const Jobtopbar = () => {
+
   return (
     <>
-      <Box sx={{ display: "flex", justifyContent: "space-around" }}>
+      <Box
+        sx={{
+          display: { xs: "none", md: "none", lg: "flex" },
+          justifyContent: "space-around",
+        }}
+      >
         <Typography
           style={{
             backgroundColor: "white",
