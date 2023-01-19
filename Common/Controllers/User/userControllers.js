@@ -40,7 +40,7 @@ const registerUser = asyncHandler(async (req, res) => {
  
  
     const userExists = await User.findOne({ email });
-     console.log(userExists, "lets seeee");
+     
   if (userExists) {
       res.status(400).json({message:"user already exists",status :false})
       console.log("error checked");
@@ -89,8 +89,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email }); 
 
   const token = await jwt.sign({ userId: user._id }, process.env.JWTPRIVATEKEY, { expiresIn: "7d", });
-  console.log(user, "yooooooooooooooooyoyoyoyoyo");
-  //user.token = token
+ 
   if (user && (await bcrypt.compare(password, user.password))) {
     
     //res.send(user);
@@ -224,7 +223,7 @@ const post = async (req, res) => {
 
           const post = await Post(userPost).save();
 
-          console.log(post, "post.....");
+        
 
           if (post) {
             res
@@ -250,7 +249,7 @@ const post = async (req, res) => {
 
       upload(req, res, async (err) => {
         if (!req.file) {
-          console.log("no video");
+         
           res.json({ noImage: "select video" });
         } else {
           userPost.name = data.name;
@@ -289,7 +288,7 @@ const post = async (req, res) => {
 
             const post = await Post(userPost).save();
 
-            console.log(post, "post.....");
+           
 
             if (post) {
               res
@@ -463,7 +462,7 @@ const rejectRequest = asyncHandler(async (req, res) => {
 
 
 const acceptRequest = asyncHandler(async (req, res) => {
-  console.log(req.body,"im working hereeee.......");
+
   try {
 
      await User.findByIdAndUpdate(
@@ -493,7 +492,7 @@ const acceptRequest = asyncHandler(async (req, res) => {
    let wait =  await User.updateOne({ _id: req.body.userId },
       { $pull: { "requests": req.body.senderId } }
     )
-    console.log(wait,"fffffffffffff");
+   
 
  
   } catch (error) {
@@ -512,9 +511,7 @@ const request = asyncHandler(async (req, res) => {
   console.log(req.body,"yesss");
   try {
 
-  //  await User.updateOne({ _id: req.body.userId },
-  //     { $pull: { "requests": req.body.senderId } }
-  //   )
+  
 
       await User.findByIdAndUpdate(
         req.body.userId,
@@ -525,7 +522,7 @@ const request = asyncHandler(async (req, res) => {
           new: true,
         }
       ).then((data) => {
-        console.log(data,"ooiiiiiii");
+      
         res
           .status(200)
           .json({ status: true, message: "request success", request: data });
@@ -600,7 +597,7 @@ const Comment = asyncHandler(async (req, res) => {
 
 
 const profileCard = asyncHandler(async (req, res) => {
-    console.log(req.file,"filess")
+   
   
   let data = req.query
  
@@ -618,7 +615,6 @@ const profileCard = asyncHandler(async (req, res) => {
       upload(req, res, async (err) => {
         if (!req.file) {
 
-           console.log( "no file...");
           await User.updateOne(
             { _id: data._id },
 
@@ -840,14 +836,14 @@ const getUsers = asyncHandler(async (req, res) => {
 
 
 const removeConnection = asyncHandler(async (req, res) => {
- console.log(req.body,"whosssss")
+
   try {
   User.updateOne(
     { _id: req.body.currentUser },
     { $pull: { "network": req.body.removedUser } }
   )
     .then((data) => {
-      console.log(data, "ggggg");
+    
       User.updateOne(
         { _id: req.body.removedUser },
         { $pull: { "network": req.body.currentUser } }
@@ -885,7 +881,7 @@ const profileVerification = asyncHandler(async (req, res) => {
 
   try {
    await Verification(verification).save().then(async(data) => {
-     console.log(data, "trying.");
+    
       await User.updateOne({ _id: data.user },
       { verification: "pending"}
     )
@@ -901,7 +897,7 @@ const profileVerification = asyncHandler(async (req, res) => {
 
 
 const basicInfo = asyncHandler(async (req, res) => {
- console.log(req.body,"incoming.........................");
+
   try {
     await User.updateOne(
       { _id: req.body._id },
@@ -915,7 +911,7 @@ const basicInfo = asyncHandler(async (req, res) => {
     )
       .then(async (data) => {
         const user = await User.findOne({ _id: req.body._id });
-        console.log(user, "response...........");
+      
         res.status(200).json({
           status: true,
           message: "updated successfully",
@@ -948,7 +944,7 @@ const experience = asyncHandler(async (req, res) => {
     uId:Date.now(),
   };
   try {
-     console.log( "incoming.........................");
+    
     await User.findByIdAndUpdate(
       req.body._id,
       {
@@ -961,7 +957,7 @@ const experience = asyncHandler(async (req, res) => {
       .then(async (data) => {
         console.log(data);
         const user = await User.findOne({ _id: req.body._id });
-        console.log(user, "response...........");
+        
         res.status(200).json({
           status: true,
           message: "updated successfully",
@@ -992,7 +988,7 @@ const certifications = asyncHandler(async (req, res) => {
     uId: Date.now(),
   };
   try {
-     console.log( "incoming.........................");
+   
     await User.findByIdAndUpdate(
       req.body._id,
       {
@@ -1005,7 +1001,7 @@ const certifications = asyncHandler(async (req, res) => {
       .then(async (data) => {
         console.log(data);
         const user = await User.findOne({ _id: req.body._id });
-        console.log(user, "response...........");
+     
         res.status(200).json({
           status: true,
           message: "updated successfully",
@@ -1039,7 +1035,7 @@ const education = asyncHandler(async (req, res) => {
     uId: Date.now(),
   };
   try {
-     console.log( "incoming.........................");
+    
     await User.findByIdAndUpdate(
       req.body._id,
       {
@@ -1050,9 +1046,9 @@ const education = asyncHandler(async (req, res) => {
       }
     )
       .then(async (data) => {
-        console.log(data);
+      
         const user = await User.findOne({ _id: req.body._id });
-        console.log(user, "response...........");
+     
         res.status(200).json({
           status: true,
           message: "updated successfully",
@@ -1113,7 +1109,7 @@ const deleteDetail = asyncHandler(async (req, res) => {
 
   if (req.body.item === "certificate") {
     try {
-      console.log("incoming.........................");
+   
       await User.findByIdAndUpdate(
         req.body._id,
         { $pull: { certifications: { uId: req.body.uId } } },
@@ -1122,9 +1118,9 @@ const deleteDetail = asyncHandler(async (req, res) => {
         }
       )
         .then(async (data) => {
-          console.log(data);
+         
           const user = await User.findOne({ _id: req.body._id });
-          // console.log(user, "response...........");
+         
           res.status(200).json({
             status: true,
             message: "updated successfully",
@@ -1147,7 +1143,7 @@ const deleteDetail = asyncHandler(async (req, res) => {
 
   if (req.body.item === "education") {
     try {
-      console.log("incoming.........................");
+  
       await User.findByIdAndUpdate(
         req.body._id,
         { $pull: { education: { uId: req.body.uId } } },
@@ -1156,9 +1152,9 @@ const deleteDetail = asyncHandler(async (req, res) => {
         }
       )
         .then(async (data) => {
-          console.log(data);
+        
           const user = await User.findOne({ _id: req.body._id });
-          // console.log(user, "response...........");
+         
           res.status(200).json({
             status: true,
             message: "updated successfully",
@@ -1273,7 +1269,7 @@ const createChat = async (req, res) => {
 
 
 const userChat = async (req, res) => {
-  console.log("im hitting the user chat");
+ 
   try {
 
     const chat = await Chat.find({
@@ -1325,10 +1321,10 @@ const addMessage = async (req, res) => {
 
 const getMessages = async (req, res) => {
   const { chatId } = req.params;
-  console.log(chatId,"fffffffffffffffffffffffffffffff")
+ 
   try {
     const result = await MessageModel.find({chatId:chatId });
-    console.log(result,"hhhhhhhhhh");
+   
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json(error);
@@ -1347,7 +1343,7 @@ const getMessages = async (req, res) => {
 // --------jobservice-------//
 
 const getJobs = asyncHandler(async (req, res) => {
- console.log("im working you know..................");
+ 
   
   axios
     .get(`${uri}/jobs/jobs`)
@@ -1395,7 +1391,7 @@ const postJobs = asyncHandler(async (req, res) => {
                 
               )
               .then(function (response) {
-                console.log(response, "yes........", Math.random());
+                
               })
               .catch(function (error) {
                 // handle error
@@ -1414,6 +1410,7 @@ const postJobs = asyncHandler(async (req, res) => {
     }
  
 })
+
 
 
 
@@ -1449,7 +1446,6 @@ const apply = asyncHandler(async (req, res) => {
 const getmyjob = asyncHandler(async (req, res) => {
 
  
-
 
      try {
        axios
