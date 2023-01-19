@@ -1,9 +1,4 @@
 
-# Project Title
-
-A brief description of what this project does and who it's for
-
-
 
 
 # Job-hunter(ONGOING)
@@ -23,9 +18,9 @@ User
 6.apply for a job  
 7.report user  
 8.report post  
-9.resume upload
-10.chat
-11.live notifications
+9.resume upload  
+10.chat  
+11.live notifications  
 
 
 
