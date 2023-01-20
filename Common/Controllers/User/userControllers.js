@@ -1264,7 +1264,7 @@ const createChat = async (req, res) => {
 
   })
 
-  
+
 }
 
 
@@ -1310,7 +1310,6 @@ const addMessage = async (req, res) => {
   try {
     const result = await message.save(); 
 
-    console.log(result,"yesssssssssssssss");
     res.status(200).json(result);
   } catch (error) {
     console.log(error);
