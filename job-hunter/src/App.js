@@ -10,7 +10,7 @@ import AdminHome from './Components/Admin/AdminHome/AdminHome';
 import AdminRoutes, { AdminRoutesTwo } from './AdminRoutes';
 import Jobs from './Components/User/Jobs/Jobs';
 import Profile from './Components/User/Profile/Profile';
-import Jobpost from './Components/User/Jobpost/Jobpost';
+import Jobpost from './Components/User/Jobpost/Jobpost.jsx';
 import JobView from './Components/User/Jobs/Jobview/JobView';
 import Connections from './Components/User/Connections/Connections';
 import Requests from './Components/User/Requests/Requests';
@@ -32,8 +32,6 @@ import { useEffect, useRef, useState } from 'react';
 
 function App() {
   
-
-
 
   
   return (
